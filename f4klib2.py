@@ -1,5 +1,26 @@
 #Misc code that is mostly not really usable.
 
+import os
+import sys
+import cv2
+import copy
+import pymatlab
+import numpy as np
+import pandas as pd
+import moviepy as mp
+from moviepy.editor import *
+from scipy import signal, stats
+from bitarray import bitarray
+from datetime import datetime
+
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import matplotlib.image as mpimg
+from matplotlib.path import Path
+from bitarray import bitarray
+
+from f4klib import *
+
 def loadPickables(movs):
     pickables = []
     ids = []
@@ -137,3 +158,251 @@ def getMask(normilizedContourPoints):
     grid = p.contains_points(points)
     grid = grid.reshape((ny,nx))
     return grid
+
+def showTransformedImage(picker, clip, hasContour, contour):
+    if hasContour[picker]:
+        image1 = clip[picker]
+        thiscontour = getContour(contour[picker])
+        mask = np.full(image1.shape, 0, dtype=np.uint8)
+        cv2.fillPoly(mask, np.array([thiscontour], dtype=np.int32), (255,)*3)
+        image2 = cv2.cvtColor(image1,cv2.COLOR_RGB2YUV)
+        image3 = normalizeRGB(image2)[:,:,0]
+        image4 = cv2.bitwise_or(cv2.bitwise_not(mask),image1)
+        image5 = cv2.cvtColor(image4,cv2.COLOR_RGB2YUV)
+        image6 = normalizeRGB(image5)[:,:,0]
+        image7 = cv2.bitwise_and(mask,image1)
+        image8 = cv2.cvtColor(image7,cv2.COLOR_RGB2YUV)
+        image9 = normalizeRGB(image8)[:,:,0]
+        plt.subplots(1,9,figsize=(18,2))
+        for index, image in enumerate([image1,image2,image3,image4,image5,image6,image7,image8,image9]):
+            plt.subplot(1,9,index+1)
+            if (index+1)%3==0:
+                plt.imshow(image, cmap='gray')
+            else:
+                plt.imshow(image)
+            plt.xticks([])
+            plt.yticks([])
+        plt.show()
+    else:
+        print("No contour for this image dummy.")
+        
+def printCNNweight():
+    basepath = '/afs/inf.ed.ac.uk/user/s14/s1413557/f4k-2017-msc-master/matt-msc/src/lua/cnn/models/'
+    if os.name=="nt":
+        basepath =  'C:/Users/YuJianmeng/f4k/matt-msc/src/lua/cnn/models/'
+    path_plasu = 'filters/B_C/1/'
+    path_plasu2 = 'filters/N/1/'
+    path_plasu3 = 'filters/W_C/1/'
+    #img = cv2.imread(basepath+path_plasu+'1.png')
+    plt.subplots(24,16,figsize=(10,10))
+    for i in range(64):
+        plt.subplot(24,16,i+1)
+        img = cv2.imread(basepath+path_plasu+str(i+1)+'.png')
+        plt.imshow(img)
+        plt.xticks([])
+        plt.yticks([])
+    for i in range(64):
+        plt.subplot(24,16,i+65)
+        img = cv2.imread(basepath+path_plasu+str(i+1)+'.png')
+        plt.imshow(normalizeRGB(img))
+        plt.xticks([])
+        plt.yticks([])
+    for i in range(64):
+        plt.subplot(24,16,i+129)
+        img = cv2.imread(basepath+path_plasu2+str(i+1)+'.png')
+        plt.imshow(img)
+        plt.xticks([])
+        plt.yticks([])
+    for i in range(64):
+        plt.subplot(24,16,i+193)
+        img = cv2.imread(basepath+path_plasu2+str(i+1)+'.png')
+        plt.imshow(normalizeRGB(img))
+        plt.xticks([])
+        plt.yticks([])
+    for i in range(64):
+        plt.subplot(24,16,i+257)
+        img = cv2.imread(basepath+path_plasu3+str(i+1)+'.png')
+        plt.imshow(img)
+        plt.xticks([])
+        plt.yticks([])
+    for i in range(64):
+        plt.subplot(24,16,i+321)
+        img = cv2.imread(basepath+path_plasu3+str(i+1)+'.png')
+        plt.imshow(normalizeRGB(img))
+        plt.xticks([])
+        plt.yticks([])
+    plt.show()
+    
+def printSeperateFish(picker, picker2):
+    movs = loadMovids()
+    movid = movs[picker]
+    info, clip, hasContour, contour, fish_id, frames = loadVideo(movid,print_info=False, print_image=False)
+    cline = contour[picker2]
+    thisContour = getContour(cline)
+
+    full_fish, head_fish, tail_fish, top_fish, bot_fish, hhead_fish, htail_fish = seperate_fish(thisContour,info[picker2][1])
+    image = clip[picker2]
+
+    #Temp stuff
+    hf = np.array((head_fish.astype(int)*255)[:,:,None], dtype=np.uint8)
+    hf = np.dstack((hf,hf,hf))
+    tf = np.array((tail_fish.astype(int)*255)[:,:,None], dtype=np.uint8)
+    tf = np.dstack((tf,tf,tf))
+    tpf = np.array((top_fish.astype(int)*255)[:,:,None], dtype=np.uint8)
+    tpf = np.dstack((tpf,tpf,tpf))
+    btf = np.array((bot_fish.astype(int)*255)[:,:,None], dtype=np.uint8)
+    btf = np.dstack((btf,btf,btf))
+    hhf = np.array((hhead_fish.astype(int)*255)[:,:,None], dtype=np.uint8)
+    hhf = np.dstack((hhf,hhf,hhf))
+    htf = np.array((htail_fish.astype(int)*255)[:,:,None], dtype=np.uint8)
+    htf = np.dstack((htf,htf,htf))
+
+    #White mask with black shape
+    mask = np.full(image.shape, 255, dtype=np.uint8)
+    roi_corners = np.array([thisContour], dtype=np.int32)
+    ignore_mask_color = (0,)*3
+    cv2.fillPoly(mask, roi_corners, ignore_mask_color)
+
+    # apply the mask
+    masked_image = cv2.bitwise_or(image, mask)
+
+    #get values
+    moments = cv2.moments(cv2.bitwise_not(mask)[:,:,0])
+    xy = (int(moments['m10']/moments['m00']), int(moments['m01']/moments['m00']))
+
+    plt.subplots(1,8,figsize=(20,5))
+    plt.subplot(181)
+    plt.imshow(image)
+    plt.subplot(182)
+    plt.imshow(masked_image)
+    plt.gca().add_patch(patches.Circle(xy,1,fill=True,linewidth=5,color='red'))
+    plt.subplot(183)
+    plt.imshow(cv2.bitwise_or(image, cv2.bitwise_not(hf)))
+    plt.subplot(184)
+    plt.imshow(cv2.bitwise_or(image, cv2.bitwise_not(tf)))
+    plt.subplot(185)
+    plt.imshow(cv2.bitwise_or(image, cv2.bitwise_not(tpf)))
+    plt.subplot(186)
+    plt.imshow(cv2.bitwise_or(image, cv2.bitwise_not(btf)))
+    plt.subplot(187)
+    plt.imshow(cv2.bitwise_or(image, cv2.bitwise_not(hhf)))
+    plt.subplot(188)
+    plt.imshow(cv2.bitwise_or(image, cv2.bitwise_not(htf)))
+    plt.show()
+    
+def histc(list1, bins):
+    hist,__ = np.histogram(list1, bins)
+    lastbin = np.sum(list1 == 1)
+    hist[-1] = hist[-1] - lastbin
+    hist = np.append(hist, lastbin)
+    return hist
+
+def generateFeatureVector(info, contour, hasContour, clip, picker):
+    cline = contour[picker]
+    thisContour = getContour(cline)
+    full, head, tail, top, bottom, hhead, htail = seperate_fish(thisContour,info[picker][1])
+    image = clip[picker]
+    norm_image = normalizeRGB(image)
+    h_image = cv2.cvtColor(image,cv2.COLOR_RGB2HSV)[:,:,0]/180.0
+    
+    bins = np.arange(0,1.02,0.02)
+    histrange_nr = [0, 0.01742,0.125,0.1884,0.226,0.26,0.2934,0.328,0.372,0.4512, 1]
+    histrange_ng = [0, 0.298,0.3276,0.35,0.3734,0.404,0.4334,0.466,0.505,0.59, 1]
+    histrange_h = [0, 0.2246,0.291,0.463,0.5648,0.6034,0.6248,0.6422,0.675,0.7164, 1]
+    
+    # ===== Normalized Red =====
+    
+    tempimage = norm_image[:,:,0][head]
+    f_0001_0051 = histc(tempimage, bins)
+    tempimage = norm_image[:,:,0][tail]
+    f_0052_0102 = histc(tempimage, bins)
+    tempimage = norm_image[:,:,0][top]
+    f_0103_0153 = histc(tempimage, bins)
+    tempimage = norm_image[:,:,0][bottom]
+    f_0154_0204 = histc(tempimage, bins)
+    tempimage = norm_image[:,:,0][full]
+    f_0205_0255 = histc(tempimage, bins)
+    
+    # ===== Normalized Green =====
+    
+    tempimage = norm_image[:,:,1][head]
+    f_0256_0306 = histc(tempimage, bins)
+    tempimage = norm_image[:,:,1][tail]
+    f_0307_0357 = histc(tempimage, bins)
+    tempimage = norm_image[:,:,1][top]
+    f_0358_0408 = histc(tempimage, bins)
+    tempimage = norm_image[:,:,1][bottom]
+    f_0409_0459 = histc(tempimage, bins)
+    tempimage = norm_image[:,:,1][full]
+    f_0460_0510 = histc(tempimage, bins)
+    
+    # ===== Normalized Hue =====
+    
+    tempimage = h_image[head]
+    f_0511_0561 = histc(tempimage, bins)
+    tempimage = h_image[tail]
+    f_0562_0612 = histc(tempimage, bins)
+    tempimage = h_image[top]
+    f_0613_0663 = histc(tempimage, bins)
+    tempimage = h_image[bottom]
+    f_0664_0714 = histc(tempimage, bins)
+    tempimage = h_image[full]
+    f_0715_0765 = histc(tempimage, bins)
+    
+    # ===== Normalized Red =====
+    
+    tempimage = norm_image[:,:,0][head]
+    f_0766_0776 = histc(tempimage, histrange_nr)
+    tempimage = norm_image[:,:,0][tail]
+    f_0777_0787 = histc(tempimage, histrange_nr)
+    tempimage = norm_image[:,:,0][top]
+    f_0788_0798 = histc(tempimage, histrange_nr)
+    tempimage = norm_image[:,:,0][bottom]
+    f_0799_0809 = histc(tempimage, histrange_nr)
+    tempimage = norm_image[:,:,0][full]
+    f_0810_0820 = histc(tempimage, histrange_nr)
+    
+    # ===== Normalized Green =====
+    
+    tempimage = norm_image[:,:,1][head]
+    f_0821_0831 = histc(tempimage, histrange_ng)
+    tempimage = norm_image[:,:,1][tail]
+    f_0832_0842 = histc(tempimage, histrange_ng)
+    tempimage = norm_image[:,:,1][top]
+    f_0843_0853 = histc(tempimage, histrange_ng)
+    tempimage = norm_image[:,:,1][bottom]
+    f_0854_0864 = histc(tempimage, histrange_ng)
+    tempimage = norm_image[:,:,1][full]
+    f_0865_0875 = histc(tempimage, histrange_ng)
+    
+    # ===== Normalized Hue =====
+    
+    tempimage = h_image[head]
+    f_0876_0886 = histc(tempimage, histrange_h)
+    tempimage = h_image[tail]
+    f_0887_0897 = histc(tempimage, histrange_h)
+    tempimage = h_image[top]
+    f_0898_0908 = histc(tempimage, histrange_h)
+    tempimage = h_image[bottom]
+    f_0909_0919 = histc(tempimage, histrange_h)
+    tempimage = h_image[full]
+    f_0920_0930 = histc(tempimage, histrange_h)
+    
+def printCameras():
+    # `camera_id` int(11) NOT NULL AUTO_INCREMENT,
+    # `video_number` int(11) NOT NULL,
+    # `location` varchar(100) NOT NULL DEFAULT '',
+    # `camera_lens` varchar(60) DEFAULT NULL,
+    # `camera_angle` smallint(6) DEFAULT NULL,
+    # `depth` tinyint(3) DEFAULT NULL,
+
+    path_camera = '/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/cameras'
+    if os.name == "nt":
+        path_camera = 'E:/cameras'
+    with open(path_camera,'r') as fp:
+        for i, line in enumerate(fp):
+            line = line[1:-2].split("),(")
+            for l in line:
+                print(l)
+                l = l.split(",")
+                #print()

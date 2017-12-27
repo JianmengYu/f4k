@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os
 import sys
 import cv2
@@ -10,6 +12,7 @@ from moviepy.editor import *
 from scipy import signal, stats
 from bitarray import bitarray
 from datetime import datetime
+from scipy import ndimage as ndi
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -177,6 +180,230 @@ def FEIF(string, case="320x240", return_info=False):
         return (reject,delta,length)
     else:
         return reject
+    
+def getMattFeatures(info, clip, hasContour, contour, fish_id, print_info=False, ret_normalized_erraticity=True):
+    
+    time = datetime.now()
+    counter = 0
+    
+    npfish = np.array(fish_id)
+    det_id = info[:,0]
+    length = len(hasContour)
+    fishs = np.unique(npfish[hasContour])
+    
+    S = 10;
+    W = 4
+    G = signal.gaussian(2*W+1, std=1)
+    G = G / np.sum(G)
+    
+    #Initialize gabor filters so we don't need to calculate it everytime.
+    #Copy implement of Ahmad because sk-image and opencv's gabor work differently
+    scales = np.repeat(np.arange(1.75,3,0.25),2)
+    thetas = np.tile(np.array([0,90]),5)
+    sigma_x = scales / np.pi * np.sqrt(np.log(2)/2) * 3 #(2^bandwidth+1)/(2^bandwidth-1); bdw=1;
+    sigma_y = sigma_x/ 0.5 #gamma
+    f = 1.0 / scales
+    x0 = np.ceil(np.abs(sigma_x))
+    y0 = np.ceil(np.abs(sigma_y))
+    G_realz = [None]*10
+    G_imagz = [None]*10
+    for i in range(10):
+        y, x = np.mgrid[-y0[i]:y0[i] + 1, -x0[i]:x0[i] + 1]
+        rotx = x * np.cos(thetas[i]) + y * np.sin(thetas[i])
+        roty = -x * np.sin(thetas[i]) + y * np.cos(thetas[i])
+        g = np.zeros(y.shape, dtype=np.complex)
+        g[:] = np.exp(-0.5 * (rotx ** 2 / sigma_x[i] ** 2 + roty ** 2 / sigma_y[i] ** 2))
+        g *= np.exp(1j * (2 * np.pi * f[i] * rotx))
+        g = g.T
+        wNorm = np.sqrt(np.sum(np.real(g)**2+np.imag(g)**2))
+        G_realz[i] = np.real(g) / wNorm
+        G_imagz[i] = np.imag(g) / wNorm
+
+    
+    #Set outputs
+    animation_scores = np.zeros(length)
+    #Reduce these stuff to single array
+    contour_size = np.zeros(length)
+    contour_skewness = np.zeros(length)
+    contour_kurtosis = np.zeros(length)
+    contour_sum = np.zeros(length)
+    erraticity_size = np.zeros(length)
+    erraticity_skewness = np.zeros(length)
+    erraticity_kurtosis = np.zeros(length)
+    erraticity_sum = np.zeros(length)
+    
+    if ret_normalized_erraticity:
+        norm_erraticity_size = np.zeros(length)
+        norm_erraticity_skewness = np.zeros(length)
+        norm_erraticity_kurtosis = np.zeros(length)
+        norm_erraticity_sum = np.zeros(length)
+        
+    gabor_feature_mean = np.zeros((length,10))
+    gabor_feature_std = np.zeros((length,10))
+    
+    for fish in fishs:
+        mask = np.logical_and(npfish == fish,hasContour)
+        index = np.arange(length)[mask]
+        track = det_id[mask]
+        tracklen = len(index)
+        #It's always sorted?
+        #print("")
+        #print("Checking stuff: {0}".format(track))
+        
+        #Animation Score
+        if tracklen == 1:
+            animation_score = 0
+            #print("AS: {0}".format(animation_score))
+        else:
+            #Why don't we use linspace?
+            if tracklen < 5:
+                target = np.arange(tracklen-1)
+            else:
+                target = np.floor(np.arange(0.0, tracklen-2, tracklen * 0.25)).astype(int)
+            if target[-1] != (tracklen - 2):
+                target = np.append(target,tracklen - 2)
+            
+            scores = np.zeros(len(target))
+            for i, t in enumerate(target):
+                N = info[index[t],1]
+                M = info[index[t],2]
+                Z = 1 / (1.0 * M * N)
+                sub_f_t = clip[index[t]][S:M+S, S:N+S, :].astype(int)
+                sub_f_tp1 = clip[index[t+1]][S:M+S, S:N+S, :].astype(int)
+                scores[i] =  np.linalg.norm(np.sum(sub_f_t-sub_f_tp1,2,dtype=int)) * Z
+            
+            animation_score = np.average(scores)
+            #print("AS: {0}".format(animation_score))
+        for i in index:
+            animation_scores[i] = animation_score
+            
+        #Contour Stuff
+        K = np.zeros(tracklen)
+        for i in np.arange(tracklen):
+            c = np.array(getContour(contour[index[i]]))
+            X = c[:,0]
+            Y = c[:,1]
+            X1 = np.hstack((X[-W:],X,X[:W]))
+            Y1 = np.hstack((Y[-W:],Y,Y[:W]))
+            XX = np.convolve(X1,G,'same')
+            YY = np.convolve(Y1,G,'same')
+            Xu = np.gradient(XX)
+            Yu = np.gradient(YY)
+            Xuu = np.gradient(Xu)
+            Yuu = np.gradient(Yu)
+            k = ((Xu*Yuu-Xuu*Yu)/((Xu**2+Yu**2)**1.5))[W:-W]
+            L2 = len(k)
+            NFFT = 1<<(len(k)-1).bit_length()
+            FT = np.fft.fft(k, NFFT) / L2
+            f = L2 / 2*np.linspace(0, 1, NFFT/2 + 1)
+            Yfreq = 2*np.abs(FT[0:NFFT/2+1])
+            lag = 10
+            if len(Yfreq) < lag:
+                lag = 1
+            #No moving average?
+            y_avg = np.convolve(Yfreq, np.ones(lag)/float(lag), 'same')[lag-1:]
+            scaled = np.convolve(np.add.reduceat(y_avg, np.arange(0, len(y_avg), 4)),[1,1],'valid')
+            
+            csize = len(scaled)
+            cskew = stats.skew(scaled)
+            ckurt = stats.kurtosis(scaled)
+            csum = np.sum(scaled)
+            
+            contour_size[index[i]] = csize
+            contour_skewness[index[i]] = cskew
+            contour_kurtosis[index[i]] = ckurt
+            contour_sum[index[i]] = csum
+            
+        #Erraticity
+            t = np.array([csize, cskew, ckurt, csum])
+            erraticity_score = np.zeros(4)
+            if i != 0:
+                erraticity_score += (t-tm1)**2
+            tm1 = copy.deepcopy(t)
+            
+        if ret_normalized_erraticity:
+            norm_erraticity_score = erraticity_score/float(tracklen)
+            
+        for i in np.arange(tracklen):
+            
+            erraticity_size[index[i]] = erraticity_score[0]
+            erraticity_skewness[index[i]] = erraticity_score[1]
+            erraticity_kurtosis[index[i]] = erraticity_score[2]
+            erraticity_sum[index[i]] = erraticity_score[3]
+            
+            if ret_normalized_erraticity:
+                norm_erraticity_size[index[i]] = norm_erraticity_score[0]
+                norm_erraticity_skewness[index[i]] = norm_erraticity_score[1]
+                norm_erraticity_kurtosis[index[i]] = norm_erraticity_score[2]
+                norm_erraticity_sum[index[i]] = norm_erraticity_score[3]
+            
+        #Gabor Edge
+        #Removable but keep it for clearer view
+        #Slow.. So Slow...
+        #0.6 sec per feature is not acceptable.
+        # took 12 secs in MATLAB, 3 minute here.
+        #
+        for i in np.arange(tracklen):
+            thiscontour = getContour(contour[index[i]])
+            I = np.full((100,100), 0, dtype=np.uint8)
+            cv2.fillPoly(I, np.array([thiscontour], dtype=np.int32), (255,))
+            for j in range(10):
+                #Slow!
+                #Imgabout = np.rot90(signal.convolve2d(np.rot90(I, 2), np.rot90(G_imagz[j], 2), mode='same'),2)
+                #Regabout = np.rot90(signal.convolve2d(np.rot90(I, 2), np.rot90(G_realz[j], 2), mode='same'),2)
+                #Damn float64/16s
+                Imgabout = ndi.convolve(I, G_realz[j], mode='constant', cval=0.0,  output=np.float64)
+                Regabout = ndi.convolve(I, G_imagz[j], mode='constant', cval=0.0,  output=np.float64)
+                gabout = np.sqrt(Imgabout**2+Regabout**2)
+                targs = gabout[I>=1]
+                targs[targs<0] = 0
+                targs[targs>255] = 255
+                targs = targs.astype(np.uint8)
+                gabor_histo = np.histogram(targs,np.arange(0,257))[0] #np.histogram things
+                gab_mean = np.dot(np.arange(0,256),gabor_histo) / sum(gabor_histo)
+                gabor_feature_mean[index[i],j] = gab_mean
+                gabor_feature_std[index[i],j] = np.dot((np.arange(0,256)-gab_mean)**2,gabor_histo) / sum(gabor_histo)
+            
+                
+            counter += 1
+            if print_info:
+                print("Feature {1} took total of {0}".format(datetime.now() - time, counter) , end ='\r')
+                
+    if print_info:
+        print("Calculate {1} feature took total of {0}".format(datetime.now() - time, counter))
+        print("{0} out of {1} feature not calculated".format(length-counter, length))
+
+    
+    if ret_normalized_erraticity:
+        output = np.column_stack((animation_scores,
+                              contour_size,
+                              contour_skewness,
+                              contour_kurtosis,
+                              contour_sum,
+                              erraticity_size,
+                              erraticity_skewness,
+                              erraticity_kurtosis,
+                              erraticity_sum,
+                              norm_erraticity_size,
+                              norm_erraticity_skewness,
+                              norm_erraticity_kurtosis,
+                              norm_erraticity_sum,
+                              gabor_feature_mean,
+                              gabor_feature_std))
+    else:
+        output = np.column_stack((animation_scores,
+                              contour_size,
+                              contour_skewness,
+                              contour_kurtosis,
+                              contour_sum,
+                              erraticity_size,
+                              erraticity_skewness,
+                              erraticity_kurtosis,
+                              erraticity_sum,
+                              gabor_feature_mean,
+                              gabor_feature_std))
+    
+    return output
 
 def loadMovids():
     path = '/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/movie_ids_info.txt'
@@ -283,7 +510,7 @@ def loadVideo(video_id, limit_output=True, limit_offset=0, limit_amount=20,
         print('Using movie, csv, sql paths: \n{0}\n{1}\n{2}'.format(movie,csv,sql))
         print('Video fps: {0}, duration {1}'.format(fps,duration))
         print('Video frame size: {0}, camera_id: {1}'.format(frame_size,camera_id))
-        print('Total frames in video: ', frames)
+        print('Total frames in video: {0}'.format(frames))
         count1 = sum(hasContour)
         count2 = len(hasContour)
         print("{0} out of {1}, about {2} detection have a bounding box in sql."
