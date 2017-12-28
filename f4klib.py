@@ -125,8 +125,11 @@ def getContour(string, return_what="Normalized", debug=False):
     if point != points[0]:
         points.append(points[0])
         
-    points2 = [(elem1-int(lmx)+10, elem2-int(contY)+10) for elem1, elem2 in points]
-    points3 = [(elem1-lmx+contX, elem2) for elem1, elem2 in points]
+    points = np.array(points)
+    points2 = points - [lmx, contY] +10
+    points3 = points - [lmx-contX,0]
+    #points2 = [(elem1-int(lmx)+10, elem2-int(contY)+10) for elem1, elem2 in points]
+    #points3 = [(elem1-lmx+contX, elem2) for elem1, elem2 in points]
     
     if return_what == "Both":
         return (points2, points3)
@@ -134,7 +137,7 @@ def getContour(string, return_what="Normalized", debug=False):
         return points3
     return points2
 
-def FEIF(string, case="320x240", return_info=False):
+def FEIF(string, case="320x240", return_info=False, matt_mode=False):
     
     if case == "320x240":
     #case 320x240
@@ -158,6 +161,28 @@ def FEIF(string, case="320x240", return_info=False):
     
     points2, points3 = getContour(string, return_what="Both")
     length = len(points2)
+    
+    if matt_mode:
+        x2 = points2[:,0]
+        y2 = points2[:,1]
+        delta = np.sum(x2 == 100) + np.sum(y2 == 100)
+        
+        if delta < 10:
+            x3 = points3[:,0]
+            y3 = points3[:,1]
+            delta += np.sum(x3<=left)+np.sum(x3>=right)+np.sum(y3<=top)+np.sum(y3>=bottom)
+            if delta < 25:
+                delta += np.sum(np.logical_and(y3<=tsbottom,x3<=tsright))
+                reject = delta >= 25
+            else:
+                reject = True
+        else:
+            reject = True
+            
+        if return_info:
+            return (reject,delta,length)
+        else:
+            return reject
     
     delta = 0
     reject = False
@@ -280,7 +305,7 @@ def getMattFeatures(info, clip, hasContour, contour, fish_id, print_info=False, 
         #Contour Stuff
         K = np.zeros(tracklen)
         for i in np.arange(tracklen):
-            c = np.array(getContour(contour[index[i]]))
+            c = getContour(contour[index[i]])
             X = c[:,0]
             Y = c[:,1]
             X1 = np.hstack((X[-W:],X,X[:W]))
@@ -346,7 +371,7 @@ def getMattFeatures(info, clip, hasContour, contour, fish_id, print_info=False, 
         for i in np.arange(tracklen):
             thiscontour = getContour(contour[index[i]])
             I = np.full((100,100), 0, dtype=np.uint8)
-            cv2.fillPoly(I, np.array([thiscontour], dtype=np.int32), (255,))
+            cv2.fillPoly(I, np.int32([thiscontour]), (255,))
             for j in range(10):
                 #Slow!
                 #Imgabout = np.rot90(signal.convolve2d(np.rot90(I, 2), np.rot90(G_imagz[j], 2), mode='same'),2)
@@ -524,7 +549,7 @@ def loadVideo(video_id, limit_output=True, limit_offset=0, limit_amount=20,
         for i in range(frames):
             if hasContour[i]:
                 cline = contour[i]
-                result = FEIF(cline,case=frame_size)
+                result = FEIF(cline,case=frame_size,matt_mode=True)
                 if result:
                     throw += 1
                 else:
@@ -554,7 +579,8 @@ def loadVideo(video_id, limit_output=True, limit_offset=0, limit_amount=20,
             if classify:
                 if hasContour[i]:
                     cline = contour[i]
-                    plt.scatter(*zip(*getContour(cline, return_what="Normalized")),s=1)
+                    thisContour = getContour(cline, return_what="Normalized")
+                    plt.scatter(thisContour[:,0],thisContour[:,1],s=1)
                     result, delta, length = FEIF(cline,case=frame_size,return_info=True)
                     #for print X and Y range
                     contX, contY, contW, contH, firstXPoint, padding, binary2 = extractMeta(cline)

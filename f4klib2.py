@@ -66,7 +66,7 @@ def plotContour(binary, add_milk=False):
     points2 = getContour(binary, return_what="Normalized")
     if add_milk:
         plt.imshow(getMask(points2))
-    plt.scatter(*zip(*points2),s=1)
+    plt.scatter(points2[:,0],points2[:,1],s=1)
     plt.xticks([])
     plt.yticks([])
     plt.gca().invert_yaxis()
@@ -93,7 +93,7 @@ def plotContourOnImage(info, clip, hasContour, contour, picker, debug=False):
         plt.axvline(10+info[picker,1],linewidth=1, color='r', alpha=0.4)
         plt.axhline(9,                linewidth=1, color='r', alpha=0.4)
         plt.axhline(10+info[picker,2],linewidth=1, color='r', alpha=0.4)
-        plt.scatter(*zip(*points2),s=5)
+        plt.scatter(points2[:,0],points2[:,1],s=5)
 
         plt.show()
         
@@ -120,7 +120,7 @@ def loadSqlOriginal(path):
 
 def seperate_fish(contour,w):
     mask = np.full((100,100), 0, dtype=np.uint8)
-    cv2.fillPoly(mask, np.array([contour], dtype=np.int32), (255,))
+    cv2.fillPoly(mask, np.int32([contour]), (255,))
     moments = cv2.moments(mask)
     (x, y) = (int(moments['m10']/moments['m00']), int(moments['m01']/moments['m00']))
     
@@ -164,7 +164,7 @@ def showTransformedImage(picker, clip, hasContour, contour):
         image1 = clip[picker]
         thiscontour = getContour(contour[picker])
         mask = np.full(image1.shape, 0, dtype=np.uint8)
-        cv2.fillPoly(mask, np.array([thiscontour], dtype=np.int32), (255,)*3)
+        cv2.fillPoly(mask, np.int32([thiscontour]), (255,)*3)
         image2 = cv2.cvtColor(image1,cv2.COLOR_RGB2YUV)
         image3 = normalizeRGB(image2)[:,:,0]
         image4 = cv2.bitwise_or(cv2.bitwise_not(mask),image1)
@@ -259,7 +259,7 @@ def printSeperateFish(picker, picker2):
 
     #White mask with black shape
     mask = np.full(image.shape, 255, dtype=np.uint8)
-    roi_corners = np.array([thisContour], dtype=np.int32)
+    roi_corners = np.int32([thisContour])
     ignore_mask_color = (0,)*3
     cv2.fillPoly(mask, roi_corners, ignore_mask_color)
 
