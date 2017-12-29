@@ -438,6 +438,12 @@ def loadMovids():
         movs = f.readlines()
     return np.array([x.strip().split(",") for x in movs])
 
+def loadLengths():
+    path = '/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/vidLen.txt'
+    with open(path) as f:
+        movs = f.readlines()
+    return np.array([int(x.strip()) for x in movs])
+
 def loadSql(path, frame_info, returnDict=False):
     
     sqlDict = dict()
@@ -472,9 +478,55 @@ def loadSql(path, frame_info, returnDict=False):
     else:
         return mask, sql, fid
 
-def loadVideo(video_id, limit_output=True, limit_offset=0, limit_amount=20,
-              print_info=False, print_image=False, print_time=False,
-              classify=False):
+def plotStuff(info, clip, hasContour, contour, movid, limit_lower=0, limit_upper=20, width=10, classify=False):
+    
+    if movid[2] == "1":
+        frame_size = "640x480"
+    else:
+        frame_size = "320x240"
+    
+    frames = len(hasContour)
+    if not(frames > limit_upper): #limit output
+        limit_upper = frames
+
+    show_axis = width <= 5
+    depth = int(np.ceil((limit_upper-limit_lower)*1.0/width))
+    
+    f, ax = plt.subplots(depth,width,figsize=(15,15/width*depth))
+    
+    for i in range(limit_lower, limit_upper):
+        plt.subplot(depth,width,i-limit_lower+1)
+        plt.imshow(clip[i])
+        plt.xticks([])
+        plt.yticks([])
+
+        if classify:
+            if hasContour[i]:
+                cline = contour[i]
+                thisContour = getContour(cline, return_what="Normalized")
+                plt.scatter(thisContour[:,0],thisContour[:,1],s=(5.0/width))
+                result, delta, length = FEIF(cline,case=frame_size,return_info=True)
+                #for print X and Y range
+                contX, contY, contW, contH, firstXPoint, padding, binary2 = extractMeta(cline)
+                if result:
+                    plt.gca().add_patch(patches.Rectangle((0,0),100,100,fill=False,linewidth=50.0/width,color='red'))
+                else:
+                    plt.gca().add_patch(patches.Rectangle((0,0),100,100,fill=False,linewidth=50.0/width,color='green'))
+                if show_axis:
+                    plt.gca().set_xlabel("{0},{1},{2},{3:.0f}%\nX:{4}-{5} Y:{6}-{7}"
+                                     .format(info[i,0],length,delta,delta/(length*0.01),
+                                            contX,contX+contW,contY,contY+contH))
+            else:
+                plt.gca().add_patch(patches.Rectangle((0,0),100,100,fill=False,linewidth=50.0/width,color='yellow'))
+                if show_axis:
+                    plt.gca().set_xlabel("{0},NO CONTOUR".format(info[i,0]))
+        else:
+            plt.gca().set_xlabel("{0},{1}".format(info[i,0],info[i,1:4]))
+            plt.gca().add_patch(patches.Rectangle((9,9),info[i,1],info[i,2],
+                                                  fill=False,linewidth=1,color='red'))
+    plt.show()
+    
+def loadVideo(video_id, print_info=False, print_time=False,):
     
     camera_id = video_id[1]
     if video_id[2] == "1":
@@ -521,9 +573,16 @@ def loadVideo(video_id, limit_output=True, limit_offset=0, limit_amount=20,
     
     #Take out RGB arrays before stuff?
     #Replace clip reader with list, so dont have to delete stuff everytime.
+    
+    
     RGB = [None] * frames
     for i in range(frames):
         RGB[i] = clip.get_frame(i / clip.fps)
+    
+    if frames != len(frame_info[:,0]):
+        RGB.append(clip.get_frame(frames / clip.fps))
+        frames += 1
+    
     if not(clip==[]):
         clip.reader.close()
     del clip
@@ -533,7 +592,6 @@ def loadVideo(video_id, limit_output=True, limit_offset=0, limit_amount=20,
             print('Loading data took: {}'.format(datetime.now() - time))
         print('Using video_id: {0}'.format(video_id))
         print('Using movie, csv, sql paths: \n{0}\n{1}\n{2}'.format(movie,csv,sql))
-        print('Video fps: {0}, duration {1}'.format(fps,duration))
         print('Video frame size: {0}, camera_id: {1}'.format(frame_size,camera_id))
         print('Total frames in video: {0}'.format(frames))
         count1 = sum(hasContour)
@@ -559,53 +617,6 @@ def loadVideo(video_id, limit_output=True, limit_offset=0, limit_amount=20,
             print('{0} out of {1} total detection is rejected by FEIF, {2} kept. Reject rate: {3}'
                   .format(throw,tot,keep,"{0:.0f}%".format(throw/(tot*1.0) * 100)))
             print('FEIF Runtime: {}'.format(datetime.now() - time))
-    
-    if print_image:
-        
-        if not(frames > limit_amount and limit_output): #limit output
-            limit_amount = frames
-        
-        throw = 0
-        keep = 0
-        tot = 0
-        
-        f, ax = plt.subplots((limit_amount-limit_offset+4)/5,5,figsize=(15,3*((limit_amount-limit_offset+4)/5)))
-        for i in range(limit_offset, limit_amount):
-            plt.subplot((limit_amount-limit_offset+4)/5,5,i-limit_offset+1)
-            plt.imshow(RGB[i])
-            plt.xticks([])
-            plt.yticks([])
-            
-            if classify:
-                if hasContour[i]:
-                    cline = contour[i]
-                    thisContour = getContour(cline, return_what="Normalized")
-                    plt.scatter(thisContour[:,0],thisContour[:,1],s=1)
-                    result, delta, length = FEIF(cline,case=frame_size,return_info=True)
-                    #for print X and Y range
-                    contX, contY, contW, contH, firstXPoint, padding, binary2 = extractMeta(cline)
-                    if result:
-                        plt.gca().add_patch(patches.Rectangle((0,0),99,99,fill=False,linewidth=7,color='red'))
-                        throw += 1
-                    else:
-                        plt.gca().add_patch(patches.Rectangle((0,0),99,99,fill=False,linewidth=7,color='green'))
-                        keep += 1
-                    tot += 1
-                    plt.gca().set_xlabel("{0},{1},{2},{3:.0f}%\nX:{4}-{5} Y:{6}-{7}"
-                                         .format(frame_info[i,0],length,delta,delta/(length*0.01),
-                                                contX,contX+contW,contY,contY+contH))
-                else:
-                    plt.gca().add_patch(patches.Rectangle((0,0),99,99,fill=False,linewidth=7,color='yellow'))
-                    plt.gca().set_xlabel("{0},NO CONTOUR".format(frame_info[i,0]))
-            else:
-                plt.gca().set_xlabel("{0},{1}".format(frame_info[i,0],frame_info[i,1:4]))
-                plt.gca().add_patch(patches.Rectangle((9,9),frame_info[i,1],frame_info[i,2],
-                                                      fill=False,linewidth=1,color='red'))
-        
-        if classify and not (tot == 0):
-            print('{0} out of {1} images is rejected, {2} kept. Reject rate: {3:.0f}%'
-                  .format(throw,tot,keep,throw/(tot*0.01)))
-        plt.show()
     
     return (frame_info, RGB, hasContour, contour, fish_id, frames)
 
