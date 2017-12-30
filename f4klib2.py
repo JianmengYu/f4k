@@ -97,6 +97,54 @@ def plotContourOnImage(info, clip, hasContour, contour, picker, debug=False):
 
         plt.show()
         
+def plotStuff(info, clip, hasContour, contour, movid, limit_lower=0, limit_upper=20, width=10, classify=False):
+    
+    if movid[2] == "1":
+        frame_size = "640x480"
+    else:
+        frame_size = "320x240"
+    
+    frames = len(hasContour)
+    if not(frames > limit_upper): #limit output
+        limit_upper = frames
+
+    show_axis = width <= 5
+    depth = int(np.ceil((limit_upper-limit_lower)*1.0/width))
+    
+    f, ax = plt.subplots(depth,width,figsize=(15,15/width*depth))
+    
+    for i in range(limit_lower, limit_upper):
+        plt.subplot(depth,width,i-limit_lower+1)
+        plt.imshow(clip[i])
+        plt.xticks([])
+        plt.yticks([])
+
+        if classify:
+            if hasContour[i]:
+                cline = contour[i]
+                thisContour = getContour(cline, return_what="Normalized")
+                plt.scatter(thisContour[:,0],thisContour[:,1],s=(5.0/width))
+                result, delta, length = FEIF(cline,case=frame_size,return_info=True)
+                #for print X and Y range
+                contX, contY, contW, contH, firstXPoint, padding, binary2 = extractMeta(cline)
+                if result:
+                    plt.gca().add_patch(patches.Rectangle((0,0),100,100,fill=False,linewidth=50.0/width,color='red'))
+                else:
+                    plt.gca().add_patch(patches.Rectangle((0,0),100,100,fill=False,linewidth=50.0/width,color='green'))
+                if show_axis:
+                    plt.gca().set_xlabel("{0},{1},{2},{3:.0f}%\nX:{4}-{5} Y:{6}-{7}"
+                                     .format(info[i,0],length,delta,delta/(length*0.01),
+                                            contX,contX+contW,contY,contY+contH))
+            else:
+                plt.gca().add_patch(patches.Rectangle((0,0),100,100,fill=False,linewidth=50.0/width,color='yellow'))
+                if show_axis:
+                    plt.gca().set_xlabel("{0},NO CONTOUR".format(info[i,0]))
+        else:
+            plt.gca().set_xlabel("{0},{1}".format(info[i,0],info[i,1:4]))
+            plt.gca().add_patch(patches.Rectangle((9,9),info[i,1],info[i,2],
+                                                  fill=False,linewidth=1,color='red'))
+    plt.show()
+    
 def loadSqlOriginal(path):
     #VERY OLD DONT USE
     ids = []

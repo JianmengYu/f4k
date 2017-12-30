@@ -20,6 +20,8 @@ import matplotlib.image as mpimg
 from matplotlib.path import Path
 from bitarray import bitarray
 
+### ===================================================== Util ===================================================== ###
+
 def cleanLine(a):
     # Input:  corrupt 01 string
     # Return: cleaned  01 string
@@ -136,6 +138,8 @@ def getContour(string, return_what="Normalized", debug=False):
     if return_what == "Original":
         return points3
     return points2
+
+### ===================================================== Classify/Extract ===================================================== ###
 
 def FEIF(string, case="320x240", return_info=False, matt_mode=False):
     
@@ -363,11 +367,7 @@ def getMattFeatures(info, clip, hasContour, contour, fish_id, print_info=False, 
                 norm_erraticity_sum[index[i]] = norm_erraticity_score[3]
             
         #Gabor Edge
-        #Removable but keep it for clearer view
-        #Slow.. So Slow...
-        #0.6 sec per feature is not acceptable.
-        # took 12 secs in MATLAB, 3 minute here.
-        #
+        
         for i in np.arange(tracklen):
             thiscontour = getContour(contour[index[i]])
             I = np.full((100,100), 0, dtype=np.uint8)
@@ -430,6 +430,44 @@ def getMattFeatures(info, clip, hasContour, contour, fish_id, print_info=False, 
     
     return output
 
+### ===================================================== Loading data ===================================================== ###
+
+def getNormalizedRange(features):
+    maxs = np.amax(features,0)
+    mins = np.amin(features,0)
+    fivep = (maxs-mins)/20
+    maxs += -fivep
+    mins += fivep
+    return np.vstack((mins,maxs))
+
+def normalizePhi(features, constants):
+    maxs = constants[1,:]
+    mins = constants[0,:]
+    features2 = (features*1.0-mins)/(maxs-mins)
+    features2[np.isnan(features2)] = 0
+    features2[features2<0] = 0
+    features2[features2>1] = 1
+    return features2
+
+def loadSampleFeatures():
+    movs = loadMovids()
+    movs_length = loadLengths()
+    features = np.array([],dtype="float64").reshape(0,2655)
+    
+    start = 30598
+    end = 30695
+    
+    for i in np.arange(start,end):
+        if movs_length[i] != 0:
+            idee = movs[i][0]
+            savepath = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/features_sample/{0}/{1}/{2}".format(idee[0],idee[0:2],idee)
+            f4kfeature = np.load(savepath+".f4kfeature.npy")
+            mattfeature = np.load(savepath+".mattfeature.npy")
+            feifmask = np.load(savepath+".feif.npy")
+            comb = np.column_stack((f4kfeature, mattfeature))[feifmask]
+            features = np.vstack((features,comb))
+    return features
+
 def loadMovids():
     path = '/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/movie_ids_info.txt'
     if os.name == "nt":
@@ -477,54 +515,6 @@ def loadSql(path, frame_info, returnDict=False):
         return mask, sql, fid, sqlDict
     else:
         return mask, sql, fid
-
-def plotStuff(info, clip, hasContour, contour, movid, limit_lower=0, limit_upper=20, width=10, classify=False):
-    
-    if movid[2] == "1":
-        frame_size = "640x480"
-    else:
-        frame_size = "320x240"
-    
-    frames = len(hasContour)
-    if not(frames > limit_upper): #limit output
-        limit_upper = frames
-
-    show_axis = width <= 5
-    depth = int(np.ceil((limit_upper-limit_lower)*1.0/width))
-    
-    f, ax = plt.subplots(depth,width,figsize=(15,15/width*depth))
-    
-    for i in range(limit_lower, limit_upper):
-        plt.subplot(depth,width,i-limit_lower+1)
-        plt.imshow(clip[i])
-        plt.xticks([])
-        plt.yticks([])
-
-        if classify:
-            if hasContour[i]:
-                cline = contour[i]
-                thisContour = getContour(cline, return_what="Normalized")
-                plt.scatter(thisContour[:,0],thisContour[:,1],s=(5.0/width))
-                result, delta, length = FEIF(cline,case=frame_size,return_info=True)
-                #for print X and Y range
-                contX, contY, contW, contH, firstXPoint, padding, binary2 = extractMeta(cline)
-                if result:
-                    plt.gca().add_patch(patches.Rectangle((0,0),100,100,fill=False,linewidth=50.0/width,color='red'))
-                else:
-                    plt.gca().add_patch(patches.Rectangle((0,0),100,100,fill=False,linewidth=50.0/width,color='green'))
-                if show_axis:
-                    plt.gca().set_xlabel("{0},{1},{2},{3:.0f}%\nX:{4}-{5} Y:{6}-{7}"
-                                     .format(info[i,0],length,delta,delta/(length*0.01),
-                                            contX,contX+contW,contY,contY+contH))
-            else:
-                plt.gca().add_patch(patches.Rectangle((0,0),100,100,fill=False,linewidth=50.0/width,color='yellow'))
-                if show_axis:
-                    plt.gca().set_xlabel("{0},NO CONTOUR".format(info[i,0]))
-        else:
-            plt.gca().set_xlabel("{0},{1}".format(info[i,0],info[i,1:4]))
-            plt.gca().add_patch(patches.Rectangle((9,9),info[i,1],info[i,2],
-                                                  fill=False,linewidth=1,color='red'))
-    plt.show()
     
 def loadVideo(video_id, print_info=False, print_time=False,):
     
