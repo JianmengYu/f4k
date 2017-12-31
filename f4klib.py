@@ -20,6 +20,9 @@ import matplotlib.image as mpimg
 from matplotlib.path import Path
 from bitarray import bitarray
 
+from sklearn.decomposition import PCA
+import pickle
+
 ### ===================================================== Util ===================================================== ###
 
 def cleanLine(a):
@@ -432,13 +435,34 @@ def getMattFeatures(info, clip, hasContour, contour, fish_id, print_info=False, 
 
 ### ===================================================== Loading data ===================================================== ###
 
-def getNormalizedRange(features):
-    maxs = np.amax(features,0)
-    mins = np.amin(features,0)
-    fivep = (maxs-mins)/20
-    maxs += -fivep
-    mins += fivep
-    return np.vstack((mins,maxs))
+def loadRange():
+    path = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/norm_const.npy"
+    if os.path.isfile(path):
+        ranges = np.load(path)
+    else:
+        features = loadSampleFeatures()        
+        maxs = np.amax(features,0)
+        mins = np.amin(features,0)
+        fivep = (maxs-mins)/20
+        maxs += -fivep
+        mins += fivep
+        ranges = np.vstack((mins,maxs))
+        del features
+        np.save(path,ranges)
+    return ranges
+        
+def loadPCA():
+    path = '/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/pcaObject'
+    if os.path.isfile(path):
+        pca = pickle.load(open(path, 'rb'))
+    else:
+        features = loadSampleFeatures()
+        normPhi = normalizePhi(features,ranges)
+        pca = PCA().fit(normPhi)
+        pickle.dump(pca, open(path, 'wb'))
+        del features
+        del normPhi
+    return pca
 
 def normalizePhi(features, constants):
     maxs = constants[1,:]

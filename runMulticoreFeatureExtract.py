@@ -27,13 +27,22 @@ class MyApp(object):
     def run(self):
         
         time = datetime.now()
-        
         movs = loadMovids()
-        #13b: np.arange(30598,30695)
-        totWork = 30695 - 30598
+        movs_length = loadLengths()
+        
+        #13b: 30598-30695
+        #0: 0-24941
+        start = 0
+        end = 24941
+        
+        #Put longer task at start.
+        order = np.argsort(movs_length[start:end])[::-1]
+        
+        #For statistics
+        totWork = end - start
         completed = 0
         
-        for i in np.arange(30598,30695):
+        for i in np.arange(start,end)[order]:
             movid = movs[i]
             self.work_queue.add_work(data=('Do stuff', movid))
 
@@ -66,57 +75,96 @@ class MySlave(Slave):
 
     def __init__(self):
         super(MySlave, self).__init__()
+        self.ranges = loadRange()
+        self.pca = loadPCA()
 
     def do_work(self, data):
         rank = MPI.COMM_WORLD.Get_rank()
         name = MPI.Get_processor_name().split(".")[0].ljust(12)
+        
         task, movid = data
-        
-        time = datetime.now()
-        
-        info, clip, hasContour, contour, fish_id, frames = loadVideo(movid)
         idee = movid[0]
         fname = movid[0].split("#")[0]
+        savepath = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/features/{0}/{1}/{2}".format(idee[0],idee[0:2],idee)
         
+        #Check if video is already extracted.
+        if os.path.isfile(savepath+".COMPLETE.npy"):
+            return (True, 'Slave: %s skipped   %s because it\'s done.' % (name, idee))
+    
+        #Load the video
+        time = datetime.now()
+        info, clip, hasContour, contour, fish_id, frames = loadVideo(movid)
+        
+        #Skipping empty videos
         if frames == 0:
             #Skipping stuff
             #print('Slave: %s skipped an empty video "%s"' % (name, idee))
-            return (True, 'Slave: %s skipped   %s' % (name, idee))
-        
-        session = pymatlab.session_factory('matlab -nojvm -nodisplay')
-        session.run("addpath('/afs/inf.ed.ac.uk/user/s14/s1413557/f4k-2017-msc-master/matt-msc/workspace/f4k/fish_recog')")
-
-        f4kfeatures = np.zeros((frames,2626))
-        feif_result = np.zeros(frames, dtype=bool)
+            np.save(savepath+".COMPLETE",np.array([]))
+            return (True, 'Slave: %s skipped   %s because it\'s empty' % (name, idee))
         
         print('                                              Slave: {0} started   {1} with {2} frames'
               .format(name, idee, str(frames).ljust(6)))
-        if movid[2] == "1":
-            frame_size = "640x480"
-        else:
-            frame_size = "320x240"
-
+        
+        #Prevent Repeat Opening Matlab
+        try: session
+        except NameError: session = None
+        if session is None:
+            session = pymatlab.session_factory('matlab -nodisplay')
+            session.run('cd /afs/inf.ed.ac.uk/user/s14/s1413557/f4k-2017-msc-master/matt-msc/workspace/f4k/fish_recog')
+          
+        #FEIF
+        if movid[2] == "1":frame_size = "640x480"
+        else:frame_size = "320x240"
+        feif_result = np.zeros(frames, dtype=bool)
         for i in range(frames):
             if hasContour[i]:
                 if not FEIF(contour[i], frame_size, matt_mode=True):
                     feif_result[i] = True
-                    thisContour = np.int32([getContour(contour[i])])
-                    image = clip[i]
-                    full_fish = np.full((100,100), 0, dtype=np.uint8)
-                    cv2.fillPoly(full_fish, thisContour, (255,))
-                    session.putvalue('A',image)
-                    session.putvalue('B',full_fish)
-                    session.run('C = feature_generateFeatureVector(A,B,false);')
-                    f4kfeatures[i,:] = session.getvalue('C')
+               
+        if np.sum(feif_result) == 0:
+            #Skipping stuff
+            #print('Slave: %s skipped an empty video "%s"' % (name, idee))
+            np.save(savepath+".COMPLETE",np.array([]))
+            return (True, 'Slave: %s skipped   %s because it\'s all rejected' % (name, idee))
 
+        #Setting up features need to be computed
+        hasCL = np.sum(feif_result)
+        rgbImgs = [None]*hasCL
+        binImgs = [None]*hasCL
+        index = 0
+        for i in range(frames):
+            if feif_result[i]:
+                rgbImgs[index]=clip[i]
+                binImgs[index]=np.full((100,100), 0, dtype=np.uint8)
+                thisContour = np.int32([getContour(contour[i])])
+                cv2.fillPoly(binImgs[index], thisContour, (255,))
+                index += 1
+
+        #Compute the features
+        session.putvalue('A',rgbImgs)
+        session.putvalue('B',binImgs)
+        session.run('C = feature_batchGenerateFeatureVector(A,B)')
+        f4kfeatures = session.getvalue('C')      
+                  
+        #Get Matt's features
         mattFeatures = getMattFeatures(info, clip, hasContour, contour, fish_id, print_info=False, ret_normalized_erraticity=False)
 
-        savepath = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/features/{0}/{1}/{2}".format(idee[0],idee[0:2],idee)
-        np.save(savepath+".f4kfeature",f4kfeatures)
-        np.save(savepath+".mattfeature",mattFeatures)
-        np.save(savepath+".feif",feif_result)
+        #Normalize and transform.
+        if np.sum(feif_result) == 1:
+            #I hate this
+            comb = np.column_stack((f4kfeatures.reshape(1,-1), mattFeatures[feif_result]))
+        else:
+            comb = np.column_stack((f4kfeatures, mattFeatures[feif_result]))
+        normPhi = normalizePhi(comb,self.ranges)
+        transformed_features = self.pca.transform(normPhi)
         
-        del session
+        #np.save(savepath+".f4kfeature",f4kfeatures)
+        #np.save(savepath+".mattfeature",mattFeatures)
+        
+        #Only save 100 first feature here to save space.
+        np.save(savepath+".pcaFeature",transformed_features[:,100])
+        np.save(savepath+".feif",feif_result)
+        np.save(savepath+".COMPLETE",np.array([]))
         
         retString = "Slave: {0} completes {1} with {2} frames in {3}".format(name,idee,str(frames).ljust(6),str(datetime.now()-time))
         return (True, retString)

@@ -3,7 +3,7 @@
 import os
 import errno
 
-dirf = "/run/media/s1413557/TOSHIBA EXT/f4ktable/"
+dirf = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/features/"
 
 for i in range(256):
 	char = hex(i)[2:]
