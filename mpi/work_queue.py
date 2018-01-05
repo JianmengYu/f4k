@@ -65,11 +65,12 @@ class WorkQueue(object):
     def __add_data(self, data, resource_id):
         if resource_id is None:
             # Anonymous work queue
-            self.work_queue.append(data)
+            self.work_queue.insert(0,data)
         else:
             # add a task in the work queue with specifc resource_id
             work_queue = self.resources_work_queue.get(resource_id, list())
-            work_queue.append(data)
+            #Insert at front in case shit crashes
+            work_queue.insert(0,data)
             self.resources_work_queue[resource_id] = work_queue
 
     def __pop_data(self, resource_id):

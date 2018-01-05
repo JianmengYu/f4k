@@ -61,8 +61,15 @@ class MySlave(Slave):
         task, _ = data
         
         try:
-            session = pymatlab.session_factory('matlab -nojvm -nodisplay')
+            session = pymatlab.session_factory('matlab -nodisplay')
             session.run("addpath('/afs/inf.ed.ac.uk/user/s14/s1413557/f4k-2017-msc-master/matt-msc/workspace/f4k/fish_recog')")
+            if name[:7] == "ashbury":
+                #Our HERO, the MAGNIFICENT and MOST EDUCATIONAL sir ASHBURY, the ONE with FORTY EXTRAVAGANZA PROCESSORS.
+                print("ACTIVATE SPELL CARD: POOL40!")
+                session.run("pc = parcluster('local')")
+                session.run('pc.NumWorkers = 40')
+                session.run('parpool(40)')
+                #Perhaps people working on it wont hate me.
         except Exception:
             print('Slave: %s crashed!' % (name))
         

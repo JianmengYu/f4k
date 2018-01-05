@@ -579,6 +579,10 @@ def loadVideo(video_id, print_info=False, print_time=False,):
             print("NO DETECTION IN VIDEO: {0}!".format(video_id))
         return ([], [], [], [], [], 0)
     
+    if len(frame_info.shape) == 1:
+        #I HATE YOU NP
+        frame_info = np.array([frame_info])
+    
     clip = VideoFileClip(movie)
     fps = clip.fps
     duration = clip.duration

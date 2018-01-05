@@ -35,9 +35,10 @@ class MyApp(object):
         #2: 49433-74100
         #3: 74100-99012
         #4: 99012-123658
+        # temp: 123658 - 130000 - 148701
         
-        start = 99012
-        end = 123658
+        start = 123658
+        end = 130000
         
         #Put longer task at start.
         order = np.argsort(movs_length[start:end])

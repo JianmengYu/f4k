@@ -10,5 +10,8 @@ for i in range(256):
 	if len(char) == 1:
 		char = "0" + char
 	filename = dirf + char[0] + "/" + char + "/"
-	os.makedirs(os.path.dirname(filename))
-	print(filename)
+	try:
+		os.makedirs(os.path.dirname(filename))
+		print(filename)
+	except Exception:
+		print("{0} exists".format(filename))
