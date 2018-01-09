@@ -123,7 +123,7 @@ class MySlave(Slave):
                 session = pymatlab.session_factory('matlab -nodisplay')
                 session.run('cd /afs/inf.ed.ac.uk/user/s14/s1413557/f4k-2017-msc-master/matt-msc/workspace/f4k/fish_recog')
                 #ASHBURY CRASHES A LOT WHEN USING 40 POOLS, HES NOT SO GREAT AFTERALL
-                if name[:7] == "ashbury":
+                if False and name[:7] == "ashbury":
                     #Our HERO, the MAGNIFICENT and MOST EDUCATIONAL sir ASHBURY, the ROYAL CLUSTA with FOURTY EXTRAVAGANZA PROCESSORS.
                     #print("ACTIVATE SPELL CARD: POOL40!")
                     session.run("pc = parcluster('local');")
@@ -132,7 +132,7 @@ class MySlave(Slave):
                     #I hope people working on it wont hate me.
             except Exception:
                 print("Slave {0} failed! On Task {1}! initializing MATLAB".format(name, idee))
-                if name[:7] == "ashbury":
+                if False and name[:7] == "ashbury":
                     try:
                         #This folder fuck things up
                         shutil.rmtree("/afs/inf.ed.ac.uk/user/s14/s1413557/.matlab/local_cluster_jobs/")

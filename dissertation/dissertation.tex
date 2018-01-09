@@ -1,0 +1,147 @@
+\documentclass[bsc,logo,twoside,fullspacing,parskip]{infthesis}
+\usepackage{url}
+
+\begin{document}
+
+\title{Parallel Massive Dataset Cleaning}
+\author{Jianmeng Yu}
+\course{Computer Science}
+\project{4th Year Project Report}
+\date{\today}
+
+\abstract{
+\pagenumbering{roman}
+This project applies the decision algorithm\cite{P1} developed by Matt Pugh in 2015 on a massive parallel scale, to remove the large amount of False Positive fish detections in the Fish4Knowledge (F4K) dataset\cite{P2}, without losing too many True Positives.
+
+Also, according to Qiqi Yu's assessed runtime\cite{P3}, the cleaning process will take more than 1000 days to complete on a 40-core machine. Simply putting the process onto parallel scale will not be sufficient, optimization of the code is also essential for making the processing more feasible.
+
+This document describes the detail of various approach to reduce unnecessary work during pre-processing, improve the cleaning algorithm, and evaluating efficiency of different implementations of the machine learning techniques used. A more detailed roadmap this project is provided in the Chapter 1.
+
+}
+
+\maketitle
+
+\section*{Acknowledgements}
+I would like to thank my project supervisor, Prof. Fisher, for his constant, patient support throughout the year. Without his expert knowledge in the field, it would be impossible for me to navigate through all of the data source and prior work of the Fish4Knowledge project. 
+
+I would also like to thank Mr. Matthew Pugh for finding out time answering my questions on the project, and precious advices on the implementation of his algorithms.
+
+I must also extend gratitude to my friends, and my family back in China, for all their help and encouragement during my study.
+
+\newpage
+
+\standarddeclaration
+
+\tableofcontents
+
+\chapter{Introduction}
+
+\pagenumbering{arabic}
+
+This project applies the previous work of Pugh\cite{P1} and Yu\cite{P3} on massive parallel scale (detail in Chapter 2), while trying to reduce the computational cost of the cleaning algorithm. 
+The main goal of this project is to produce a cleaned subset of Fish4Knowledge Original Data-Set (FDS), so researchers in the future may extract more reliable information from it.
+
+An introduction on background of the F4K project, related background of the decision algorithm, framework design, and libraries used are included in Chapter 2.
+
+
+It is identified that the most time-consuming part of the cleaning is the extraction of data from storage. Details of the data sources used are described in Chapter 3.
+
+Chapter 4 describes the first stages of the cleaning: early detection removal, feature extraction, preprocessing for classification in the next stage, and also approaches like translating Matlab code into Python to reducing runtime and workload.
+
+Chapter 5 discusses the final classifiers used in the cleaning, with evaluation of the results and comparison between different algorithms. Conclusions and possible future work needed are included in Chapter 6.
+
+\section{Big Data}
+
+chui bi
+
+chui bi
+chui bi
+
+blah
+
+\chapter{Background}
+
+\section{Fish4Knowledge Data Set}
+
+Say something here
+
+\section{Classification Schema}
+
+\section{Original Pipeline Classifier}
+
+\section{Message Passing Interface (MPI)}
+
+
+\chapter{Data Source}
+
+Under limitations of disk space and access speed, loading a large SQL database dump file into server and performing 400,000 queries is very unnecessary and time consuming, hence making it the slowest part of the cleaning.
+Since each record needed for the cleaning are independent, an alternative is to use python script with stdin/out pipeline to parse and partition the dump file directly into usable csv files, the details of the pipeline and data sources are described in Chapter 3.
+
+\chapter{Preprocessing}
+
+\chapter{Classifiers}
+
+\chapter{Conclusion}
+
+The document structure should include:
+\begin{itemize}
+\item
+The title page  in the format used above.
+\item
+An optional acknowledgements page.
+\item
+The table of contents.
+\item
+The report text divided into chapters as appropriate.
+\item
+The bibliography.
+\end{itemize}
+
+Commands for generating the title page appear in the skeleton file and
+are self explanatory.
+The file also includes commands to choose your report type (project
+report, thesis or dissertation) and degree.
+These will be placed in the appropriate place in the title page. 
+
+The default behaviour of the documentclass is to produce documents typeset in
+12 point.  Regardless of the formatting system you use, 
+it is recommended that you submit your thesis printed (or copied) 
+double sided.
+
+The report should be printed single-spaced.
+It should be 30 to 60 pages long, and preferably no shorter than 20 pages.
+Appendices are in addition to this and you should place detail
+here which may be too much or not strictly necessary when reading the relevant section.
+
+\section{Using Sections}
+
+Divide your chapters into sub-parts as appropriate.
+
+\section{Citations}
+
+Note that citations 
+can be generated using {\tt BibTeX} or by using the
+{\tt thebibliography} environment. This makes sure that the
+table of contents includes an entry for the bibliography.
+Of course you may use any other method as well.
+
+\section{Options}
+
+There are various documentclass options, see the documentation.  Here we are
+using an option ({\tt bsc} or {\tt minf}) to choose the degree type, plus:
+\begin{itemize}
+\item {\tt frontabs} (recommended) to put the abstract on the front page;
+\item {\tt twoside} (recommended) to format for two-sided printing, with
+  each chapter starting on a right-hand page;
+\item {\tt singlespacing} (required) for single-spaced formating; and
+\item {\tt parskip} (a matter of taste) which alters the paragraph formatting so that
+paragraphs are separated by a vertical space, and there is no
+indentation at the start of each paragraph.
+\end{itemize}
+
+% use the following and \cite{} as above if you use BibTeX
+% otherwise generate bibtem entries
+\bibliographystyle{unsrt}
+\bibliography{dissertation}
+
+\end{document}

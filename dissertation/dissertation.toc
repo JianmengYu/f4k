@@ -1,0 +1,15 @@
+\contentsline {chapter}{\numberline {1}Introduction}{1}
+\contentsline {section}{\numberline {1.1}Big Data}{1}
+\contentsline {chapter}{\numberline {2}Background}{3}
+\contentsline {section}{\numberline {2.1}Fish4Knowledge Data Set}{3}
+\contentsline {section}{\numberline {2.2}Classification Schema}{3}
+\contentsline {section}{\numberline {2.3}Original Pipeline Classifier}{3}
+\contentsline {section}{\numberline {2.4}Message Passing Interface (MPI)}{3}
+\contentsline {chapter}{\numberline {3}Data Source}{5}
+\contentsline {chapter}{\numberline {4}Preprocessing}{7}
+\contentsline {chapter}{\numberline {5}Classifiers}{9}
+\contentsline {chapter}{\numberline {6}Conclusion}{11}
+\contentsline {section}{\numberline {6.1}Using Sections}{12}
+\contentsline {section}{\numberline {6.2}Citations}{12}
+\contentsline {section}{\numberline {6.3}Options}{12}
+\contentsline {chapter}{Bibliography}{13}
