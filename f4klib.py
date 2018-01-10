@@ -451,7 +451,7 @@ def loadRange():
         np.save(path,ranges)
     return ranges
         
-def loadPCA():
+def loadPCA(ranges):
     path = '/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/pcaObject'
     if os.path.isfile(path):
         pca = pickle.load(open(path, 'rb'))
@@ -488,7 +488,7 @@ def loadSampleFeatures():
             f4kfeature = np.load(savepath+".f4kfeature.npy")
             mattfeature = np.load(savepath+".mattfeature.npy")
             feifmask = np.load(savepath+".feif.npy")
-            comb = np.column_stack((f4kfeature, mattfeature))[feifmask]
+            comb = np.column_stack((f4kfeature, mattfeature[feifmask]))
             features = np.vstack((features,comb))
     return features
 
@@ -522,6 +522,7 @@ def loadSql(path, frame_info, returnDict=False):
                 ValueError.message
                 continue
                 
+       
     length = len(frame_info[:,0])
     mask = [False] * length
     sql = [-1] * length
