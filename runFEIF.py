@@ -30,13 +30,13 @@ class MyApp(object):
         movs = loadMovids()
         #13b: np.arange(30598,30695)
         #1584
-        totWork = 30695 - 30598
+        totWork = 1584 - 0
         completed = 0
         shadno = 0
         shadyes = 0
         shadwhat = 0
         
-        for i in np.arange(30598,30695):
+        for i in np.arange(0,1584):
             movid = movs[i]
             self.work_queue.add_work(data=('Do stuff', movid))
 

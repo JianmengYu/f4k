@@ -97,7 +97,7 @@ def plotContourOnImage(info, clip, hasContour, contour, picker, debug=False):
 
         plt.show()
         
-def plotStuff(info, clip, hasContour, contour, movid, limit_lower=0, limit_upper=20, width=10, classify=False):
+def plotStuff(info, clip, hasContour, contour, movid, limit_lower=0, limit_upper=20, width=5, gap=1, classify=False):
     
     if movid[2] == "1":
         frame_size = "640x480"
@@ -113,8 +113,8 @@ def plotStuff(info, clip, hasContour, contour, movid, limit_lower=0, limit_upper
     
     f, ax = plt.subplots(depth,width,figsize=(15,15/width*depth))
     
-    for i in range(limit_lower, limit_upper):
-        plt.subplot(depth,width,i-limit_lower+1)
+    for i in np.arange(limit_lower, (limit_upper-limit_lower)*gap+limit_lower, gap):
+        plt.subplot(depth,width,(i-limit_lower)/gap+1)
         plt.imshow(clip[i])
         plt.xticks([])
         plt.yticks([])
@@ -139,10 +139,10 @@ def plotStuff(info, clip, hasContour, contour, movid, limit_lower=0, limit_upper
                 plt.gca().add_patch(patches.Rectangle((0,0),100,100,fill=False,linewidth=50.0/width,color='yellow'))
                 if show_axis:
                     plt.gca().set_xlabel("{0},NO CONTOUR".format(info[i,0]))
-        else:
-            plt.gca().set_xlabel("{0},{1}".format(info[i,0],info[i,1:4]))
-            plt.gca().add_patch(patches.Rectangle((9,9),info[i,1],info[i,2],
-                                                  fill=False,linewidth=1,color='red'))
+        #else:
+            #plt.gca().set_xlabel("{0},{1}".format(info[i,0],info[i,1:4]))
+            #plt.gca().add_patch(patches.Rectangle((9,9),info[i,1],info[i,2],
+            #                                      fill=False,linewidth=1,color='red'))
     plt.show()
     
 def loadSqlOriginal(path):
@@ -435,6 +435,48 @@ def generateFeatureVector(info, contour, hasContour, clip, picker):
     f_0909_0919 = histc(tempimage, histrange_h)
     tempimage = h_image[full]
     f_0920_0930 = histc(tempimage, histrange_h)
+    
+def featureNames():
+    feature_names =[]
+    for i in np.arange(1,256):
+        feature_names.append("Normalized Red {0}".format(i))
+    for i in np.arange(1,256):
+        feature_names.append("Normalized Green {0}".format(i))
+    for i in np.arange(1,256):
+        feature_names.append("Normalized H {0}".format(i))
+    for i in np.arange(1,56):
+        feature_names.append("Normalized Red (bin2) {0}".format(i))
+    for i in np.arange(1,56):
+        feature_names.append("Normalized Green (bin2) {0}".format(i))
+    for i in np.arange(1,56):
+        feature_names.append("Normalized H (bin2) {0}".format(i))
+    feature_names.append("Curve Shape")
+    feature_names.append("Curve Tail Ratio")
+    for i in np.arange(1,13):
+        feature_names.append("Fish density static {0}".format(i))
+    for i in np.arange(1,11):
+        for j in np.arange(1,73):
+            feature_names.append("Co-occurance Matrix ({0},{1})".format(j,i))
+    for i in np.arange(1,43):
+        feature_names.append("Moment Invariant {0}".format(i))
+    for i in np.arange(1,681):
+        feature_names.append("PHOG {0}".format(i))
+    for i in np.arange(1,16):
+        feature_names.append("Fourier Descriptor {0}".format(i))
+    for i in np.arange(1,161):
+        feature_names.append("Gabor Filter (texture) {0}".format(i))
+    for i in np.arange(1,64):
+        feature_names.append("AMI features {0}".format(i))
+    feature_names.append("Half Head Ratio")
+    feature_names.append("Half Tail Ratio")
+    feature_names.append("Animation Score")
+    for i in np.arange(1,5):
+        feature_names.append("Curvature {0}".format(i))
+    for i in np.arange(1,5):
+        feature_names.append("Erraticity {0}".format(i))
+    for i in np.arange(1,21):
+        feature_names.append("Gabor Filter (edge) {0}".format(i))
+    return feature_names
     
 def printCameras():
     # `camera_id` int(11) NOT NULL AUTO_INCREMENT,

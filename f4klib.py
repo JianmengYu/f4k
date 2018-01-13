@@ -144,7 +144,39 @@ def getContour(string, return_what="Normalized", debug=False):
 
 ### ===================================================== Classify/Extract ===================================================== ###
 
-def FEIF(string, case="320x240", return_info=False, matt_mode=False):
+def earlyRemoval(movid, length):    
+    video_id = movid[0]
+    camera_id = int(movid[1])
+    year = int(video_id[33:37])
+    month = int(video_id[37:39])
+    day = int(video_id[39:41])
+    hour = int(video_id[41:43])
+    
+    #Remove lanyu night videos
+    if camera_id == 44 or camera_id == 46:
+        #print("LANYU SCUM!")
+        if hour >= 18 or hour <= 6:
+            #print("Wai so dim")
+            return True
+        
+    #Skip videos that could give DICE too much pressure.
+    #Usually having a dynamic background.
+    if length >= 40000:
+        return True
+        
+    #Videos that are too long for all kinds of issues
+    if camera_id == 42 and year == 2012 and month >= 6 and month <= 8 and length >= 30000:
+        #print("Buggish videos")
+        return True
+        
+    if camera_id == 38 and year == 2010 and month == 1 and length >= 30000:
+        #print("Early 2010 HDTV stuff")
+        return True
+    
+    return False
+    
+
+def FEIF(string, case="320x240", return_info=False, matt_mode=True):
     
     if case == "320x240":
     #case 320x240
@@ -165,6 +197,11 @@ def FEIF(string, case="320x240", return_info=False, matt_mode=False):
         left = 6
         tsright = 266
         tsbottom = 33
+        
+    
+    #My new criteria: 40 touching points or more than 20% touching
+    limit1 = 30
+    limit2 = 20 #%
     
     points2, points3 = getContour(string, return_what="Both")
     length = len(points2)
@@ -178,9 +215,9 @@ def FEIF(string, case="320x240", return_info=False, matt_mode=False):
             x3 = points3[:,0]
             y3 = points3[:,1]
             delta += np.sum(x3<=left)+np.sum(x3>=right)+np.sum(y3<=top)+np.sum(y3>=bottom)
-            if delta < 25:
+            if delta < limit1:
                 delta += np.sum(np.logical_and(y3<=tsbottom,x3<=tsright))
-                reject = delta >= 25
+                reject = delta >= limit1 or (delta*100/length) > limit2
             else:
                 reject = True
         else:
@@ -213,7 +250,7 @@ def FEIF(string, case="320x240", return_info=False, matt_mode=False):
     else:
         return reject
     
-def getMattFeatures(info, clip, hasContour, contour, fish_id, print_info=False, ret_normalized_erraticity=True):
+def getMattFeatures(info, clip, hasContour, contour, fish_id, print_info=False, ret_normalized_erraticity=False):
     
     time = datetime.now()
     counter = 0

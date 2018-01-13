@@ -8,9 +8,11 @@ from mpi.master_slave import Master, Slave
 from mpi.work_queue import WorkQueue
 from f4klib import *
 import shutil
+import gc
+import multiprocessing
 
 #HOSTS=basso,battaglin,belloni,bergamaschi,berrendero,bertoglio,berzin,binda
-#mpiexec -n 167 -host $HOSTS python ~/f4k/runMulticoreFeatureExtract.py
+#mpiexec -n 16 -host $HOSTS python ~/f4k/runMulticoreFeatureExtract.py
 
 
 class MyApp(object):
@@ -38,20 +40,32 @@ class MyApp(object):
         #5: 123658-148701
         #6: 148701-173761
         
-        start = 148701
-        end = 173761
+        start = 24941
+        end = 49433
         
         #Put longer task at start.
         order = np.argsort(movs_length[start:end])
         
         #For statistics
-        totWork = end - start
+        totWork = 0#end - start
         completed = 0
         
         for i in np.arange(start,end)[order]:
-            movid = movs[i]
-            #It's modified that task is appended at front
-            self.work_queue.add_work(data=('Do stuff', movid))
+            
+            if earlyRemoval(movs[i], movs_length[i]):
+                idee = movs[i][0]
+                savepath = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/features/{0}/{1}/{2}"
+                savepath = savepath.format(idee[0],idee[0:2],idee)
+                
+                if not os.path.isfile(savepath+".COMPLETE.npy"):
+                    print("Master removes movid {0} with early removal".format(movs[i][0]))
+                    np.save(savepath+".COMPLETE",np.array([]))
+                
+            else:
+                totWork += 1
+                movid = movs[i]
+                #It's modified that task is appended at front
+                self.work_queue.add_work(data=('Do stuff', movid))
 
                 
         #for i in range(tasks):
@@ -84,137 +98,171 @@ class MySlave(Slave):
     """
 
     def __init__(self):
+        
         super(MySlave, self).__init__()
         self.ranges = loadRange()
-        self.pca = loadPCA()
-
-    def do_work(self, data):
-        rank = MPI.COMM_WORLD.Get_rank()
-        name = MPI.Get_processor_name().split(".")[0].ljust(12)
-        
-        task, movid = data
-        idee = movid[0]
-        fname = movid[0].split("#")[0]
-        savepath = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/features/{0}/{1}/{2}".format(idee[0],idee[0:2],idee)
-        
-        #Check if video is already extracted.
-        if os.path.isfile(savepath+".COMPLETE.npy"):
-            return (True, 'Slave: %s skipped   %s because it\'s done.' % (name, idee), movid)
-    
-        #Load the video
-        time = datetime.now()
-        info, clip, hasContour, contour, fish_id, frames = loadVideo(movid)
-        
-        #Skipping empty videos
-        if frames == 0:
-            #Skipping stuff
-            #print('Slave: %s skipped an empty video "%s"' % (name, idee))
-            np.save(savepath+".COMPLETE",np.array([]))
-            return (True, 'Slave: %s skipped   %s because it\'s empty' % (name, idee), movid)
-        
-        print('                                              Slave: {0} started   {1} with {2} frames'
-              .format(name, idee, str(frames).ljust(6)))
-        
-        #Prevent Repeat Opening Matlab
-        try: session
-        except NameError: session = None
-        if session is None:
-            try:
-                session = pymatlab.session_factory('matlab -nodisplay')
-                session.run('cd /afs/inf.ed.ac.uk/user/s14/s1413557/f4k-2017-msc-master/matt-msc/workspace/f4k/fish_recog')
-                #ASHBURY CRASHES A LOT WHEN USING 40 POOLS, HES NOT SO GREAT AFTERALL
-                if name[:7] == "ashbury":
-                    #Our HERO, the MAGNIFICENT and MOST EDUCATIONAL sir ASHBURY, the ROYAL CLUSTA with FOURTY EXTRAVAGANZA PROCESSORS.
-                    #print("ACTIVATE SPELL CARD: POOL40!")
-                    session.run("pc = parcluster('local');")
-                    session.run('pc.NumWorkers = 40;')
-                    session.run('parpool(40);')
-                    #I hope people working on it wont hate me.
-            except Exception:
-                print("Slave {0} failed! On Task {1}! initializing MATLAB".format(name, idee))
-                if name[:7] == "ashbury":
-                    try:
-                        #This folder fuck things up
-                        shutil.rmtree("/afs/inf.ed.ac.uk/user/s14/s1413557/.matlab/local_cluster_jobs/")
-                    except Exception:
-                        print("Slave {0} failed! Job folder can't be removed!".format(name))
-                return (True, "FAILED", movid)
-          
-        #FEIF
-        if movid[2] == "1":frame_size = "640x480"
-        else:frame_size = "320x240"
-        feif_result = np.zeros(frames, dtype=bool)
-        for i in range(frames):
-            if hasContour[i]:
-                if not FEIF(contour[i], frame_size, matt_mode=True):
-                    feif_result[i] = True
-               
-        if np.sum(feif_result) == 0:
-            #Skipping stuff
-            #print('Slave: %s skipped an empty video "%s"' % (name, idee))
-            np.save(savepath+".COMPLETE",np.array([]))
-            return (True, 'Slave: %s skipped   %s because it\'s all rejected' % (name, idee), movid)
-
-        #Setting up features need to be computed
-        hasCL = np.sum(feif_result)
-        rgbImgs = [None]*hasCL
-        binImgs = [None]*hasCL
-        index = 0
-        for i in range(frames):
-            if feif_result[i]:
-                rgbImgs[index]=clip[i]
-                binImgs[index]=np.full((100,100), 0, dtype=np.uint8)
-                thisContour = np.int32([getContour(contour[i])])
-                cv2.fillPoly(binImgs[index], thisContour, (255,))
-                index += 1
-
-        #Compute the features
-        
+        self.pca = loadPCA(self.ranges)
+           
+    def run(self):
+        super(MySlave, self).run()
         try:
-            session.putvalue('A',rgbImgs)
-            session.putvalue('B',binImgs)
-            session.run('C = feature_batchGenerateFeatureVector(A,B)')
-            f4kfeatures = session.getvalue('C')
+            self.p.terminate()
+            print(MPI.Get_processor_name().split(".")[0] + "'s subprocess killed!")
         except Exception:
-            print("Slave {0} failed! On Task {1}!".format(name, idee))
-            return (True, "FAILED", movid)
-                  
-        #Get Matt's features
-        mattFeatures = getMattFeatures(info, clip, hasContour, contour, fish_id, print_info=False, ret_normalized_erraticity=False)
+            print(MPI.Get_processor_name().split(".")[0] + "'s subprocess killing failed!")
+            
+    def do_work(self, data):
+        
+        q = multiprocessing.Queue()
+        self.p = multiprocessing.Process(target=do_actual_work, args=(self,data,q,))
+        self.p.start()
+        ret = q.get()
+        self.p.join()
+        return (ret[0],ret[1],ret[2])
+        
 
-        #Normalize and transform.
-        if np.sum(feif_result) == 1:
-            #I hate this
-            comb = np.column_stack((f4kfeatures.reshape(1,-1), mattFeatures[feif_result]))
-        else:
-            comb = np.column_stack((f4kfeatures, mattFeatures[feif_result]))
-        normPhi = normalizePhi(comb,self.ranges)
-        transformed_features = self.pca.transform(normPhi)
-        
-        #np.save(savepath+".f4kfeature",f4kfeatures)
-        #np.save(savepath+".mattfeature",mattFeatures)
-        
-        #Only save 100 first feature here to save space.
-        np.save(savepath+".pcaFeature",transformed_features[:,:100])
-        np.save(savepath+".feif",feif_result)
+def do_actual_work(self, data, q):
+    rank = MPI.COMM_WORLD.Get_rank()
+    name = MPI.Get_processor_name().split(".")[0].ljust(12)
+    task, movid = data
+    idee = movid[0]
+    fname = movid[0].split("#")[0]
+    savepath = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/features/{0}/{1}/{2}".format(idee[0],idee[0:2],idee)
+
+    #Check if video is already extracted.
+    if os.path.isfile(savepath+".COMPLETE.npy"):
+        q.put([True, 'Slave: %s skipped   %s because it\'s done.' % (name, idee), movid])
+        return
+
+    #Load the video
+    time = datetime.now()
+    info, clip, hasContour, contour, fish_id, frames = loadVideo(movid)
+
+    #Skipping empty videos
+    if frames == 0:
+        #Skipping stuff
+        #print('Slave: %s skipped an empty video "%s"' % (name, idee))
         np.save(savepath+".COMPLETE",np.array([]))
-        
-        #JustMatlabThings#
-        del session
-        sleeptime.sleep(1)
-        if name[:7] == "ashbury":
-            sleeptime.sleep(4)
-        
-        retString = "Slave: {0} completes {1} with {2} frames in {3}".format(name,idee,str(frames).ljust(6),str(datetime.now()-time))
-        return (True, retString, movid)
+        q.put([True, 'Slave: %s skipped   %s because it\'s empty' % (name, idee), movid])
+        return
 
+    #Notify the Boss
+    print('                                              Slave: {0} started   {1} with {2} frames'
+          .format(name, idee, str(frames).ljust(6)))
 
+    #Prevent Opening Matlab before the prev one close.
+    try: session
+    except NameError: session = None
+    if session is None:
+        try:
+            session = pymatlab.session_factory('matlab -nodisplay')
+            session.run('cd /afs/inf.ed.ac.uk/user/s14/s1413557/f4k-2017-msc-master/matt-msc/workspace/f4k/fish_recog')
+            #ASHBURY CRASHES A LOT WHEN USING 40 POOLS, HES NOT SO GREAT AFTERALL
+            if name[:7] == "ashbury":
+                #Our HERO, MAGNIFICENT and MOST EDUCATIONAL sir ASHBURY, CLUSTER with FOURTY EXTRAVAGANZA PROCESSORS.
+                #print("ACTIVATE SPELL CARD: POOL40!")
+                session.run("pc = parcluster('local');")
+                session.run('pc.NumWorkers = 40;')
+                session.run('parpool(40);')
+                #I hope people working on it wont hate me.
+        except Exception:
+            print("Slave {0} failed! On Task {1}! initializing MATLAB".format(name, idee))
+            if name[:7] == "ashbury":
+                try:
+                    #This folder fuck things up
+                    shutil.rmtree("/afs/inf.ed.ac.uk/user/s14/s1413557/.matlab/local_cluster_jobs/")
+                except Exception:
+                    print("Slave {0} failed! Job folder can't be removed!".format(name))
+            q.put([True, "FAILED", movid])
+            return
+
+    #FEIF
+    if movid[2] == "1":frame_size = "640x480"
+    else:frame_size = "320x240"
+        
+    feif_result = np.zeros(frames, dtype=bool)
+    for i in range(frames):
+        if hasContour[i]:
+            if not FEIF(contour[i], frame_size, matt_mode=True):
+                feif_result[i] = True
+
+    if np.sum(feif_result) == 0:
+        #Skipping stuff
+        #print('Slave: %s skipped an empty video "%s"' % (name, idee))
+        np.save(savepath+".COMPLETE",np.array([]))
+        q.put([True, 'Slave: %s skipped   %s because it\'s all rejected' % (name, idee), movid])
+        return
+
+    #Setting up features need to be computed
+    hasCL = np.sum(feif_result)
+    rgbImgs = [None]*hasCL
+    binImgs = [None]*hasCL
+    index = 0
+    for i in range(frames):
+        if feif_result[i]:
+            rgbImgs[index]=clip[i]
+            binImgs[index]=np.full((100,100), 0, dtype=np.uint8)
+            thisContour = np.int32([getContour(contour[i])])
+            cv2.fillPoly(binImgs[index], thisContour, (255,))
+            index += 1
+
+    #Compute the features
+
+    try:
+        session.putvalue('A',rgbImgs)
+        session.putvalue('B',binImgs)
+        session.run('C = feature_batchGenerateFeatureVector(A,B)')
+        f4kfeatures = session.getvalue('C')
+    except Exception:
+        print("Slave {0} failed! On Task {1}!".format(name, idee))
+        q.put([True, "FAILED", movid])
+        return
+
+    #Get Matt's features
+    mattFeatures = getMattFeatures(info, clip, hasContour, contour, fish_id)
+
+    #Normalize and transform.
+    if np.sum(feif_result) == 1:
+        #I hate this
+        comb = np.column_stack((f4kfeatures.reshape(1,-1), mattFeatures[feif_result]))
+    else:
+        comb = np.column_stack((f4kfeatures, mattFeatures[feif_result]))
+    normPhi = normalizePhi(comb,self.ranges)
+    transformed_features = self.pca.transform(normPhi)
+
+    #np.save(savepath+".f4kfeature",f4kfeatures)
+    #np.save(savepath+".mattfeature",mattFeatures)
+
+    #Only save 100 first feature here to save space.
+    np.save(savepath+".pcaFeature",transformed_features[:,:100])
+    np.save(savepath+".feif",feif_result)
+    np.save(savepath+".COMPLETE",np.array([]))
+
+    #JustMatlabThings#
+    del session
+    sleeptime.sleep(1)
+    if name[:7] == "ashbury":
+        sleeptime.sleep(4)
+
+    #Cleanup not sure if helps (HINT: IT DOESN'T)
+    del info, clip, hasContour, contour, fish_id
+    del comb, normPhi, transformed_features
+    del rgbImgs, binImgs
+    gc.collect()
+
+    retString = "Slave: {0} completes {1} with {2} frames in {3}"
+    retString = retString.format(name, idee, str(frames).ljust(6), str(datetime.now()-time))
+
+    q.put([True, retString, movid])
+    return
+    
+    
 def main():
 
     name = MPI.Get_processor_name()
     rank = MPI.COMM_WORLD.Get_rank()
     size = MPI.COMM_WORLD.Get_size()
-    os.nice(10)
+    os.nice(18)
 
     print('I am  %s rank %d (total %d)' % (name, rank, size) )
 
