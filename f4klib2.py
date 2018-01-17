@@ -221,6 +221,9 @@ def showTransformedImage(picker, clip, hasContour, contour):
         image7 = cv2.bitwise_and(mask,image1)
         image8 = cv2.cvtColor(image7,cv2.COLOR_RGB2YUV)
         image9 = normalizeRGB(image8)[:,:,0]
+        labels = ["RGB of N","YUV of N","Normalized Y of N",
+                  "RGB of WC","YUV of WC","Normalized Y of WC",
+                  "RGB of BC","YUV of BC","Normalized Y of BC"]
         plt.subplots(1,9,figsize=(18,2))
         for index, image in enumerate([image1,image2,image3,image4,image5,image6,image7,image8,image9]):
             plt.subplot(1,9,index+1)
@@ -230,6 +233,8 @@ def showTransformedImage(picker, clip, hasContour, contour):
                 plt.imshow(image)
             plt.xticks([])
             plt.yticks([])
+            plt.xlabel(labels[index])
+            
         plt.show()
     else:
         print("No contour for this image dummy.")

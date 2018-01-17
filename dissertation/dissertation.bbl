@@ -15,4 +15,14 @@ Qiqi Yu.
 \newblock Adding temporal constraints to a large data cleaning problem.
 \newblock Msc dissertation, The University of Edinburgh, 2016.
 
+\bibitem{L3}
+Introduction to hadoop image processing interface (hipi).
+\newblock \url{http://hipi.cs.virginia.edu/}.
+\newblock Accessed: 2018-01-15.
+
+\bibitem{L4}
+4quant homepage.
+\newblock \url{http://4quant.com/}.
+\newblock Accessed: 2018-01-10.
+
 \end{thebibliography}

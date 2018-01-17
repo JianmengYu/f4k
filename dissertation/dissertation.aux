@@ -17,51 +17,79 @@
 \@writefile{toc}{\contentsline {section}{\numberline {1.4}Pipeline Classifier}{4}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1.2}{\ignorespaces Pipeline Classifier designed by Matthew, modified\relax }}{4}}
 \newlabel{fig:pipeline}{{1.2}{4}}
+\citation{L3}
+\citation{L4}
 \@writefile{toc}{\contentsline {chapter}{\numberline {2}Background}{5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{toc}{\contentsline {section}{\numberline {2.1}Big Data}{5}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.2}Message Passing Interface (MPI)}{5}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Data Source}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}Translation from MATLAB to Python}{5}}
+\newlabel{sec:translate}{{2.2}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Test runtime of different 2D convolve algorithms.\relax }}{6}}
+\newlabel{fig:benchmark}{{2.1}{6}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Message Passing Interface for Python (MPI4PY)}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Running the MPI program on MATE terminal\relax }}{7}}
+\newlabel{fig:mpi}{{2.2}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}CPU Hogging and Memory Thrashing Prevention}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}Error Recovery and Progress Record}{8}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Data Source}{9}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{sec:datasource}{{3}{7}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Extracted Images}{7}}
-\newlabel{sec:summaries}{{3.1}{7}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}SQL dump file}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Stdin based Script}{7}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Preprocessing}{9}}
+\newlabel{sec:datasource}{{3}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Extracted Images}{9}}
+\newlabel{sec:summaries}{{3.1}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Process of Extracting Image\relax }}{10}}
+\newlabel{fig:extraction}{{3.1}{10}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}SQL dump file}{10}}
+\newlabel{sec:sqld}{{3.2}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Standard Stream based Extraction Script}{11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Translation of Binary Data}{11}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Ground Truthing Dataset}{12}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Preprocessing}{13}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Early Video Removal}{9}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Log Scale Histogram of Detection Length\relax }}{9}}
-\newlabel{fig:vidlength}{{4.1}{9}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Frame Edge Indicator Function}{11}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}Feature Extraction}{11}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}F4K and Matt Feature}{11}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Translation Attempt}{11}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.3}PCA Analysis}{11}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Image Processing For CNN}{11}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Classifiers}{13}}
+\newlabel{sec:prepro}{{4}{13}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Early Video Removal}{13}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Frame Edge Indicator Function (FEIF)}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Log Scale Histogram of Detection Length\relax }}{15}}
+\newlabel{fig:vidlength}{{4.1}{15}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Feature Extraction}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Matthew's Feature}{16}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}F4K Feature}{16}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.3}PCA Analysis}{16}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}Image Processing For CNN}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Images on different stage of pre-process\relax }}{16}}
+\newlabel{fig:imageprepro}{{4.2}{16}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Classification}{17}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Support Vector Machines (SVM)}{17}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Convolutional Neural Networks (CNN)}{17}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Evaluation}{17}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Potential Candidate of classifiers}{17}}
 \bibstyle{unsrt}
 \bibdata{dissertation}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Conclusion}{15}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Conclusion}{19}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Results}{19}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Future Work}{19}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}Final Words}{19}}
 \bibcite{P1}{1}
 \bibcite{P2}{2}
 \bibcite{P3}{3}
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{17}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}Sample of Lengthy Videos}{19}}
+\bibcite{L3}{4}
+\bibcite{L4}{5}
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{21}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Sample of Lengthy Videos}{23}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.1}{\ignorespaces Sample frames from a video filmed at night.\relax }}{19}}
-\newlabel{fig:sample_night}{{A.1}{19}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.2}{\ignorespaces Sample frames from a corrupted video.\relax }}{20}}
-\newlabel{fig:sample_corrupt}{{A.2}{20}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.3}{\ignorespaces Sample frames from a video facing ground.\relax }}{20}}
-\newlabel{fig:sample_vegetation}{{A.3}{20}}
-\@writefile{lof}{\contentsline {figure}{\numberline {A.4}{\ignorespaces Sample frames from a video with abnormal amount of fish.\relax }}{20}}
-\newlabel{fig:sample_fish}{{A.4}{20}}
+\newlabel{sec:samplelong}{{A}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.1}{\ignorespaces Sample frames from a video filmed at night.\relax }}{23}}
+\newlabel{fig:sample_night}{{A.1}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.2}{\ignorespaces Sample frames from a corrupted video.\relax }}{24}}
+\newlabel{fig:sample_corrupt}{{A.2}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.3}{\ignorespaces Sample frames from a video with dynamic background.\relax }}{24}}
+\newlabel{fig:sample_vegetation}{{A.3}{24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {A.4}{\ignorespaces Sample frames from a video with abnormal amount of fish.\relax }}{24}}
+\newlabel{fig:sample_fish}{{A.4}{24}}
