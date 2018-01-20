@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.7.13)  17 JAN 2018 19:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.7.13)  18 JAN 2018 21:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -397,42 +397,43 @@ File: graph/Pipeline_Classifier.png Graphic file (type png)
 Package pdftex.def Info: graph/Pipeline_Classifier.png used on input line 143.
 (pdftex.def)             Requested size: 396.21503pt x 119.78593pt.
  [4 <./graph/Pipeline_Classifier.png>]
-Chapter 2.
-[5
+[5] [6
 
 ]
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
-(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 176.
-
- <graph/benchmark.png, id=58, 381.425pt x 266.9975pt>
+Chapter 2.
+[7] <graph/benchmark.png, id=65, 381.425pt x 266.9975pt>
 File: graph/benchmark.png Graphic file (type png)
 
 <use graph/benchmark.png>
-Package pdftex.def Info: graph/benchmark.png used on input line 185.
+Package pdftex.def Info: graph/benchmark.png used on input line 195.
 (pdftex.def)             Requested size: 190.71202pt x 133.49841pt.
- [6 <./graph/benchmark.png>]
-<graph/sample_terminal.png, id=64, 1173.38374pt x 400.49625pt>
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
+(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 203.
+
+ [8 <./graph/benchmark.png>]
+<graph/sample_terminal.png, id=71, 1173.38374pt x 400.49625pt>
 File: graph/sample_terminal.png Graphic file (type png)
 
 <use graph/sample_terminal.png>
-Package pdftex.def Info: graph/sample_terminal.png used on input line 211.
+Package pdftex.def Info: graph/sample_terminal.png used on input line 232.
 (pdftex.def)             Requested size: 410.69046pt x 140.17578pt.
- [7 <./graph/sample_terminal.png>] [8]
+ [9] [10 <./graph/sample_terminal.png>] [11]
+[12
+
+]
 Chapter 3.
-<graph/extraction.png, id=73, 1003.75pt x 501.875pt>
+<graph/extraction.png, id=86, 1003.75pt x 501.875pt>
 File: graph/extraction.png Graphic file (type png)
 
 <use graph/extraction.png>
-Package pdftex.def Info: graph/extraction.png used on input line 262.
+Package pdftex.def Info: graph/extraction.png used on input line 283.
 (pdftex.def)             Requested size: 301.12732pt x 150.56366pt.
- [9
-
-]
+ [13]
 (/opt/texlive/2017/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
 LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <6> not available
-(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 282.
+(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 303.
 Missing character: There is no â in font pcrr7tn!
 Missing character: There is no € in font pcrr7tn!
 Missing character: There is no ˜ in font pcrr7tn!
@@ -524,104 +525,105 @@ Missing character: There is no â in font pcrr7tn!
 Missing character: There is no € in font pcrr7tn!
 Missing character: There is no ˜ in font pcrr7tn!
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 300.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 321.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 300.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 321.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 12.9599pt on input line 300.
- [10 <./graph/extraction.png>]
+(Font)              scaled to size 12.9599pt on input line 321.
+ [14 <./graph/extraction.png>]
 LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 309.
-LaTeX Font Info:    Try loading font information for OMS+pcr on input line 319.
+(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 330.
+LaTeX Font Info:    Try loading font information for OMS+pcr on input line 340.
 
  (/opt/texlive/2017/texmf-dist/tex/latex/psnfss/omspcr.fd
 File: omspcr.fd 
 )
 LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 319.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 340.
 
-[11] [12]
+[15] [16]
 Chapter 4.
-[13
+[17
 
-] <graph/frame_distribution.png, id=92, 603.25375pt x 252.945pt>
+] <graph/frame_distribution.png, id=105, 603.25375pt x 252.945pt>
 File: graph/frame_distribution.png Graphic file (type png)
 
 <use graph/frame_distribution.png>
-Package pdftex.def Info: graph/frame_distribution.png used on input line 380.
+Package pdftex.def Info: graph/frame_distribution.png used on input line 398.
 (pdftex.def)             Requested size: 392.11029pt x 164.4123pt.
- [14] [15 <./graph/frame_distribution.png>]
-<graph/imagepre.png, id=100, 1028.84375pt x 126.4725pt>
+ [18 <./graph/frame_distribution.png>]
+[19] <graph/imagepre.png, id=113, 1028.84375pt x 126.4725pt>
 File: graph/imagepre.png Graphic file (type png)
 
 <use graph/imagepre.png>
-Package pdftex.def Info: graph/imagepre.png used on input line 431.
+Package pdftex.def Info: graph/imagepre.png used on input line 459.
 (pdftex.def)             Requested size: 411.53021pt x 50.58809pt.
- [16 <./graph/imagepre.png>]
+ [20 <./graph/imagepre.png>]
 Chapter 5.
-[17
+[21
 
-] [18
+] [22
 
 ]
 Chapter 6.
-(./dissertation.bbl [19] [20
+(./dissertation.bbl [23] [24
 
-]) [21] [22
+]) [25] [26
 
 ]
 Appendix A.
-<graph/sample_night.png, id=124, 861.2175pt x 344.28625pt>
+<graph/sample_night.png, id=138, 861.2175pt x 344.28625pt>
 File: graph/sample_night.png Graphic file (type png)
 
 <use graph/sample_night.png>
-Package pdftex.def Info: graph/sample_night.png used on input line 467.
+Package pdftex.def Info: graph/sample_night.png used on input line 495.
 (pdftex.def)             Requested size: 396.16486pt x 158.37358pt.
 
-<graph/sample_corrupt.png, id=125, 861.2175pt x 344.28625pt>
+<graph/sample_corrupt.png, id=139, 861.2175pt x 344.28625pt>
 File: graph/sample_corrupt.png Graphic file (type png)
 
 <use graph/sample_corrupt.png>
-Package pdftex.def Info: graph/sample_corrupt.png used on input line 474.
+Package pdftex.def Info: graph/sample_corrupt.png used on input line 502.
 (pdftex.def)             Requested size: 396.16486pt x 158.37358pt.
 
-<graph/sample_vegetation.png, id=126, 861.2175pt x 344.28625pt>
+<graph/sample_vegetation.png, id=140, 861.2175pt x 344.28625pt>
 File: graph/sample_vegetation.png Graphic file (type png)
 
 <use graph/sample_vegetation.png>
-Package pdftex.def Info: graph/sample_vegetation.png used on input line 481.
+Package pdftex.def Info: graph/sample_vegetation.png used on input line 509.
 (pdftex.def)             Requested size: 396.16486pt x 158.37358pt.
 
-<graph/sample_fish.png, id=127, 861.2175pt x 344.28625pt>
+<graph/sample_fish.png, id=141, 861.2175pt x 344.28625pt>
 File: graph/sample_fish.png Graphic file (type png)
 
 <use graph/sample_fish.png>
-Package pdftex.def Info: graph/sample_fish.png used on input line 487.
+Package pdftex.def Info: graph/sample_fish.png used on input line 515.
 (pdftex.def)             Requested size: 396.16486pt x 158.37358pt.
- [23 <./graph/sample_night.png>] [24 <./graph/sample_corrupt.png> <./graph/samp
+ [27 <./graph/sample_night.png>] [28 <./graph/sample_corrupt.png> <./graph/samp
 le_vegetation.png> <./graph/sample_fish.png>]
 (./dissertation.aux) ) 
 Here is how much of TeX's memory you used:
- 5438 strings out of 492995
- 82497 string characters out of 6101534
- 202316 words of memory out of 5000000
- 8872 multiletter control sequences out of 15000+600000
- 40444 words of font info for 82 fonts, out of 8000000 for 9000
+ 5444 strings out of 492995
+ 82527 string characters out of 6101534
+ 202326 words of memory out of 5000000
+ 8873 multiletter control sequences out of 15000+600000
+ 42811 words of font info for 87 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,6n,47p,550b,1183s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/opt/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc
-}</opt/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/
-texlive/2017/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></opt/texlive/2017/t
-exmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></opt/texlive/2017/texmf-dist/font
-s/type1/urw/helvetic/uhvb8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1/urw/h
-elvetic/uhvr8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvro
-8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/tex
-live/2017/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/texlive/2017/texmf-
-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on dissertation.pdf (32 pages, 2012999 bytes).
+}</opt/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/t
+exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/texlive/
+2017/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></opt/texlive/2017/texmf-dis
+t/fonts/type1/urw/courier/ucrr8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1/
+urw/helvetic/uhvb8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/
+uhvr8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb><
+/opt/texlive/2017/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></opt/texlive/201
+7/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></opt/texlive/2017/texmf-dist/fon
+ts/type1/urw/times/utmri8a.pfb>
+Output written on dissertation.pdf (36 pages, 2023317 bytes).
 PDF statistics:
- 171 PDF objects out of 1000 (max. 8388607)
- 103 compressed objects within 2 object streams
+ 187 PDF objects out of 1000 (max. 8388607)
+ 114 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  61 words of extra memory for PDF output out of 10000 (max. 10000000)
 

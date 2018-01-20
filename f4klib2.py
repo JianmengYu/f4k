@@ -33,6 +33,26 @@ def loadPickables(movs):
             ids.append(i)
     return (ids, pickables)
 
+def printClassExamples():
+    movs = loadMovids()
+    samp_vids = [343 ,638,6,5,13 ,146,408,153,408,5  ]
+    samp_fram = [1000,80 ,0,0,136,301,60 ,290,1  ,177]
+    
+    plt.subplots(2,5,figsize=(15,6))
+    
+    for i in range(10):
+        plt.subplot(2,5,i+1)
+        plt.xticks([])
+        plt.yticks([])
+        plt.xlabel("Class {0}".format(i+1))
+        info, clip, hasContour, contour, fish_id, frames = loadVideo(movs[samp_vids[i]])
+        plt.imshow(clip[samp_fram[i]])
+        cline = contour[samp_fram[i]]
+        thisContour = getContour(cline, return_what="Normalized")
+        plt.scatter(thisContour[:,0],thisContour[:,1],s=1)
+    plt.show()
+
+
 def plotContourFromOriginalFile(path, limit_amount=400, add_milk=False):
     if limit_amount > 0:
         plt.subplots((limit_amount+19)/20,20,figsize=(15,0.75*((limit_amount+19)/20)))
@@ -111,7 +131,7 @@ def plotStuff(info, clip, hasContour, contour, movid, limit_lower=0, limit_upper
     show_axis = width <= 5
     depth = int(np.ceil((limit_upper-limit_lower)*1.0/width))
     
-    f, ax = plt.subplots(depth,width,figsize=(15,15/width*depth))
+    f, ax = plt.subplots(depth,width,figsize=(20,20*depth/width))
     
     for i in np.arange(limit_lower, (limit_upper-limit_lower)*gap+limit_lower, gap):
         plt.subplot(depth,width,(i-limit_lower)/gap+1)
@@ -123,10 +143,11 @@ def plotStuff(info, clip, hasContour, contour, movid, limit_lower=0, limit_upper
             if hasContour[i]:
                 cline = contour[i]
                 thisContour = getContour(cline, return_what="Normalized")
-                plt.scatter(thisContour[:,0],thisContour[:,1],s=(5.0/width))
+                plt.scatter(thisContour[:,0],thisContour[:,1],s=(3.0/width),color='red')
                 result, delta, length = FEIF(cline,case=frame_size,return_info=True)
                 #for print X and Y range
                 contX, contY, contW, contH, firstXPoint, padding, binary2 = extractMeta(cline)
+                plt.gca().add_patch(patches.Rectangle((9,9),info[i,1],info[i,2],fill=False,linewidth=1,color='red'))
                 if result:
                     plt.gca().add_patch(patches.Rectangle((0,0),100,100,fill=False,linewidth=50.0/width,color='red'))
                 else:

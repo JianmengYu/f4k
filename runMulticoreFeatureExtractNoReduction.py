@@ -12,7 +12,7 @@ import gc
 import multiprocessing
 
 #HOSTS=basso,battaglin,belloni,bergamaschi,berrendero,bertoglio,berzin,binda
-#mpiexec -n 16 -host $HOSTS python ~/f4k/runMulticoreFeatureExtract.py
+#mpiexec -n 2 -host $HOSTS python ~/f4k/runMulticoreFeatureExtractWithoutNoReduction.py
 
 
 class MyApp(object):
@@ -49,8 +49,8 @@ class MyApp(object):
         #e: 347142-372011
         #f: 372011-396901
         
-        start = 148701
-        end = 173761
+        start = 30598
+        end = 30695
         
         #Put longer task at start.
         if end == 396901:
@@ -64,7 +64,7 @@ class MyApp(object):
         
         for i in np.arange(start,end)[order]:
             
-            if earlyRemoval(movs[i], movs_length[i]):
+            if False and earlyRemoval(movs[i], movs_length[i]):
                 idee = movs[i][0]
                 savepath = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/features/{0}/{1}/{2}"
                 savepath = savepath.format(idee[0],idee[0:2],idee)
@@ -187,16 +187,10 @@ def do_actual_work(self, data, q):
                     print("Slave {0} failed! Job folder can't be removed!".format(name))
             q.put([True, "FAILED", movid])
             return
-
-    #FEIF
-    if movid[2] == "1":frame_size = "640x480"
-    else:frame_size = "320x240"
-        
+    
     feif_result = np.zeros(frames, dtype=bool)
     for i in range(frames):
-        if hasContour[i]:
-            if not FEIF(contour[i], frame_size, matt_mode=True):
-                feif_result[i] = True
+        feif_result[i] = True
 
     if np.sum(feif_result) == 0:
         #Skipping stuff

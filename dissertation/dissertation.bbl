@@ -15,8 +15,13 @@ Qiqi Yu.
 \newblock Adding temporal constraints to a large data cleaning problem.
 \newblock Msc dissertation, The University of Edinburgh, 2016.
 
+\bibitem{L5}
+luca-s: mpi-master-slave github repository.
+\newblock \url{https://github.com/luca-s/mpi-master-slave}.
+\newblock Accessed: 2018-01-18.
+
 \bibitem{L3}
-Introduction to hadoop image processing interface (hipi).
+Introduction to hadoop image processing interface {(HIPI)}.
 \newblock \url{http://hipi.cs.virginia.edu/}.
 \newblock Accessed: 2018-01-15.
 

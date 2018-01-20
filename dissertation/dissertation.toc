@@ -3,34 +3,35 @@
 \contentsline {section}{\numberline {1.2}Fish4Knowledge Data Set}{1}
 \contentsline {section}{\numberline {1.3}Classification Schema}{2}
 \contentsline {section}{\numberline {1.4}Pipeline Classifier}{4}
-\contentsline {chapter}{\numberline {2}Background}{5}
-\contentsline {section}{\numberline {2.1}Big Data}{5}
-\contentsline {section}{\numberline {2.2}Translation from MATLAB to Python}{5}
-\contentsline {section}{\numberline {2.3}Message Passing Interface for Python (MPI4PY)}{7}
-\contentsline {section}{\numberline {2.4}CPU Hogging and Memory Thrashing Prevention}{8}
-\contentsline {section}{\numberline {2.5}Error Recovery and Progress Record}{8}
-\contentsline {chapter}{\numberline {3}Data Source}{9}
-\contentsline {section}{\numberline {3.1}Extracted Images}{9}
-\contentsline {section}{\numberline {3.2}SQL dump file}{10}
-\contentsline {subsection}{\numberline {3.2.1}Standard Stream based Extraction Script}{11}
-\contentsline {subsection}{\numberline {3.2.2}Translation of Binary Data}{11}
-\contentsline {section}{\numberline {3.3}Ground Truthing Dataset}{12}
-\contentsline {chapter}{\numberline {4}Preprocessing}{13}
-\contentsline {section}{\numberline {4.1}Early Video Removal}{13}
-\contentsline {section}{\numberline {4.2}Frame Edge Indicator Function (FEIF)}{14}
-\contentsline {section}{\numberline {4.3}Feature Extraction}{15}
-\contentsline {subsection}{\numberline {4.3.1}Matthew's Feature}{16}
-\contentsline {subsection}{\numberline {4.3.2}F4K Feature}{16}
-\contentsline {subsection}{\numberline {4.3.3}PCA Analysis}{16}
-\contentsline {section}{\numberline {4.4}Image Processing For CNN}{16}
-\contentsline {chapter}{\numberline {5}Classification}{17}
-\contentsline {section}{\numberline {5.1}Support Vector Machines (SVM)}{17}
-\contentsline {section}{\numberline {5.2}Convolutional Neural Networks (CNN)}{17}
-\contentsline {section}{\numberline {5.3}Evaluation}{17}
-\contentsline {section}{\numberline {5.4}Potential Candidate of classifiers}{17}
-\contentsline {chapter}{\numberline {6}Conclusion}{19}
-\contentsline {section}{\numberline {6.1}Results}{19}
-\contentsline {section}{\numberline {6.2}Future Work}{19}
-\contentsline {section}{\numberline {6.3}Final Words}{19}
-\contentsline {chapter}{Bibliography}{21}
-\contentsline {chapter}{\numberline {A}Sample of Lengthy Videos}{23}
+\contentsline {section}{\numberline {1.5}Contribution}{5}
+\contentsline {chapter}{\numberline {2}Background}{7}
+\contentsline {section}{\numberline {2.1}Big Data}{7}
+\contentsline {section}{\numberline {2.2}Translation from MATLAB to Python}{7}
+\contentsline {section}{\numberline {2.3}Message Passing Interface for Python (MPI4PY)}{9}
+\contentsline {section}{\numberline {2.4}CPU Hogging and Memory Thrashing Prevention}{9}
+\contentsline {section}{\numberline {2.5}Error Recovery and Progress Record}{10}
+\contentsline {chapter}{\numberline {3}Data Source}{13}
+\contentsline {section}{\numberline {3.1}Extracted Images}{13}
+\contentsline {section}{\numberline {3.2}SQL dump file}{14}
+\contentsline {subsection}{\numberline {3.2.1}Standard Stream based Extraction Script}{15}
+\contentsline {subsection}{\numberline {3.2.2}Translation of Binary Data}{15}
+\contentsline {section}{\numberline {3.3}Ground Truthing Dataset}{16}
+\contentsline {chapter}{\numberline {4}Preprocessing}{17}
+\contentsline {section}{\numberline {4.1}Early Video Removal}{17}
+\contentsline {section}{\numberline {4.2}Frame Edge Indicator Function (FEIF)}{19}
+\contentsline {section}{\numberline {4.3}Feature Extraction}{19}
+\contentsline {subsection}{\numberline {4.3.1}Matthew's Feature}{20}
+\contentsline {subsection}{\numberline {4.3.2}F4K Feature}{20}
+\contentsline {subsection}{\numberline {4.3.3}PCA Analysis}{20}
+\contentsline {section}{\numberline {4.4}Image Processing For CNN}{20}
+\contentsline {chapter}{\numberline {5}Classification}{21}
+\contentsline {section}{\numberline {5.1}Support Vector Machines (SVM)}{21}
+\contentsline {section}{\numberline {5.2}Convolutional Neural Networks (CNN)}{21}
+\contentsline {section}{\numberline {5.3}Evaluation}{21}
+\contentsline {section}{\numberline {5.4}Potential Candidate of classifiers}{21}
+\contentsline {chapter}{\numberline {6}Conclusion}{23}
+\contentsline {section}{\numberline {6.1}Results}{23}
+\contentsline {section}{\numberline {6.2}Future Work}{23}
+\contentsline {section}{\numberline {6.3}Final Words}{23}
+\contentsline {chapter}{Bibliography}{25}
+\contentsline {chapter}{\numberline {A}Sample of Lengthy Videos}{27}

@@ -16,7 +16,7 @@
 \pagenumbering{roman}
 This project applies the decision algorithm\cite{P1} developed by Matt Pugh in 2015 on a massive parallel scale, to remove the large amount of False Positive fish detections in the Fish4Knowledge (F4K) dataset\cite{P2}, without losing too many True Positives.
 
-Also, according to Qiqi Yu's assessed runtime\cite{P3}, the cleaning process will take more than 1000 days to complete on a 40-core machine. Simply putting the process onto parallel scale will not be sufficient, optimization of the code is also essential for making the processing more feasible.
+Also, according to Qiqi Yu's estimated runtime\cite{P3}, the cleaning process will take more than 1000 days to complete on a 40-core machine. Simply putting the process onto parallel scale will not be sufficient, optimization of the code is also essential for making the processing more feasible.
 
 This document describes the detail of various approach to reduce unnecessary work during pre-processing, improve the cleaning algorithm, and evaluating efficiency of different implementations of the machine learning techniques used. A more detailed roadmap this project is provided in the Chapter 1.
 
@@ -47,15 +47,15 @@ This project applies the previous work of Matthew Pugh\cite{P1} and Qiqi Yu\cite
 
 \section{Document Structure}
 
-Chapter 2 discussed some concept, designs used and the previous work of the project.
+\textbf{Chapter 2} discussed some concept, designs used and the previous work of the project.
 
-Chapter 3 described the details of the data sources, storage and preprocessing used in the cleaning algorithm.
+\textbf{Chapter 3} described the details of the data sources, storage and preprocessing used in the cleaning algorithm.
 
-Chapter 4 describes the first stages of the cleaning: early detection removal, feature extraction, preprocessing for classification in the next stage.
+\textbf{Chapter 4} describes the first stages of the cleaning: early detection removal, feature extraction, preprocessing for classification in the next stage.
 
-Chapter 5 discusses the final classifiers used in the cleaning, with evaluation of the results and comparison between different algorithms. 
+\textbf{Chapter 5} discusses the final classifiers used in the cleaning, with evaluation of the results and comparison between different algorithms. 
 
-Chapter 6 contains the conclusions and possible future work needed for the project.
+\textbf{Chapter 6} contains the conclusions and possible future work needed for the project.
 
 \section{Fish4Knowledge Data Set}
 
@@ -133,10 +133,10 @@ To further reduce the cost of cleaning, and attempt of translating the pipeline 
 Before sending the data into the classifiers, preprocessing is needed to give a more sensible result, which is the slowest part of the pipeline after removing SQL server. 
 In Matt's thesis, a Frame Edge Indicator Function (FEIF) is used to directly reduce the amount of frames need to classify, after improvements and new addition in Chapter \ref{sec:prepro}, cleans out about 20\% of the detection.
 
-After extracting and reducing features, they are fed into 3 Convolutional Neural Networks (CNNs) and 10 Support Vector Machines (SVMs), then applying them a top N algorithm is used to produce final result. This part is mostly trivial since the classifiers are already trained by Matt. Some further evaluation about other potential classifiers are in Chapter 5.
+After extracting and reducing features, they are fed into 3 Convolutional Neural Networks (CNNs) and 10 Support Vector Machines (SVMs), then applying them a top N algorithm is used to produce final result. 
+This part is mostly trivial since the classifiers are already trained by Matt. Some further evaluation about other potential classifiers are in Chapter 5.
 
 Figure \ref{fig:pipeline} below is a diagram of the work flow of the pipeline classifier:
-
 
 \begin{figure}[!b]
     \centering
@@ -145,8 +145,28 @@ Figure \ref{fig:pipeline} below is a diagram of the work flow of the pipeline cl
     \label{fig:pipeline}
 \end{figure}
 
-\chapter{Background}
+\section{Contribution}
 
+%TODO finish it.
+During this project, the parallel task distribution programme is based on a public GitHub repository - mpi master slave - created by user "luca-s"\cite{L5}, minor changes were made to the work queue and protocol for crash recovery.
+
+Data extraction pipeline written in Python was created to partition, extract, and parse the raw SQL file to comma separated values.
+Functions necessary for extraction and ones needed for visualization are written into two small libraries. 
+
+(TODO) Cleaned ground truthing dataset, as previous Matt and Qiqi seems to use different criteria for cleaning.
+
+The pipeline classifier is re-written in Python, unfinished part of the original pipeline is implemented, some completed components in the pipeline like Matt's feature extraction metrics and algorithms were translated.
+
+F4K project's feature extraction MATLAB code is untranslated, and is called within Python using PyMatlab library. One edge extraction algorithm were replaced and error handling were added to one of the unstable {\tt getCstd()} function. 
+
+The classification step will use Matthew's trained SVM and CNN. (TODO) Since the ground truthing dataset isn't correct and complete, re-training might be needed.
+
+(TODO) Ask bob if reconstruct of the SQL and video is needed, some of the FEIF rejected image still seems to be useful.
+
+
+
+
+\chapter{Background}
 
 \section{Big Data}
 
@@ -170,22 +190,23 @@ For example, the Gabor Filter used by both Huang and Matthew, are written by Ahm
 
 Full translation could take a few weeks for the F4K feature, also because of the cleaning algorithm only need to run once, expected increase in performance need to be calculated to figure out which approach is faster. After time recording on various part of the algorithm, it's identified one of the slowest operation is 2D convolution.
 
-Figure \ref{fig:benchmark} below are test result of different 2D convolve algorithm. Where 2000 random 100x100 array is generated to simulate images used, and 5 random 5x5 filter is used, simulating both Gabor Filter and CNN used in the pipeline. By enforcing the maximum computational thread to 1, the result shows that 2 algorithm in Python is faster than MATLAB.
+\begin{figure}[!t]
+    \centering
+    \includegraphics[scale=0.5]{graph/benchmark.png}
+    \caption{Test runtime of different 2D convolve algorithms.}
+    \label{fig:benchmark}
+\end{figure}
+
+Figure \ref{fig:benchmark} shows the test result of various 2D convolve algorithm. During the test, 2000 random 100x100 array is generated to simulate images used, and 5 random 5x5 filter is used, simulating both Gabor Filter and CNN used in the pipeline. By enforcing the maximum computational thread to 1, the result shows that only 2 of the chosen algorithms in Python is faster than MATLAB.
 \begin{itemize}
 \item
-TensorFlow's conv2d, while faster than all other library, it has a significantly high memory usage due to the tensor data type, potentially causing thrashing on machines.
+TensorFlow's conv2d, while faster than all other library, it has a significantly high memory usage due to the tensor data type, potentially causing thrashing on machines. Also because of the high initialization time cost, it can't be used for each frame individually.
 \item
 Scipy.NDImage's convolve, giving almost same performance as MATLAB.
 \end{itemize}
 
 After above analysis, it's clear that re-engineering the MATLAB code is likely to spend more time, so a library called PyMatlab will be used to compute the F4K features in a MATLAB session instead, while other unfinished part of the pipeline will be translated to Python.
 
-\begin{figure}[!b]
-    \centering
-    \includegraphics[scale=0.5]{graph/benchmark.png}
-    \caption{Test runtime of different 2D convolve algorithms.}
-    \label{fig:benchmark}
-\end{figure}
 
 \section{Message Passing Interface for Python (MPI4PY)}
 
@@ -372,15 +393,16 @@ Videos from NPP-3 site camera 3, at January 2010. These videos are captured at a
 Dynamic background - Videos filled with moving vegetation, or refraction of sunlight. They usually contains lots of good detections.
 \end{itemize}
 
-Using the above patterns, if we remove all the videos recorded in the night, videos with 40,000 or more frames, and video recorded with above characteristics and 20,000 or more frames. About 8\% of the detections can be rejected without need to extract them, saving approximately 200 days of computational time.
-Samples of rejected videos are in Appendix \ref{sec:samplelong}.
-
 \begin{figure}
 \centering
     \includegraphics[scale=0.65]{graph/frame_distribution.png}
     \caption{Log Scale Histogram of Detection Length}
     \label{fig:vidlength}
 \end{figure}
+
+Using the above patterns, if we remove all the videos recorded in the night, videos with 40,000 or more frames, and video recorded with above characteristics and 20,000 or more frames. About 8\% of the detections can be rejected without need to extract them, saving approximately 200 days of computational time.
+Samples of rejected videos are in Appendix \ref{sec:samplelong}.
+
 
 \section{Frame Edge Indicator Function (FEIF)}
 
@@ -412,6 +434,11 @@ Unfortunately after checking the features with PCA, these feature all took signi
 This part of the generated feature consist of 4 parts: Animation Score, Boundary Curvature, Erraticity, and Gabor Filter on edge. This part of the pipeline is translated into Python as the original feature generation script is incomplete. Some inefficient for loops where translated using Numpy library to speed it up.
 
 Animation Score is calculated for one whole track, where 5 frames are pick from the track, and squared sum of the change in pixels is calculated. This part isn't very useful because of the dynamic background of the image.
+
+Boundary Curvature, (TODO) I'm not actually sure how these works but my translated code produce the same result.
+
+Errarticity, similar to animation score, picks 4 frame from a track and
+
 \subsection{F4K Feature}
 
 \subsection{PCA Analysis}

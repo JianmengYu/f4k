@@ -333,6 +333,7 @@ def getMattFeatures(info, clip, hasContour, contour, fish_id, print_info=False, 
                 target = np.append(target,tracklen - 2)
             
             scores = np.zeros(len(target))
+            
             for i, t in enumerate(target):
                 N = info[index[t],1]
                 M = info[index[t],2]
@@ -340,8 +341,9 @@ def getMattFeatures(info, clip, hasContour, contour, fish_id, print_info=False, 
                 sub_f_t = clip[index[t]][S:M+S, S:N+S, :].astype(int)
                 sub_f_tp1 = clip[index[t+1]][S:M+S, S:N+S, :].astype(int)
                 scores[i] =  np.linalg.norm(np.sum(sub_f_t-sub_f_tp1,2,dtype=int)) * Z
-            
+
             animation_score = np.average(scores)
+                
             #print("AS: {0}".format(animation_score))
         for i in index:
             animation_scores[i] = animation_score
@@ -528,6 +530,52 @@ def loadSampleFeatures():
             comb = np.column_stack((f4kfeature, mattfeature[feifmask]))
             features = np.vstack((features,comb))
     return features
+
+def loadTrainDataSet():
+    movs = loadMovids()
+    movs_length = loadLengths()
+    idl = np.hstack((np.arange(30598,30633),np.arange(30634,30638)))
+    location = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/training/features/"
+    start = True
+    for i in idl:
+        idee = movs[i][0]
+        pca_feature = np.load(location+idee+".pcaFeature.npy")
+        try:
+            gts = loadGT(idee, movs_length[i], partial=True)
+        except:
+            gts = loadGT(idee, movs_length[i], partial=False)
+        if start:
+            features = pca_feature
+            targets = gts
+            start = False
+        features = np.vstack((features,pca_feature))
+        targets = np.hstack((targets,gts))
+    mask = targets != 0
+    features = features[mask]
+    targets = targets[mask]
+    return (features,targets)
+
+def loadGT(video_id, length, partial=False):
+    path = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/training/targets/"+video_id+".f4kgt"
+    if partial: path+=".partial"
+    with open(path) as f:
+        line = f.readlines()
+        line = line[0][1:-1]
+        tags = line.split(",")
+        gts = [None] * length
+        for t in tags:
+            try:
+                left, right = t.split(":",1)
+                left = int(left.strip()[1:-1])-1
+                right = int(right.strip())
+                if right == 0:right=10
+                gts[left] = right
+            except Exception as e:
+                print(t)
+                print(e)
+    gts = np.array(gts)
+    gts[gts == None] = 0
+    return gts
 
 def loadMovids():
     path = '/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/movie_ids_info.txt'
