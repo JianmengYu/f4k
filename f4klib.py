@@ -531,10 +531,73 @@ def loadSampleFeatures():
             features = np.vstack((features,comb))
     return features
 
-def loadTrainDataSet():
+def loadNewGT(movid, frames):
+    location = "/afs/inf.ed.ac.uk/user/s14/s1413557/f4k/newgt/"
+    path = location + movid
+    
+    gts = [None] * frames
+    string = ""
+    
+    with open(path) as f:
+        line = f.readlines()
+        for l in line:
+            string += l.strip()
+            
+    for i in range(len(string)):
+        gts[i] = int(string[i])
+        if string[i] == "0": gts[i]=10
+    
+    return gts
+
+def loadExtraTrainingSet(filta=None):
+    movs = loadMovids()
+    movs_length = loadLengths()
+    
+    forty = np.array([112,180,272,285,330,447, 469, 474,498,500,517,527,545,550,622])
+    fortyone = np.array([10, 33, 75, 82, 101, 114, 182, 183, 275, 279, 282, 291, 306, 325, 338, 380, 420, 424])
+
+    idl = np.hstack((forty,fortyone))
+    
+    if filta=="40":
+        idl = forty
+    if filta=="41":
+        idl = fortyone
+    
+    location = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/training/features/"
+    start = True
+    
+    for i in idl:
+        idee = movs[i][0]
+        pca_feature = np.load(location+idee+".pcaFeature.npy")
+        gts = loadNewGT(idee, movs_length[i])
+        gts = np.array(gts)
+        mask = gts != None
+        
+        pca_feature = pca_feature[mask]
+        gts = gts[mask]
+            
+        if start:
+            features = pca_feature
+            targets = gts
+            start = False
+        else:
+            features = np.vstack((features,pca_feature))
+            targets = np.hstack((targets,gts))
+        
+    mask = targets != 0
+    features = features[mask]
+    targets = targets[mask]
+    return (features,targets)
+
+def loadTrainDataSet(includeNew=False, filta=None):
     movs = loadMovids()
     movs_length = loadLengths()
     idl = np.hstack((np.arange(30598,30633),np.arange(30634,30638)))
+    
+    if filta!=None:
+        mask = movs[idl][:,1]==filta
+        idl = idl[mask]
+    
     location = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/training/features/"
     start = True
     for i in idl:
@@ -544,15 +607,27 @@ def loadTrainDataSet():
             gts = loadGT(idee, movs_length[i], partial=True)
         except:
             gts = loadGT(idee, movs_length[i], partial=False)
+        
         if start:
             features = pca_feature
             targets = gts
             start = False
-        features = np.vstack((features,pca_feature))
-        targets = np.hstack((targets,gts))
+        else:
+            features = np.vstack((features,pca_feature))
+            targets = np.hstack((targets,gts))
+            
     mask = targets != 0
     features = features[mask]
     targets = targets[mask]
+    
+    if includeNew:
+        if filta!="40" and filta!="41" and filta!=None:
+            return (features,targets)
+        features2, targets2 = loadExtraTrainingSet(filta=filta)
+        mask = targets2!=None
+        features = np.vstack((features,features2[mask]))
+        targets = np.hstack((targets,targets2[mask]))
+    
     return (features,targets)
 
 def loadGT(video_id, length, partial=False):

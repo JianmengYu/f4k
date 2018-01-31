@@ -12,7 +12,7 @@ import gc
 import multiprocessing
 
 #HOSTS=basso,battaglin,belloni,bergamaschi,berrendero,bertoglio,berzin,binda
-#mpiexec -n 2 -host $HOSTS python ~/f4k/runMulticoreFeatureExtractWithoutNoReduction.py
+#mpiexec -n 11 -host $HOSTS python ~/f4k/runMulticoreFeatureExtractNoReduction.py
 
 
 class MyApp(object):
@@ -62,7 +62,11 @@ class MyApp(object):
         totWork = 0#end - start
         completed = 0
         
-        for i in np.arange(start,end)[order]:
+        #for i in np.arange(start,end)[order]:
+        
+        forty = [112,180,272,285,330,447,469,474,498,500,517,527,545,550,622]
+        fortyone = [10, 33, 75, 82, 101, 114, 182, 183, 275, 279, 282, 291, 306, 325, 338, 380, 420, 424]
+        for i in fortyone:
             
             if False and earlyRemoval(movs[i], movs_length[i]):
                 idee = movs[i][0]

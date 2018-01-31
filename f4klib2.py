@@ -117,7 +117,7 @@ def plotContourOnImage(info, clip, hasContour, contour, picker, debug=False):
 
         plt.show()
         
-def plotStuff(info, clip, hasContour, contour, movid, limit_lower=0, limit_upper=20, width=5, gap=1, classify=False):
+def plotStuff(info, clip, hasContour, contour, movid, limit_lower=0, limit_upper=20, width=5, gap=1,classify=False,gt=[]):
     
     if movid[2] == "1":
         frame_size = "640x480"
@@ -132,6 +132,8 @@ def plotStuff(info, clip, hasContour, contour, movid, limit_lower=0, limit_upper
     depth = int(np.ceil((limit_upper-limit_lower)*1.0/width))
     
     f, ax = plt.subplots(depth,width,figsize=(20,20*depth/width))
+    
+    mark = len(gt) == len(hasContour)
     
     for i in np.arange(limit_lower, (limit_upper-limit_lower)*gap+limit_lower, gap):
         plt.subplot(depth,width,(i-limit_lower)/gap+1)
@@ -156,6 +158,8 @@ def plotStuff(info, clip, hasContour, contour, movid, limit_lower=0, limit_upper
                     plt.gca().set_xlabel("{0},{1},{2},{3:.0f}%\nX:{4}-{5} Y:{6}-{7}"
                                      .format(info[i,0],length,delta,delta/(length*0.01),
                                             contX,contX+contW,contY,contY+contH))
+                if mark:
+                    plt.gca().set_xlabel("GT marked {0}".format(gt[i]))
             else:
                 plt.gca().add_patch(patches.Rectangle((0,0),100,100,fill=False,linewidth=50.0/width,color='yellow'))
                 if show_axis:

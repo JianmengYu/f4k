@@ -49,12 +49,12 @@ class MyApp(object):
         #e: 347142-372011
         #f: 372011-396901
         
-        start = 148701
-        end = 173761
+        start = 372011
+        end = 396901
         
         #Put longer task at start.
         if end == 396901:
-            order = np.argsort(np.append(movs_length[372011:396901-1],(movs_length[-1])))
+            order = np.argsort(movs_length[372011:])
         else:
             order = np.argsort(movs_length[start:end])
         
@@ -169,20 +169,29 @@ def do_actual_work(self, data, q):
         try:
             session = pymatlab.session_factory('matlab -nodisplay')
             session.run('cd /afs/inf.ed.ac.uk/user/s14/s1413557/f4k-2017-msc-master/matt-msc/workspace/f4k/fish_recog')
+            jobloc = "'/afs/inf.ed.ac.uk/user/s14/s1413557/.matlab/" + name.strip() + "/'"
+            
+            #I hate matlab
+            session.run("pc = parcluster('local')")
+            session.run("mkdir('/afs/inf.ed.ac.uk/user/s14/s1413557/.matlab/','" + name.strip() + "')")
+            session.run(("pc.JobStorageLocation = " + jobloc))
+            session.run("parpool(pc, 4)")
+
+            
             #ASHBURY CRASHES A LOT WHEN USING 40 POOLS, HES NOT SO GREAT AFTERALL
             if name[:7] == "ashbury":
                 #Our HERO, MAGNIFICENT and MOST EDUCATIONAL sir ASHBURY, CLUSTER with FOURTY EXTRAVAGANZA PROCESSORS.
                 #print("ACTIVATE SPELL CARD: POOL40!")
-                session.run("pc = parcluster('local');")
-                session.run('pc.NumWorkers = 40;')
-                session.run('parpool(40);')
+                #session.run("pc = parcluster('local');")
+                #session.run('pc.NumWorkers = 40;')
+                session.run('parpool(pc, 40);')
                 #I hope people working on it wont hate me.
         except Exception:
             print("Slave {0} failed! On Task {1}! initializing MATLAB".format(name, idee))
-            if name[:7] == "ashbury":
+            if True or name[:7] == "ashbury":
                 try:
                     #This folder fuck things up
-                    shutil.rmtree("/afs/inf.ed.ac.uk/user/s14/s1413557/.matlab/local_cluster_jobs/")
+                    shutil.rmtree("/afs/inf.ed.ac.uk/user/s14/s1413557/.matlab/" + name.strip() + "/")
                 except Exception:
                     print("Slave {0} failed! Job folder can't be removed!".format(name))
             q.put([True, "FAILED", movid])
