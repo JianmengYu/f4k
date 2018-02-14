@@ -531,8 +531,10 @@ def loadSampleFeatures():
             features = np.vstack((features,comb))
     return features
 
-def loadNewGT(movid, frames):
+def loadNewGT(movid, frames, validation=False):
     location = "/afs/inf.ed.ac.uk/user/s14/s1413557/f4k/newgt/"
+    if validation:
+        location = "/afs/inf.ed.ac.uk/user/s14/s1413557/f4k/newgt/validation/"
     path = location + movid
     
     gts = [None] * frames
@@ -549,12 +551,63 @@ def loadNewGT(movid, frames):
     
     return gts
 
+def loadValidationSet(filta=None):
+    movs = loadMovids()
+    movs_length = loadLengths()
+    
+    idl = np.array([396853,396857,396859,396860,396866,396876,396880,396892,396895,396900,
+                    396823,396829,396843,396852,396862,396870,396882,396885,396889,396894,
+                    396856,396863,396864,396868,396869,396893,396896,396897,396898,396899,
+                    396624,396639,396662,396675,396728,396737,396759,396777,396790,396804,
+                    396750,396760,396767,396784,396792,396793,396872,396877,396878,396886,
+                    396824,396836,396839,396854,396858,396861,396865,396871,396874,396884,
+                    396720,396733,396778,396815,396820,396827,396830,396834,396879,396890,
+                    396840,396841,396845,396849,396850,396851,396867,396883,396887,396891,
+                    396785,396802,396811,396822,396838,396844,396873,396875,396881,396888])
+    
+    location = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/training/features/"
+    start = True
+    
+    for i in idl:
+        idee = movs[i][0]
+        pca_feature = np.load(location+idee+".pcaFeature.npy")
+        gts = loadNewGT(idee, movs_length[i])
+        gts = np.array(gts)
+        mask = gts != None
+        
+        pca_feature = pca_feature[mask]
+        gts = gts[mask]
+            
+        if start:
+            features = pca_feature
+            targets = gts
+            start = False
+        else:
+            features = np.vstack((features,pca_feature))
+            targets = np.hstack((targets,gts))
+        
+    mask = targets != 0
+    features = features[mask]
+    targets = targets[mask]
+    return (features,targets)
+
 def loadExtraTrainingSet(filta=None):
     movs = loadMovids()
     movs_length = loadLengths()
     
-    forty = np.array([112,180,272,285,330,447, 469, 474,498,500,517,527,545,550,622])
-    fortyone = np.array([10, 33, 75, 82, 101, 114, 182, 183, 275, 279, 282, 291, 306, 325, 338, 380, 420, 424])
+    
+    forty = np.array([112,180,272,285,330,       447,469,474,498,500,
+                      517,527,545,550,622,       661,713,720,749,771,
+                      779,806,807,902,959,       970,982,1038,1042,1068,
+                      1085,1100,1111,1114,1116,  1136,1147,1155,1211,1258,
+                      1306,1373,1379,1409,1432,  1505])
+    fortyone = np.array([10,33,75,82,101,           114,182,183,275,279,
+                         282,291,306,325,338,       380,420,424,449,482,
+                        490,518,560,579,593,        616,652,657,685,695,
+                        701,737,740,793,803,        811,834,843,844,858,
+                        868,923,931,955,966,        1029,1030,1156,1160,1187, 
+                        1193,1223,1241,1278,1279,   1281,1323,1356,1361,1366,
+                        1378,1413,1428,1491,1493,   1513,1530,1535])
 
     idl = np.hstack((forty,fortyone))
     

@@ -23,17 +23,17 @@ Tags = IntEnum('Tags', 'READY START DONE EXIT')
 folds = 10
 
 gammas = 1
-#ls = np.logspace(-2,0,gammas)
+#ls = np.logspace(-3,2,gammas)
 #ls = np.linspace(0.1,0.3,gammas)
-ls = np.linspace(0.1,0.1,gammas)
+ls = np.linspace(0.2,0.2,gammas)
 
 cs = 1
 #ls2 = np.logspace(-2,3,cs) #High C -> hours of train time.
 #ls2 = np.linspace(2,20,cs)
-ls2 = np.linspace(10,10,cs)
+ls2 = np.linspace(50,50,cs)
 
-pcs = 11
-ls3 = np.linspace(30,40,pcs)
+pcs = 50
+ls3 = np.linspace(1,50,pcs)
 
 
 class MyApp(object):
@@ -94,7 +94,7 @@ class MySlave(Slave):
         
         super(MySlave, self).__init__()
         self.features, self.targets = loadTrainDataSet()
-        self.X = self.features[:,:30]
+        self.X = self.features[:,:]
         self.y = self.targets[:].astype('int') 
            
     def run(self):

@@ -1,0 +1,119 @@
+\documentclass{beamer}[fullspacing]
+\usetheme{Ilmenau}
+\usepackage{hyperref}
+
+\parskip=6pt
+\itemindent=0pt
+\listparindent=0pt
+
+\begin{document}
+
+\title{Parallel Massive Dataset Cleaning}
+\author{Jianmeng Yu}
+\institute{Supervised by: Bob Fisher}
+\date{}
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+\begin{frame}
+\tableofcontents
+\end{frame}
+
+
+\section{Project Recap}
+
+\begin{frame}
+\frametitle{Project Recap}
+
+\begin{itemize}
+\item What is the project about?
+\begin{itemize}
+\item Translate the existing decision algorithms into Python.
+\item Develop a framework to apply the algorithm at a massive parallel scale.
+\item Running the cleaning algorithm and reconstruct the video files.
+\end{itemize}
+\item Why parallel?
+\begin{itemize}
+\item The original code would take about 25,000 hours on a 40-core machine to finish.
+\item There are about 839,000,000 frames in 396,000 video clips.
+\item And 1,446,000,000 records in a 500 GB .sql file.
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\section{Current Progress}
+\subsection{Code Translation}
+
+\begin{frame}
+\frametitle{Current Progress - Code Translation}
+
+One of the original goal of the project is to translate the Pipeline Classifier developed by Matthew Pugh, from Matlab to Python.
+
+This Pipeline classifier is still at experiment stage, it's not assembled together, but all of the component is implemented.
+
+\begin{itemize}
+\item What's the translation progress?
+\begin{itemize}
+\item Most of the component is rewritten with Python.
+\item Feature Extraction in Matlab was called using PyMatlab library.
+\item Neural Network written in Lua Torch was called using Lutorpy library.
+\end{itemize}
+\item Why using a bridge on these part instead of translating?
+\begin{itemize}
+\item Some part of the code were customized and was not documented.
+\item Estimated time cost of translating the code is larger than the time it could reduce.
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\subsection{Cleaning Progress}
+\begin{frame}
+\frametitle{Current Progress - Applying Cleaning Algorithm}
+The task distribution is implemented using MPI (message passing interface). Some minor fixes were made to the framework created last semester, to prevent thrashing on DICE machines.
+
+Due to usage of the lab during day, the cleaning algorithm is only running during night, on about 200 DICE machines in Appleton Tower. 
+
+It took about 20 days for the most costly feature extraction part to finish. The only remaining part of the pipeline is classification using SVM and CNN, which would take about a week to finish.
+
+\end{frame}
+
+
+\section{Future Work}
+\subsection{Finish the Cleaning Algorithm}
+\begin{frame}
+\frametitle{Future Work - Finishing Cleaning Algorithm}
+After finishing the classification, the only part left would be combining the results to generate a decision vector of each video. 
+
+Since the Pipeline Classifier is only at experiment stage, the final combine stage used is not decided. Some evaluation on the classification results may be needed to produce the final result.
+
+Also, the training data used is heavily biased, if the outcome of the algorithm have a poor accuracy on unseen dataset, re-training might be needed.
+
+If the classification is producing sensible results, then the videos will be reconstructed to a smaller set.
+
+\end{frame}
+
+\subsection{Schedule}
+\begin{frame}
+\frametitle{Future Work - Scheduling}
+\begin{itemize}
+\item What's the plan in week 5-11?
+	\begin{itemize}
+	\item Week 5-6: Finish the remaining cleaning, write coursework and dissertation while waiting the code to finish.
+	\item Week 7-11: Evaluate the cleanness of the algorithm, Finish the dissertation. Reconstruct the videos.
+	\end{itemize}
+	
+\item What if the algorithm perform poorly on unseen data?
+	\begin{itemize}
+	\item Create new Ground Truth Dataset.
+	\item Experiment on different classifiers.
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\end{document}

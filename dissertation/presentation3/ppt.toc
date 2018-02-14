@@ -1,0 +1,7 @@
+\beamer@sectionintoc {1}{Project Recap}{3}{0}{1}
+\beamer@sectionintoc {2}{Current Progress}{4}{0}{2}
+\beamer@subsectionintoc {2}{1}{Code Translation}{4}{0}{2}
+\beamer@subsectionintoc {2}{2}{Cleaning Progress}{5}{0}{2}
+\beamer@sectionintoc {3}{Future Work}{6}{0}{3}
+\beamer@subsectionintoc {3}{1}{Finish the Cleaning Algorithm}{6}{0}{3}
+\beamer@subsectionintoc {3}{2}{Schedule}{7}{0}{3}

@@ -49,8 +49,8 @@ class MyApp(object):
         #e: 347142-372011
         #f: 372011-396901
         
-        start = 30598
-        end = 30695
+        start = 0
+        end = 1584
         
         #Put longer task at start.
         if end == 396901:
@@ -63,10 +63,20 @@ class MyApp(object):
         completed = 0
         
         #for i in np.arange(start,end)[order]:
-        
-        forty = [112,180,272,285,330,447,469,474,498,500,517,527,545,550,622]
-        fortyone = [10, 33, 75, 82, 101, 114, 182, 183, 275, 279, 282, 291, 306, 325, 338, 380, 420, 424]
-        for i in fortyone:
+            
+        idlist = np.array([396853,396857,396859,396860,396866,396876,396880,396892,396895,396900,
+                        396823,396829,396843,396852,396862,396870,396882,396885,396889,396894,
+                        396856,396863,396864,396868,396869,396893,396896,396897,396898,396899,
+                        396624,396639,396662,396675,396728,396737,396759,396777,396790,396804,
+                        396750,396760,396767,396784,396792,396793,396872,396877,396878,396886,
+                        396824,396836,396839,396854,396858,396861,396865,396871,396874,396884,
+                        396720,396733,396778,396815,396820,396827,396830,396834,396879,396890,
+                        396840,396841,396845,396849,396850,396851,396867,396883,396887,396891,
+                        396785,396802,396811,396822,396838,396844,396873,396875,396881,396888])
+        order = np.argsort(movs_length[idlist])
+        #forty = [112,180,272,285,330,447,469,474,498,500,517,527,545,550,622]
+        #fortyone = [10, 33, 75, 82, 101, 114, 182, 183, 275, 279, 282, 291, 306, 325, 338, 380, 420, 424]
+        for i in idlist[order]:
             
             if False and earlyRemoval(movs[i], movs_length[i]):
                 idee = movs[i][0]
@@ -173,22 +183,15 @@ def do_actual_work(self, data, q):
         try:
             session = pymatlab.session_factory('matlab -nodisplay')
             session.run('cd /afs/inf.ed.ac.uk/user/s14/s1413557/f4k-2017-msc-master/matt-msc/workspace/f4k/fish_recog')
-            #ASHBURY CRASHES A LOT WHEN USING 40 POOLS, HES NOT SO GREAT AFTERALL
-            if name[:7] == "ashbury":
-                #Our HERO, MAGNIFICENT and MOST EDUCATIONAL sir ASHBURY, CLUSTER with FOURTY EXTRAVAGANZA PROCESSORS.
-                #print("ACTIVATE SPELL CARD: POOL40!")
-                session.run("pc = parcluster('local');")
-                session.run('pc.NumWorkers = 40;')
-                session.run('parpool(40);')
-                #I hope people working on it wont hate me.
+            jobloc = "'/afs/inf.ed.ac.uk/user/s14/s1413557/.matlab/" + name.strip() + "/'"
+            
+            #I hate matlab
+            session.run("pc = parcluster('local')")
+            session.run("mkdir('/afs/inf.ed.ac.uk/user/s14/s1413557/.matlab/','" + name.strip() + "')")
+            session.run(("pc.JobStorageLocation = " + jobloc))
+            session.run("parpool(pc, 4)")
         except Exception:
             print("Slave {0} failed! On Task {1}! initializing MATLAB".format(name, idee))
-            if name[:7] == "ashbury":
-                try:
-                    #This folder fuck things up
-                    shutil.rmtree("/afs/inf.ed.ac.uk/user/s14/s1413557/.matlab/local_cluster_jobs/")
-                except Exception:
-                    print("Slave {0} failed! Job folder can't be removed!".format(name))
             q.put([True, "FAILED", movid])
             return
     

@@ -1,0 +1,600 @@
+\documentclass[bsc,logo,twoside,fullspacing,parskip]{infthesis}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{appendix}
+\usepackage{listings}
+
+\begin{document}
+
+\title{Parallel Massive Dataset Cleaning}
+\author{Jianmeng Yu}
+\course{Computer Science}
+\project{4th Year Project Report}
+\date{\today}
+
+\abstract{
+\pagenumbering{roman}
+This project applies the decision algorithm\cite{P1} developed by Matthew Pugh on a massive parallel scale. This aims to remove a large amount of False Positive fish detections in the Fish4Knowledge (F4K) dataset\cite{P2}, without losing too many True Positives.
+
+According to Qiqi Yu's estimated runtime\cite{P3}, the cleaning process will take more than 1000 days to complete on a 40-core machine. Simply running the process on a parallel scale will not be sufficient, optimization of the code is also essential for making the processing more feasible.
+
+This document describes the detail of various approach to reduce unnecessary work during pre-processing and improve the cleaning algorithm. In this process, efficiency evaluation for different implementations of the machine learning techniques is used to reduce computational time cost. 
+A more detailed roadmap this project is provided in Chapter 1.
+
+}
+
+\maketitle
+
+\section*{Acknowledgements}
+I would like to thank my project supervisor, Prof. Fisher, for his constant, patient support throughout the year. Without his expert knowledge in the field, it would be impossible for me to navigate through all of the data source and prior work of the Fish4Knowledge project. 
+
+I would also like to thank Mr. Matthew Pugh for spending time answering my questions on the project, and precious advice on the implementation of his algorithms.
+
+I must also extend gratitude to my friends, and my family back in China, for all their help and encouragement during my study.
+
+\newpage
+
+\standarddeclaration
+
+\tableofcontents
+
+
+
+\chapter{Introduction}
+
+\pagenumbering{arabic}
+
+The main goal of this project is to produce a cleaned subset of a 1.6 TB dataset for future research purposes. And the main challenge of the project is to re-engineer the framework used to make it more scalable, hence finish the 800,000-hour task within a reasonable amount of time.
+
+\section{Fish4Knowledge Project (F4K)}
+
+The Fish4Knowledge (F4K) project, funded by EU's Seventh Framework Programme (FP7), studied environmental effects by analysing raw videos and extracting information from it, so researchers could use it for studies without much programming skills. 
+
+The project acquired video data collected by Taiwan Ocean Research Institute. 
+They set up 9 cameras in different coral reef areas in Taiwan such as Nanwan National Park (NPP-3), Lanyu, and Houbi Lake (HoBiHu). 
+After 5 years of recording, the project collected about 524,000 10-minute video clips, with a total size of 91 TB, and approximately 1.4 billion fish detection found in the videos, we call this the F4K Original Data Set (FDS).
+
+%TODO ask Bob who extracted these.
+Attempting to reduce the dataset, the F4K project developed and applied a species recognition algorithm. 
+This algorithm extracts all detections as 100x100 RGB images and their description files, reducing the dataset to approximately 839 million detections, having a combined size of 1.6 TB
+This dataset is called Reduced FDS (RDS), a more detailed composition of these files are described in Chapter \ref{sec:datasource}.
+
+\section{Project Motivation}
+
+In 2015, Pugh\cite{P1} developed a cleaning algorithm for RDS, which would approximately remove 90\% of the False Positives (objects that are not fish, recognized as fish), while only losing about 8\% of True Positives (true fish detections). 
+
+However, due to lack of time and resource, the cleaning was not used on the dataset.
+In 2016, Yu\cite{P3} attempted to add voting constraints on the cleaning algorithm, and evaluated the time cost of the algorithm.
+The cleaning wasn't applied because the constraint could not improve much to the efficiency of cleaning.
+
+It is evaluated cleaning a 1,000 detection video on a 40-core machine would take 200 seconds.
+This gives a 8 second per frame per core (8 {\tt s/fc}), with the available 200 4-core machines in student labs, 1 {\tt s/fc} would result in 12 days of computational time.
+
+\section{Contribution}
+
+After translation and modification on the algorithm used, the project managed to improve the efficiency to about 0.5-0.8 {\tt s/fc}. Distributes and completes the aforementioned cleaning algorithm.
+
+%TODO finish it.
+During this project, the parallel task distribution programme is based on a public GitHub repository "mpi-master-slave" created by user "luca-s"\cite{L5}, minor changes were made to the work queue and protocol for thrashing prevention and crash recovery.
+
+Data extraction pipeline written in Python was created to partition, extract, and parse the raw SQL dump file to comma separated values stored in plain text files. 
+
+(TODO?) Clean the ground truthing dataset, as previous Matt and Qiqi seems to use different criteria for cleaning.
+
+The pipeline classifier is also re-written in Python, unfinished part of the original pipeline is implemented. 
+Due to the removal of the SQL server in the pipeline, the extraction and visualization MATLAB scripts created by Matthew are re-engineered into Python functions. 
+Some metrics algorithms used is translated from MATLAB for loops to Numpy/Scipy operations to increase efficiency.
+
+F4K project's feature extraction MATLAB code is untranslated and is called within Python using PyMatlab library. Some minor changes like replacing edge extraction algorithm used, and error handling added to one of the unstable {\tt getCstd()} function. 
+
+The classification step will use Matthew's trained SVM and CNN. (TODO) Re-train the SVM because change to PCA.
+
+(TODO) Possible reconstruction of the SQL and video is needed? Some of the FEIF rejected images still seems to be useful.
+
+\section{Document Structure}
+
+\textbf{Chapter 2} discusses the concepts, designs used and more detailed previous works of the project. 
+
+\textbf{Chapter 3} described the details of the data sources, storage and preprocessing used in the cleaning algorithm.
+
+\textbf{Chapter 4} describes the first stages of the cleaning: early detection removal, feature extraction, preprocessing for classification in the next stage.
+
+\textbf{Chapter 5} discusses the final classifiers used in the cleaning, with evaluation of the results and comparison between different algorithms. 
+
+\textbf{Chapter 6} talks about the task distribution system used in this project, and some of the difficulties and solutions.
+
+\textbf{Chapter 7} contains the conclusions and possible future work needed for the project.
+\newpage
+
+\chapter{Backgrounds}
+
+\section{Big Data}
+
+Big data is one of the hottest trending topics recently, where the amount of the data generated is not possible to be manually analysed. 
+Different to the popular text stream analysing, the project is more focused on image processing of a large collection. 
+There are already some image processing libraries with work distribution framework, for example: Hadoop Image Processing Interface\cite{L3}, Apache Spark based 4Quant\cite{L4}, and other toolkits for parallelization.
+
+Due to the limit of the project scale, the cleaning could not use dedicated servers, the Distributed Informatics Computing Environment (DICE) with Scientific Linux 7 (SL7) is used instead. 
+The DICE machines are provided by The University of Edinburgh, in this project, approximately 200-300 student lab DICE were used.
+Also, a 256 GB disk space quota on Andrew File System (AFS) was used for this project.
+
+\section{Classification Schema}
+\label{sec:schema}
+
+The reduction procedure of F4K project removed some of the False Positives from FDS. 
+However, there are still a lot of False Positives in the RDS, to resolve this issue, a classification schema is created to identify the detections.
+
+In previous work of Pugh\cite{P1}, ten different detection classes were used to ground truth the dataset, which is later used to train different classifiers used in the cleaning. 
+
+These 10 classes can be divided into 3 main categories:
+
+\renewcommand{\labelenumi}{\Roman{enumi}}
+\renewcommand{\labelenumii}{\arabic{enumii}}
+\renewcommand{\labelenumiii}{\roman{enumiii}}
+\begin{enumerate}
+ \item Not A Fish - These detection are marked for removal in future.
+ \begin{enumerate}
+   \item Compression Artefact - During the process of recording video, some bits were dropped during transmission of the compressed video. These detections usually have rigid square shapes.
+   \item Illumination Artefact - Changes of brightness recognized as fish, they are usually refraction caused by turbid water, or light reflecting plankton.
+   \item Background Vegetation - Some of the video are captured with dynamic backgrounds, where the swaying plants are recognized as fish.
+   \item Others - Everything else, this includes large floating matter, empty contours created by faults in previous algorithms.
+   \item Unknown - Due to issues like lighting, blurry and stretched video frames, it's uncertain the detection is fish or not.
+ \end{enumerate}
+ 
+ \item A Fish - These frames are useful for future researchers.
+ \begin{enumerate}
+   \setcounter{enumii}{5} 
+   \item Good Boundary - With clear ocean as background, these fish have good boundaries, and are useful for future species recognition.
+   \item Partial Fish - Mostly good detection boundary, but part of the fish is cut-off for various reasons:
+    \begin{enumerate}
+      \item Fishes cut by frame boundaries.
+      \item Fishes are covered by vegetation or other fishes.
+      \item The fish is too big and cropped by the 100x100 boundary.
+    \end{enumerate}
+   \item Bad Boundary - The fish is clearly captured, but the boundary extracted is erratic and useless for research. 
+ \end{enumerate}
+ 
+ \item A Fish, but not useful - These frames detects fish correctly, but misleading information may be extracted, it's unsure these frames should be kept or not.
+ \begin{enumerate}
+   \setcounter{enumii}{8} 
+   \item Other Errors - like compression artefact are found in the image.
+   \item Multiple Fish - with shared contour.
+ \end{enumerate}
+\end{enumerate}
+
+Fig \ref{fig:classes} shows manually picked examples from each of these classes.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.44]{graph/class_sample.png}
+    \caption{Example Detections From Each Class}
+    \label{fig:classes}
+\end{figure}
+
+\section{Pipeline Classifier}
+
+The main part of the project is to translate and apply the pipeline classifier, designed by Pugh\cite{P1}. 
+However, under limitations, the pipeline itself could not be applied directly on a parallel scale.
+
+The first limitation is the SQL database, which stores the track and contour information of the image. 
+However the SQL is too large and slow for the project, To make the extraction more sensible, a Python script was used to partition the SQL.
+This potentially cuts the runtime to about 10\% of the original design and removed the need for a SQL database server. 
+More details of this modification is in Section \ref{sec:sqld}.
+
+Before sending the data into the classifiers, preprocessing is needed to give a more sensible result.
+%The data pre-processing is the slowest part of the pipeline after removing the SQL server. 
+In Pugh's thesis\cite{P1}, a Frame Edge Indicator Function (FEIF) is used to directly reduce the number of frames need to be classified, after improvements and some new additions on dataset reduction, pre-processing cleans out about 20\% of the detections. More details on the reduction are in Chapter \ref{sec:datasource}.
+
+After extracting and reducing features, they are fed into 3 Convolutional Neural Networks (CNN) and 10 Support Vector Machines (SVM), then applying a top N algorithm to produce the final result. 
+
+\begin{figure}[!t]
+    \centering
+    \includegraphics[scale=0.34]{graph/Pipeline_Classifier.png}
+    \caption{Pipeline Classifier designed by Matthew, modified}
+    \label{fig:pipeline}
+\end{figure}
+
+\section{Qiqi's Voting Constraints}
+
+(TODO) Not used because it doesn't reduce much workload.
+
+
+\chapter{Data Source}
+\label{sec:datasource}
+
+After the species recognition of the F4K project, three types of output files are stored:
+\begin{itemize}
+\item
+Extracted 100x100 RGB images, compiled into {\tt .avi} video file.
+\item
+Corresponding summary of the video, recording detection id and bounding box sizes. Stored in comma separated values format, as {\tt .txt} file.
+\item
+A {\tt .sql} dump file of 500GB, from the database used for species extraction.
+\end{itemize}
+
+\section{Extracted Images}
+\label{sec:summaries}
+
+During the species recognition, the bounding box and contour of each detection are computed.
+The bounding box consists of 4 values {\tt x,y,w,h}, where {\tt x} and {\tt y} are the coordinate of the top left corner, {\tt w} and {\tt h} are the width and height of the bounding box. 
+
+For each video a {\tt video\_id} is generated, it consists of a 32 byte hash of video, a {\tt \#}, and the filming date of {\tt YYYYMMDDhhmm} format. 
+For every detection with {\tt w} and {\tt h} both smaller than 90, a process illustrated in Figure \ref{fig:extraction} is applied, where a 100x100 area is selected with top left corner coordinate {\tt w-10} and {\tt h-10} and cropped from the image. 
+If the selected area is out of the range of the frame, those areas will be filled with black pixels.
+Those cropped images are then stored in file {\tt summary\_(video\_id).avi}, with detection id and {\tt w} and {\tt h} stored in corresponding {\tt frame\_info\_(video\_id).txt}.
+
+There are a total of 396,901 of such videos, consist of 839,465,846 frames, sums up to a total size of 1.14 TB.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{graph/extraction.png}
+    \caption{Process of Extracting Image}
+    \label{fig:extraction}
+\end{figure}
+
+\section{SQL dump file}
+\label{sec:sqld}
+
+The {\tt .sql} dump file comes from the SQL workflow of the F4K project, which means not the only details of fish detection are stored. 
+Other components irrelevant to this project is also stored. 
+
+Below is the schema of the "Fish Detection" table. 
+This table takes about 326 GB, and is the only table that is actually needed for the cleaning.
+
+\lstdefinestyle{sql}{
+  language=SQL,
+  tabsize=1,
+  showspaces=false,
+  showstringspaces=false
+}
+\lstset{basicstyle=\tiny\ttfamily,breaklines=true,style=sql}
+\begin{lstlisting}[frame=single]
+CREATE TABLE IF NOT EXISTS ‘f4k_db‘.‘fish_detection‘ (
+‘detection_id‘ INT(11) NOT NULL AUTO_INCREMENT,
+‘fish_id‘ INT(11) NOT NULL,
+‘video_id‘ CHAR(45) CHARACTER SET ’utf8’ NOT NULL DEFAULT ’’,
+‘frame_id‘ MEDIUMINT(9) NOT NULL DEFAULT ’0’,
+‘timestamp‘ TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+‘bb_cc‘ BLOB NOT NULL,
+‘detection_certainty‘ FLOAT NULL DEFAULT NULL,
+‘tracking_certainty‘ FLOAT NULL DEFAULT NULL,
+‘component_id‘ SMALLINT(6) NOT NULL,
+‘processed_videos_id‘ INT(11) NOT NULL
+\end{lstlisting}
+
+There are other tables such as "Camera\_Info" that shows the camera used for each video, with relatively small disk usage.
+
+This {\tt .sql} dump file is stored as plain text files that could be parsed into SQL code that loads the stored data.
+Under limitations of disk space and access speed, loading a large SQL database dump file into a server and performing 400,000 queries is very unnecessary and time-consuming, hence making it the slowest part of the cleaning. Also, the provided AFS quota could not hold all the information. 
+An alternative is to use python script with standard stream pipeline to parse and partition the SQL dump file into directly usable files.
+
+\subsection{Standard Stream based Extraction Script}
+
+In this project, each record needed for the cleaning is independent (given they have different video\_id). 
+If each detection is stored in a corresponding files with its video\_id, the information extraction will be much faster without the need to seek through all the records of other videos.
+
+Because each detection is only need once during the extraction, and the dump file is too large for the RAM, standard stream pipeline a more reasonable choice for the parsing. 
+
+With simple Python functions such as {\tt split()}, the record in the dump file of form:
+\lstset{basicstyle=\small\ttfamily,breaklines=true,style=sql}
+\begin{lstlisting}[frame=single]
+ INSERT INTO `fish_detection` VALUES (1),(2),(3),(4)...(N)
+\end{lstlisting}
+are parsed into directly usable list of values, separated by {\tt newline} character.
+
+This process makes the time cost for loading the dataset reduced to an almost negligible amount. In Qiqi's estimate, the loading and preprocessing would take 800,000 hours (25,000 hours on a 32 core machine) in the original design (double the time if considering her calculation error). After the pre-extraction, it only took about 0.3 seconds on average for a frame to be load and processed on a single computational thread. Which is about 70,000 hours, essentially cutting down the time used to 10\% of the original design.
+
+\subsection{Translation of Binary Data} 
+
+With the above extraction, another problem arises, in the schema mentioned in section \ref{sec:sqld}, there is a column called {\tt bb\_cc}, which means "Bounding Box Chain Code". This contains the {\tt x,y,w,h} in original videos, and a chain code to store the fish boundary data in a more compact format.
+
+Also, since the binary file is stored as text file, a different encoding is used so it won't cause parsing fault during loading, for example, 8 consecutive 0 bits, the null character, are stored as two bytes in ascii format of {\tt \textbackslash0}. A cleaning function is used to enumerate through the raw bit array to translate them back to original values.
+
+After comparing binary values of {\tt bb\_cc} and the corresponding detection image, it is found that the binary data is in the following format:
+\begin{itemize}
+\item
+First 42 (11,11,10,10) bits - {\tt x,y,w,h} of the bounding box.
+\item
+Next 11 bits - X-coordinate of the first contour point.
+\item
+Following 3 bits - Padding of zeros added to make the length a multiple of 8.
+\item
+All other bits - Chain Code of the contour, 3 bits each. Pointing towards next contour point from previous one. 
+\end{itemize}
+
+This process allows quick extraction of the contour, loading the image, summaries, and the contour information of a 1000 frame video into memory from AFS only took 1 second now and removes the need to maintain a running SQL server.
+
+\section{Ground Truth Dataset}
+
+In order to train and evaluate the classifiers, Pugh and Yu manually marked a set of detections with the schema above. They chose a subset of the RDS, which is all the videos having id start with "13b". This subset of the RDS consists of 97 video files and 154,042 detections. 
+
+However, the marking was not able to cover all of the detections because of its size. Moreover, some set of the detection are marked wrong because of the ambiguity of the classification schema. For example, a lot of the planktons are marked as fishes, and since class 9 (good detection with problems) is very rare, it's sometimes mistaken as class 5 (Unknown) or 7 (bad boundary). Some of the error patterns are not included in this video set.
+
+(TODO) They only marked 60,000 detections, and is unbalanced. Add more.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.52]{graph/idscount.png}
+    \caption{Number of Ground Truth Targets in each class at different sites}
+    \label{fig:gtdist}
+\end{figure}
+
+
+\chapter{Preprocessing}
+\label{sec:prepro}
+
+While the data source problem is solved, the most costly part of the pipeline will be the feature extraction for the SVM part. 
+It's not sensible to send all of the RGB values of a image as direct input for the SVM, hence feature extraction and dimensionality reduction is needed.
+
+To achieve the goal of removing False Positives without losing too many True Positives, some reduction methods are used on the dataset before extraction of the features. 
+Early Video Removal was introduced and an improved version of Frame Edge Indicator Function developed by Pugh was used.
+
+\section{Translation from MATLAB to Python}
+\label{sec:translate}
+
+Initially the project aims to translate the entire pipeline into Python, however when it comes to the feature extraction part, translating the code became an unreasonable solution.
+
+The F4K feature extraction code have about 5,000 lines of code in MATLAB.
+Usually, for most of the MATLAB functions, an equivalent library function from Numpy/Scipy/SKLearn could be found.
+Unfortunately, most of F4K feature extraction consists of customized code that could not be directly translated to Python.
+
+For example, the Gabor Filter used in the project are written by Ahmad Poursaberi from Tehran University, a different implementation (where the scale of the filter is rotated, while their variance isn't) is used. 
+This essentially required the project to re-engineer the whole F4K feature library.
+
+A full translation of the F4K feature could take a few weeks. Since the cleaning algorithm only need to execute once, translation may not be the optimal path to take. After recording performance on various parts of the algorithm, we determined that one of the slowest operation is 2D convolution.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{graph/benchmark.png}
+    \caption{Test runtime of different 2D convolve algorithms.}
+    \label{fig:benchmark}
+\end{figure}
+
+Figure \ref{fig:benchmark} shows the tested performance of various 2D convolution algorithm. During the test, 2000 random 100x100 arrays are generated to simulate images used, and 5 random 5x5 filters are used, simulating both the Gabor Filter and CNN used in the pipeline. By enforcing the maximum computational thread to 1, the result shows that only 2 of the chosen algorithms in Python are faster than MATLAB.
+\begin{itemize}
+\item
+TensorFlow's conv2d, while faster than all other library, it has a significantly higher memory usage due to the tensor data type. It also have a high initialization cost due to the transformation needed.
+\item
+Scipy.NDImage's convolve, giving almost same performance as MATLAB.
+\end{itemize}
+
+After this analysis, it's clear that re-engineering the MATLAB code is likely to spend more time, so a library called PyMatlab will be used to compute the F4K features in a MATLAB session instead, while other unfinished parts of the pipeline will be translated to Python.
+
+\section{Early Video Removal}
+
+During the feature extraction tests, it is discovered that loading a 40,000 frame video and extract features from it would take about 8 GB of memory space. 
+If such video is processed on a node with RAM less than 8 GB, it will cause serious thrashing, rendering the node unresponsive. For machines having a RAM higher than 8 GB, it will still causes some disruption during loading.  
+
+While risking the chance of thrashing, these videos took a longer time to process, and most importantly, they are usually filled with False Positive detections. As discussed in Chapter \ref{sec:summaries}, if a camera recorded 30,000 detection in 10 minutes, means that in every frame of the original video, an average of 10 detection is extracted. By looking at these "outlier" videos, some patterns were found:
+
+\begin{itemize}
+\item
+Both cameras at Lanyu site are night-vision cameras. When they film during the night, a lot of light reflecting planktons and small animals close to the camera are recognised as fishes. Videos filmed during night have an average of 6974 detections. A 5\% of the total detection comes from such videos, with the high False Positive rate, these videos can be safely excluded from cleaning.
+\item
+Videos full of compression/transmission errors, mostly happened at NPP-3 site camera 2 during June 2012 to August 2012. The camera falls down and change angles every few days. Even if there are no such errors, most of the detections are from moving background vegetation.
+\item
+One outlier video had 200,000 detections, consisting of lots of repeating frames, possibly caused by bugs in previous extraction processes.
+\end{itemize}
+There are also some good videos with high detections: 
+\begin{itemize}
+\item
+Videos from NPP-3 site camera 3, at January 2010. These videos are captured at a higher frame rate, resulting in more detections. They usually contains lots of good detections.
+\item
+Dynamic background - Videos filled with moving vegetation, or refraction of sunlight. They usually contains lots of good detections.
+\end{itemize}
+
+%TODO add labels
+\begin{figure}[h]
+\centering
+    \includegraphics[scale=0.40]{graph/frame_distribution.png}
+    \caption{Log Scale Histogram of Detection Length}
+    \label{fig:vidlength}
+\end{figure}
+
+Using the above patterns and observed distribution in Fig \ref{fig:vidlength}, if we remove all the videos recorded in the night, videos with 40,000 or more frames, and video recorded with above characteristics and 20,000 or more frames. About 8\% of the detections can be rejected without need to extract them, saving approximately 200 days of computational time.
+%Samples of rejected videos are in Appendix \ref{sec:samplelong}.
+
+
+\section{Frame Edge Indicator Function (FEIF)}
+
+In Pugh's thesis\cite{P1}, the FEIF is used to identify if a fish is being partially cut by the frame. In FEIF, a boundary of video is defined, and if the number of the contour points outside of the boundary exceeds 25, the detection is then rejected.
+
+However this function could not achieve the intention on some cases, for example, some videos have a darker frame edge, so even if a fish is cut by boundary, the contour points will be inside the boundary. Also, a large fish slightly touching the boundary will be rejected because the 25 limit, and small fishes may bypass the heuristics because of the size.
+
+Following modification is added to solve the problem, by shrinking the boundary by 2 pixels, then increasing the limit of 25 to 40, and adding a new restriction: reject all the detections with 25\% of the points touching the boundary. About 15\% of the dataset is rejected by this upgraded FEIF algorithm, saving about 400 days of computational time.
+
+\section{Feature Extraction}
+
+During the species recognition stage of the F4K project, 2626 features were used for computing detection certainty. 
+On that basis, Pugh added 29 new features focused on the edges of the contour. Then dimensionality reduction is applied to the features to reduce dimension from 2655 to 28. 
+
+This process takes about 0.3 seconds for each frame, Analysing the computational time shows the following result, sorted by time cost:
+\begin{itemize}
+\item
+Co-occurance Matrix - these 720 features took about 0.2 seconds to compute.
+\item
+Affine Moment Invariants - these 105 features took 0.05 seconds to compute.
+\item
+Gabor Filter - these 160 features took about 0.04 seconds to compute.
+\item
+Rest of the features took almost negligible amount of time to finish.
+\end{itemize}
+Unfortunately after checking the features with PCA, these feature all took significant part in the first 50 PCA components, removing any one of the 3 time costly feature will have a high impact on the result.
+
+\subsection{Pugh's Features}
+
+This part of the generated feature consist of 4 parts: Animation Score, Boundary Curvature, Erraticity, and Gabor Filter on edge. This part of the pipeline is translated into Python as the original feature generation script is incomplete. Some inefficient {\tt for} loops were translated using Numpy library to speed them up.
+
+The Animation Score (AS) is calculated for one whole track, where 5 frames are pick from the track, and squared sum of the change in pixels is calculated. This feature isn't very useful because of the dynamic background of the image.
+
+%TODO 
+(TODO) Boundary Curvature.
+
+(TODO) Gabor Filter on binary image.
+
+\subsection{F4K Feature}
+
+\subsection{PCA Analysis}
+
+%\begin{figure}[h]
+%\centering
+%    \includegraphics[scale=0.30]{graph/pcas.png}
+%    \caption{some fancy placeholder}
+%    \label{fig:pcsused}
+%\end{figure}
+
+\section{Image Processing For CNN}
+
+In Pugh's pipeline classifier, 3 different CNNs were used on different type of preprocessed images.
+In  {\tt CNN\_N}, normal image is used, in {\tt CNN\_WC} and {\tt CNN\_BC}, a masked image is used, filling the pixels outside the contour with white and black respectively.
+For all 3 type of images, and transformation to YUV color space is used, then the Y channel is normalized with mean and variance of ground truth dataset.
+A final color space of Y'UV is used for the CNNs.
+
+Different to the SVM features, preprocessing for the CNN took almost no time using OpenCV's image transformation.
+
+\begin{figure}[h]
+\centering
+    \includegraphics[scale=0.4]{graph/imagepre.png}
+    \caption{Images on different stage of pre-process}
+    \label{fig:imageprepro}
+\end{figure}
+
+\chapter{Classification}
+
+\section{Support Vector Machines (SVM)}
+
+(TODO) Write in proper English.
+
+Pugh uses 10 SVMs for each class, with rbf kernel and gammas around 4-5.
+
+Python's SKLearn provides a multiclass SVM, 
+it also allows an additional setting: penalty parameter C. MATLAB use \(\gamma\), Python use \(\sigma\) for rbf kernel. \( \gamma = 1/2\sigma^2 \).
+
+Using aforementioned parallel framework for testing optimal parameters. Fitting 1000 SVM would take 4 days, finish within a hour using MPI.
+
+Testing shows optimal \(\sigma\) is around 0.1-0.2, optimal C is around 10-50.
+
+\begin{figure}[!b]
+\centering
+    \includegraphics[scale=0.5]{graph/svmparameter.png}
+    \caption{Average score of 10-fold cross validation of rbf kernel SVMs}
+    \label{fig:svmparameter}
+\end{figure}
+
+\section{Convolutional Neural Networks (CNN)}
+\section{Evaluation}
+\section{Potential Candidate of classifiers}
+
+\chapter{Parallel Distribution}
+
+The project uses the student lab DICE machines as processor nodes, these machines have a shared file-system - AFS, and they have distributed memory. 
+
+With the need to communicate between the processes, Message Passing Interface (MPI) is used for the project. This allows quick startup of the work queues, and gives scalability on the machines used.
+
+\section{Message Passing Interface for Python (MPI4PY)}
+
+Mpi-master-slave, a small python library with MPI4PY is used to distribute all the job among the available machines. 
+For example, if there are 4 machines available, with the following command: 
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+\begin{lstlisting}[frame=single]
+>> HOSTS=basso,battaglin,belloni,bergamaschi
+>> mpiexec -n 4 -host $HOSTS \
+.. python ~/f4k/runMulticoreFeatureExtract.py
+\end{lstlisting}
+The python program will be started on above 4 machines, with the first one (basso) being the master node.
+The master node keeps a list of video that needs to be processed as a work queue, and distributing them to slaves nodes, which is every other node in {\tt \$HOSTS}. 
+The slave nodes process the video and store the result on AFS, upon finish, it notifies the master to receive more tasks.
+
+%TODO add to appendix.
+%When a "slave" node doesn't receive an {\tt EXIT} signal, it will keep sending the master a {\tt READY} signal, and after receiving work data from "master", it sends a {\tt DONE} signal back to the "master" and then goes back to the {\tt READY} loop. The "master" creates a work queue of all the videos that need to be processed, and send them to "slave" with {\tt START} whenever it receives {\tt READY}. It keeps sending the work until the work queue is empty, when every work is marked as finished, it broadcasts a {\tt EXIT} signal to terminate other processes.
+
+For all the "slave" node, Python's MultiProcessing and MATLAB's ParPool are used to fully utilize every core's computational power.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.30]{graph/sample_terminal.png}
+    \caption{Running the MPI program on MATE terminal}
+    \label{fig:mpi}
+\end{figure}
+
+\section{CPU Hogging and Memory Thrashing Prevention}
+
+The project uses the public student lab machines provided by The University of Edinburgh. 
+It is important to make sure the cleaning procedure doesn't affect other user's work.
+
+A short bash script combining {\tt ping} and {\tt ssh} is used to update the {\tt \$HOSTS} to a up-to-date list of available DICE machines.
+
+For the CPU usage, SL7 provides a {\tt NICE} command, allowing the program to have a higher {\tt NI} value which gives lower priority on CPU scheduling. This allows other students to work without disruption by the cleaning.
+
+After testing it on the machines, it is reported that some machines are starting to become unresponsive after running code on it.
+
+Since loading a video with 10,000 frames and all the library function used will take about 3 GB space in physical memory. 
+After unreferencing every variable and force the garbage collecting mechanism, it still leaves 10\% of the memory in use. This eventually piles up and thrash the memory. 
+
+A solution is to spawn a sub-process and kill it after it's finished, but this increases the time to reload the python libraries, taking about 5 to 60 seconds per video.
+
+\section{Error Recovery and Progress Record}
+
+MPI allows a more scalable way of distribution of task on multiple computational nodes.
+However, one of the main disadvantage is the error handling, if one of the MPI process crashes, all of the process running will be forced to exit.
+
+The project is running on a massive scale, so error handling plays a more and more important role in the processing. 
+When an error is caught when processing a video, it immediately sends master node a {\tt DONE} signal, but with a failure message. The master node will remove the failed slave node and put it's job back to the start of the work queue, allowing it to be re-scheduled again.
+
+In the case of master crashes and other situations that MPI process is killed, all of the nodes will stop and some progress recording mechanism is needed for resuming progress. After all the output is stored on the disk, another empty file with {\tt .complete} suffix is created. So the "slave" process could know if a video is finished processing, or killed before it finishes storage. With this file existence check, repeat work after restart is greatly reduced, hence keeping the progress.
+
+(TODO) Some lab machine were shut down by students, hence killing my process.
+
+\newpage
+
+\chapter{Conclusion}
+\section{Results}
+\section{Future Work}
+\section{Final Words}
+
+
+% use the following and \cite{} as above if you use BibTeX
+% otherwise generate bibtem entries
+\bibliographystyle{unsrt}
+\bibliography{dissertation}
+
+
+%\begin{appendices}
+%\chapter{Sample of Lengthy Videos}
+%\label{sec:samplelong}
+%TODO say something
+%The videos below are some sample frames.
+
+%Words
+
+%Paragraphs
+
+%\begin{figure}
+%\centering
+%    \includegraphics[scale=0.46]%{graph/sample_night.png}
+%    \caption{Sample frames from a video filmed at night.}
+%    \label{fig:sample_night}
+%\end{figure}
+
+%\begin{figure}
+%\centering
+%    \includegraphics[scale=0.46]{graph/sample_corrupt.png}
+%    \caption{Sample frames from a corrupted video.}
+%    \label{fig:sample_corrupt}
+%\end{figure}
+
+%\begin{figure}
+%\centering
+%    \includegraphics[scale=0.46]%{graph/sample_vegetation.png}
+%    \caption{Sample frames from a video with dynamic background.}
+%    \label{fig:sample_vegetation}
+%\end{figure}
+%\begin{figure}
+%\centering
+%    \includegraphics[scale=0.46]{graph/sample_fish.png}
+%    \caption{Sample frames from a video with abnormal amount of fish.}
+%    \label{fig:sample_fish}
+%\end{figure}
+%\end{appendices}
+
+\end{document}

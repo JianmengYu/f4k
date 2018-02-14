@@ -192,6 +192,7 @@ def loadSqlOriginal(path):
     return np.vstack((ids,original,binaries)).T
 
 def seperate_fish(contour,w):
+    #USELESS!
     mask = np.full((100,100), 0, dtype=np.uint8)
     cv2.fillPoly(mask, np.int32([contour]), (255,))
     moments = cv2.moments(mask)
@@ -217,6 +218,7 @@ def seperate_fish(contour,w):
     return (full_fish,head_fish,tail_fish,top_fish,bot_fish,hhead_fish,htail_fish)
 
 def normalizeRGB(image):
+    #WRONG!
     weight = np.sum(image,axis=2,dtype = np.uint16)
     weight[weight < 1] = 1
     return image/(weight*1.0)[:,:,None]
@@ -233,6 +235,7 @@ def getMask(normilizedContourPoints):
     return grid
 
 def showTransformedImage(picker, clip, hasContour, contour):
+    #WRONG!
     if hasContour[picker]:
         image1 = clip[picker]
         thiscontour = getContour(contour[picker])
@@ -265,6 +268,7 @@ def showTransformedImage(picker, clip, hasContour, contour):
         print("No contour for this image dummy.")
         
 def printCNNweight():
+    #THIS IS WONG ON SO MANY REVRUS
     basepath = '/afs/inf.ed.ac.uk/user/s14/s1413557/f4k-2017-msc-master/matt-msc/src/lua/cnn/models/'
     if os.name=="nt":
         basepath =  'C:/Users/YuJianmeng/f4k/matt-msc/src/lua/cnn/models/'
