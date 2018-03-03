@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage{appendix}
 \usepackage{listings}
+\usepackage{physics}
 
 \begin{document}
 
@@ -14,7 +15,7 @@
 
 \abstract{
 \pagenumbering{roman}
-This project applies the decision algorithm\cite{P1} developed by Matthew Pugh on a massive parallel scale. This aims to remove a large amount of False Positive fish detections in the Fish4Knowledge (F4K) dataset\cite{P2}, without losing too many True Positives.
+This project applies the decision algorithm\cite{P1} developed by Pugh on a massive parallel scale. This aims to remove a large amount of False Positive fish detections in the Fish4Knowledge (F4K) dataset\cite{P2}, without losing too many True Positives.
 
 According to Qiqi Yu's estimated runtime\cite{P3}, the cleaning process will take more than 1000 days to complete on a 40-core machine. Simply running the process on a parallel scale will not be sufficient, optimization of the code is also essential for making the processing more feasible.
 
@@ -79,15 +80,20 @@ During this project, the parallel task distribution programme is based on a publ
 
 Data extraction pipeline written in Python was created to partition, extract, and parse the raw SQL dump file to comma separated values stored in plain text files. 
 
-(TODO?) Clean the ground truthing dataset, as previous Matt and Qiqi seems to use different criteria for cleaning.
-
 The pipeline classifier is also re-written in Python, unfinished part of the original pipeline is implemented. 
-Due to the removal of the SQL server in the pipeline, the extraction and visualization MATLAB scripts created by Matthew are re-engineered into Python functions. 
+Due to the removal of the SQL server in the pipeline, the extraction and visualization MATLAB scripts created by Pugh are re-engineered into Python functions. 
 Some metrics algorithms used is translated from MATLAB for loops to Numpy/Scipy operations to increase efficiency.
 
 F4K project's feature extraction MATLAB code is untranslated and is called within Python using PyMatlab library. Some minor changes like replacing edge extraction algorithm used, and error handling added to one of the unstable {\tt getCstd()} function. 
 
-The classification step will use Matthew's trained SVM and CNN. (TODO) Re-train the SVM because change to PCA.
+For validation of Pugh's classifier performance, a set of separate videos were marked. After testing the classifiers on this dataset, it's discovered that Pugh's classifiers over-fits on the training dataset. Also by inspecting the training code, it is found that the training set were heavily biased. A new complementary ground truth dataset were marked for training new classifiers. 
+
+The classification step was originally going to use Pugh's trained SVM and CNN. Due to the problem above, the SVM parameters used are re-calibrated for higher accuracy on unseen dataset. 
+
+Also, a fatal mistake were found in the CNN design, this causes 2 out of 3 CNN trained by Pugh almost useless. Details about the fault and the re-train attempt were included in (TODO)
+%TODO 
+
+The SVM was not directly translated, the Python's {\tt sklearn.svm.SVC} were used to achieve the same result. The CNN implemented with lua torch are rewritten and called with Lutorpy library.
 
 (TODO) Possible reconstruction of the SQL and video is needed? Some of the FEIF rejected images still seems to be useful.
 
@@ -116,7 +122,7 @@ There are already some image processing libraries with work distribution framewo
 
 Due to the limit of the project scale, the cleaning could not use dedicated servers, the Distributed Informatics Computing Environment (DICE) with Scientific Linux 7 (SL7) is used instead. 
 The DICE machines are provided by The University of Edinburgh, in this project, approximately 200-300 student lab DICE were used.
-Also, a 256 GB disk space quota on Andrew File System (AFS) was used for this project.
+Also, 1 TB and 256 GB of disk space quota on Andrew File System (AFS) was used for this project.
 
 \section{Classification Schema}
 \label{sec:schema}
@@ -190,11 +196,13 @@ After extracting and reducing features, they are fed into 3 Convolutional Neural
 \begin{figure}[!t]
     \centering
     \includegraphics[scale=0.34]{graph/Pipeline_Classifier.png}
-    \caption{Pipeline Classifier designed by Matthew, modified}
+    \caption{Pipeline Classifier designed by Pugh, modified}
     \label{fig:pipeline}
 \end{figure}
 
-\section{Qiqi's Voting Constraints}
+\section{Yu's Voting Constraints}
+
+In 2016, Yu 
 
 (TODO) Not used because it doesn't reduce much workload.
 
@@ -306,16 +314,16 @@ This process allows quick extraction of the contour, loading the image, summarie
 
 \section{Ground Truth Dataset}
 
-In order to train and evaluate the classifiers, Pugh and Yu manually marked a set of detections with the schema above. They chose a subset of the RDS, which is all the videos having id start with "13b". This subset of the RDS consists of 97 video files and 154,042 detections. 
+In order to train and evaluate the classifiers, Pugh and Yu manually marked a set of detections with the schema above. They chose a subset of the RDS, which is some of the videos having id start with "13b". This subset of the RDS consists of 39 video files and 61,101 detections. 
 
 However, the marking was not able to cover all of the detections because of its size. Moreover, some set of the detection are marked wrong because of the ambiguity of the classification schema. For example, a lot of the planktons are marked as fishes, and since class 9 (good detection with problems) is very rare, it's sometimes mistaken as class 5 (Unknown) or 7 (bad boundary). Some of the error patterns are not included in this video set.
 
-(TODO) They only marked 60,000 detections, and is unbalanced. Add more.
+After extracting some statistics on this dataset, it is discovered that this dataset is heavily biased, it fails to include normal videos filmed at 2 sites. Due to need for re-calibration and future validation. Two subset with 10,000 detections each were marked.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.52]{graph/idscount.png}
-    \caption{Number of Ground Truth Targets in each class at different sites}
+    \includegraphics[scale=0.34]{graph/classdist.png}
+    \caption{Number of Fish/Non-Fish at different sites in original Ground Truth Dataset}
     \label{fig:gtdist}
 \end{figure}
 
@@ -383,7 +391,6 @@ Videos from NPP-3 site camera 3, at January 2010. These videos are captured at a
 Dynamic background - Videos filled with moving vegetation, or refraction of sunlight. They usually contains lots of good detections.
 \end{itemize}
 
-%TODO add labels
 \begin{figure}[h]
 \centering
     \includegraphics[scale=0.40]{graph/frame_distribution.png}
@@ -401,12 +408,12 @@ In Pugh's thesis\cite{P1}, the FEIF is used to identify if a fish is being parti
 
 However this function could not achieve the intention on some cases, for example, some videos have a darker frame edge, so even if a fish is cut by boundary, the contour points will be inside the boundary. Also, a large fish slightly touching the boundary will be rejected because the 25 limit, and small fishes may bypass the heuristics because of the size.
 
-Following modification is added to solve the problem, by shrinking the boundary by 2 pixels, then increasing the limit of 25 to 40, and adding a new restriction: reject all the detections with 25\% of the points touching the boundary. About 15\% of the dataset is rejected by this upgraded FEIF algorithm, saving about 400 days of computational time.
+Following modification is added to solve the problem, by shrinking the boundary by 2 pixels, then increasing the limit of 25 to 40, and adding a new restriction: reject all the detections with 25\% of the points touching the boundary. About 15\% of the dataset is rejected by this upgraded FEIF algorithm, saving 400 days of computational time.
 
 \section{Feature Extraction}
 
 During the species recognition stage of the F4K project, 2626 features were used for computing detection certainty. 
-On that basis, Pugh added 29 new features focused on the edges of the contour. Then dimensionality reduction is applied to the features to reduce dimension from 2655 to 28. 
+On that basis, Pugh added 29 new features focused on the edges of the contour. Then dimensionality reduction is applied to the features to reduce dimension from 2655 to 88. 
 
 This process takes about 0.3 seconds for each frame, Analysing the computational time shows the following result, sorted by time cost:
 \begin{itemize}
@@ -423,65 +430,124 @@ Unfortunately after checking the features with PCA, these feature all took signi
 
 \subsection{Pugh's Features}
 
-This part of the generated feature consist of 4 parts: Animation Score, Boundary Curvature, Erraticity, and Gabor Filter on edge. This part of the pipeline is translated into Python as the original feature generation script is incomplete. Some inefficient {\tt for} loops were translated using Numpy library to speed them up.
+Pugh's part of the generated feature consist of 4 parts: Animation Score, Boundary Curvature, Erraticity, and Gabor Filter on edge. This part of the pipeline is translated into Python as the original feature generation script is incomplete. Some inefficient {\tt for} loops were translated using Numpy library to speed them up.
 
 The Animation Score (AS) is calculated for one whole track, where 5 frames are pick from the track, and squared sum of the change in pixels is calculated. This feature isn't very useful because of the dynamic background of the image.
 
-%TODO 
-(TODO) Boundary Curvature.
+Boundary Curvature (BC), it uses the Curvature Scale Space to measure the change of direction to the contour, the result is blurred with a Gaussian filter and the Skewness and Kurtosis is extracted. 
 
-(TODO) Gabor Filter on binary image.
+Temporal Consistency (Erraticity) is similar to Boundary Curvature, where 5 frames are picked and mean of Skewness and Kurtosis is recorded.
 
-\subsection{F4K Feature}
+Gabor Filters applied on binary image generated using contour, instead of the original image used in the F4K feature extraction. 
 
-\subsection{PCA Analysis}
+\subsection{Principle Component Analysis}
 
-%\begin{figure}[h]
-%\centering
-%    \includegraphics[scale=0.30]{graph/pcas.png}
-%    \caption{some fancy placeholder}
-%    \label{fig:pcsused}
-%\end{figure}
+Originally in Pugh's design, the number of the Principle Components used were selected with Kaiser's Criterion, where only ones with eigenvalue greater than 1 is selected. However the only advantage with this criterion is it being easy to calculate, essentially throwing away 30\% of informations.
+
+Also due to storages limit of the project, about 100 features per frame could be stored. With this problem, the first 88 Principle Components were used, this express 90\% of the variance of the training dataset.
+
+\begin{figure}[ht]
+\centering
+    \includegraphics[scale=0.40]{graph/pcas.png}
+    \caption{Variance Explained}
+    \label{fig:pcsused}
+\end{figure}
 
 \section{Image Processing For CNN}
 
 In Pugh's pipeline classifier, 3 different CNNs were used on different type of preprocessed images.
 In  {\tt CNN\_N}, normal image is used, in {\tt CNN\_WC} and {\tt CNN\_BC}, a masked image is used, filling the pixels outside the contour with white and black respectively.
-For all 3 type of images, and transformation to YUV color space is used, then the Y channel is normalized with mean and variance of ground truth dataset.
-A final color space of Y'UV is used for the CNNs.
+For the BC and WC images, it is then moved to center of the image.
 
-Different to the SVM features, preprocessing for the CNN took almost no time using OpenCV's image transformation.
+Before the image is forward into the CNN models, transformation and normalization is performed. 
+Firstly the image is transformed into YUV color space.
+Then the image is normalized globally with mean and standard deviation of the YUV images.
+Finally, local spatial normalization was applied on each channel.
+
+However after tests on the CNN trained, the result obtained weren't even close to the ones Pugh obtained.
+It is discovered that during the preprocessing stage of Pugh, two major mistakes were made.
+Pugh uses OpenCV's {\tt imwrite} for the extraction of the image, the images are stored in compressed {\tt ".jpeg"} format, this leads to drastic change in the result matrix, due to the local normalization step. Another fatal mistake is the image store with OpenCV are in BGR space, where Lua recognize it as RGB image.
+
+This causes the CNN\_N and CNN\_BC almost useless, classifying almost every unseen data into 1 single class. Some re-train attempt were included in Section \ref{sec:cnn}.
 
 \begin{figure}[h]
 \centering
     \includegraphics[scale=0.4]{graph/imagepre.png}
-    \caption{Images on different stage of pre-process}
+    \caption{Images on first stages of pre-process}
     \label{fig:imageprepro}
 \end{figure}
 
 \chapter{Classification}
 
-\section{Support Vector Machines (SVM)}
+\section{Ambiguity in Original Classification Schema}
+\label{AmbigCS}
 
-(TODO) Write in proper English.
+For the Pipeline Classifier, 10 classes of different detections were proposed in Section \ref{sec:schema}, but there are many limitations on this schema.
+For example, some cases could be appearing simultaneously, a detection could have an erratic boundary, and also touching the boundary of a frame. Pugh's thesis didn't state clearly different priority among classes used. 
 
-Pugh uses 10 SVMs for each class, with rbf kernel and gammas around 4-5.
+After looking through the previously marked ground truth data, it is also found that some classes are very similar to others. For example in Fig \ref{fig:class68}, the track has a detection contour that is progressively less erratic. It makes it hard to draw an exact boundary between different classes when classifying manually.
 
-Python's SKLearn provides a multiclass SVM, 
-it also allows an additional setting: penalty parameter C. MATLAB use \(\gamma\), Python use \(\sigma\) for rbf kernel. \( \gamma = 1/2\sigma^2 \).
-
-Using aforementioned parallel framework for testing optimal parameters. Fitting 1000 SVM would take 4 days, finish within a hour using MPI.
-
-Testing shows optimal \(\sigma\) is around 0.1-0.2, optimal C is around 10-50.
-
-\begin{figure}[!b]
+\begin{figure}[h]
 \centering
-    \includegraphics[scale=0.5]{graph/svmparameter.png}
-    \caption{Average score of 10-fold cross validation of rbf kernel SVMs}
-    \label{fig:svmparameter}
+    \includegraphics[scale=0.34]{graph/6-8.png}
+    \caption{Detection changing from class 8 (Bad Boundary) to 6 (Clean Boundary).}
+    \label{fig:class68}
 \end{figure}
 
+Another example of this is shown in Fig \ref{fig:class56}, where initially it is unknown whether the detection is a fish or not given the single frame. This is more problematic because the extraction intends to throw away class 5 while keep class 6 detections. 
+
+\begin{figure}[ht]
+\centering
+    \includegraphics[scale=0.34]{graph/5-6.png}
+    \caption{A track of detection, changing from class 5 (Unknown) to 6 (Fish).}
+    \label{fig:class56}
+\end{figure}
+
+Similar problem has also occurred between \(class\in[2,3,4,5,8,6]\). Where class 2, 3, and 4 generally means "I'm not sure what this is, but it's definitely not a fish", and on the other side, class 6 represents fish with good detection boundary. 
+Also, any one of the detection might suddenly change to class 7 (partial fish visible) just because they are close to the frame edge. 
+
+For the case of class 2 and 3, they are errors captured by the F4K species extraction's background removal issues, caused by illumination and background vegetation respectively.
+During the ground truth process of new datasets, it is found that distinguish between these two class are impossible.
+This indicates that confusion matrix might not be a good indicator whether a classifier performs well or not. In fact, if the classifier performs too well, it would indicate the classifier over-fits on the training dataset instead.
+
+The original goal of the project is to remove non-fish detections from the dataset, hence only fish marked with class 6 and 8 are kept, it is more tolerable for "fish-like" classes 
+like class 9 (Fish with Error) and class 7 (Partial visible) to be classified as fish.
+On the other hand, class 1 (Compression Fault) classified as class 6 (Good Fish) needed to be penalized heavily. 
+
+With this addition to accuracy metrics, the SVM and CNN developed by Pugh were evaluated again, and unfortunately, both need rework for it to work properly again.
+
+\section{Support Vector Machines (SVM)}
+
+In the original design, Pugh uses ten different SVM classifier with RBF kernel (Radial Basis Function kernel) for marking probability of each class. Each of the SVM has a parameter setting of:
+\renewcommand{\labelenumi}{\arabic{enumi}}
+\begin{enumerate}
+	\item In the Kernel Function \(K(x,x') = exp(-\gamma\norm{x-x'}^2)\), a \(\gamma\) value around 4-5.
+	\item Soft Margin Parameter C set to 1.
+\end{enumerate}
+Translating the SVM design to python is trivial, the package {\tt sklean.svm} provides a easy-to-use implement of the SVM, with only the need to fit the dataset again.
+The only different between MATLAB and Python's SVM is the parameter \(\gamma\) used, Python use \(\sigma\) for rbf kernel. A simple translation could be used to find the corresponding \(\sigma\) value, using the formula \( \gamma = 1/2\sigma^2 \).
+
+In Pugh's design, due to the limitations of an incomplete training dataset, the result is heavily biased. After testing on unseen data, it classifies almost every detection as class 7 (partial fish visible). In order to fully utilize the features extracted, another search of parameter over C and \(\sigma\) is needed.
+
+Pugh's search for optimal parameters involves finding \(\gamma\in[2^{-5},2^{-3}...2^{13},2^{15}]\) that gives the highest accuracy among the pre-split dataset, due to the amount of features used and the size of the dataset, training a single SVM could take from 30-minute to 2-hour. Using the new grid search involving C and K-Folding, about 500 new SVM are needed to fit for finding the optimal value, it would take over months to complete.
+
+With the help of the task distribution system developed, it took about 4 hours to find the
+new optimal \(\sigma = 10^{-3}\), and \(C = 1\).
+
+\begin{figure}[h]
+\centering
+    \includegraphics[scale=0.44]{graph/svmresult.png}
+    \caption{SVM's result and normalized result on unseen dataset}
+    \label{fig:svmacc}
+\end{figure}
+
+The result of the SVM shown in Fig \ref{fig:svmacc}, 
+
 \section{Convolutional Neural Networks (CNN)}
+\label{sec:cnn}
+
+
+
 \section{Evaluation}
 \section{Potential Candidate of classifiers}
 
@@ -542,8 +608,6 @@ The project is running on a massive scale, so error handling plays a more and mo
 When an error is caught when processing a video, it immediately sends master node a {\tt DONE} signal, but with a failure message. The master node will remove the failed slave node and put it's job back to the start of the work queue, allowing it to be re-scheduled again.
 
 In the case of master crashes and other situations that MPI process is killed, all of the nodes will stop and some progress recording mechanism is needed for resuming progress. After all the output is stored on the disk, another empty file with {\tt .complete} suffix is created. So the "slave" process could know if a video is finished processing, or killed before it finishes storage. With this file existence check, repeat work after restart is greatly reduced, hence keeping the progress.
-
-(TODO) Some lab machine were shut down by students, hence killing my process.
 
 \newpage
 

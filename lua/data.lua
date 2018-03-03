@@ -71,7 +71,7 @@ function load_data(filepath, expand)
 
 	for i=1,#files do
 		xlua.progress(j, N)
-		local img = image.loadJPG(string.format('%s/%s', frame_dir, files[i])):float()
+		local img = image.loadPNG(string.format('%s/%s', frame_dir, files[i])):float()
 		images[{j,{},{},{}}] = img
 		Yp[j] = Y[i]
 		j = j + 1
@@ -202,7 +202,7 @@ function get_classify_data()
 		if f:len() > 2 then
 			local local_path = string.format('%s/%s', frame_dir, f)
 --			print('==> Trying to load ' .. local_path)
-			local img = image.loadJPG(local_path):float()
+			local img = image.loadPNG(local_path):float()
 			images[{i,{},{},{}}] = img
 			i = i + 1
 		end

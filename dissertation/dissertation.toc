@@ -7,7 +7,7 @@
 \contentsline {section}{\numberline {2.1}Big Data}{5}
 \contentsline {section}{\numberline {2.2}Classification Schema}{5}
 \contentsline {section}{\numberline {2.3}Pipeline Classifier}{7}
-\contentsline {section}{\numberline {2.4}Qiqi's Voting Constraints}{7}
+\contentsline {section}{\numberline {2.4}Yu's Voting Constraints}{7}
 \contentsline {chapter}{\numberline {3}Data Source}{9}
 \contentsline {section}{\numberline {3.1}Extracted Images}{9}
 \contentsline {section}{\numberline {3.2}SQL dump file}{10}
@@ -20,20 +20,20 @@
 \contentsline {section}{\numberline {4.3}Frame Edge Indicator Function (FEIF)}{16}
 \contentsline {section}{\numberline {4.4}Feature Extraction}{16}
 \contentsline {subsection}{\numberline {4.4.1}Pugh's Features}{17}
-\contentsline {subsection}{\numberline {4.4.2}F4K Feature}{17}
-\contentsline {subsection}{\numberline {4.4.3}PCA Analysis}{17}
-\contentsline {section}{\numberline {4.5}Image Processing For CNN}{17}
+\contentsline {subsection}{\numberline {4.4.2}Principle Component Analysis}{17}
+\contentsline {section}{\numberline {4.5}Image Processing For CNN}{18}
 \contentsline {chapter}{\numberline {5}Classification}{19}
-\contentsline {section}{\numberline {5.1}Support Vector Machines (SVM)}{19}
-\contentsline {section}{\numberline {5.2}Convolutional Neural Networks (CNN)}{20}
-\contentsline {section}{\numberline {5.3}Evaluation}{20}
-\contentsline {section}{\numberline {5.4}Potential Candidate of classifiers}{20}
-\contentsline {chapter}{\numberline {6}Parallel Distribution}{21}
-\contentsline {section}{\numberline {6.1}Message Passing Interface for Python (MPI4PY)}{21}
-\contentsline {section}{\numberline {6.2}CPU Hogging and Memory Thrashing Prevention}{22}
-\contentsline {section}{\numberline {6.3}Error Recovery and Progress Record}{22}
-\contentsline {chapter}{\numberline {7}Conclusion}{25}
-\contentsline {section}{\numberline {7.1}Results}{25}
-\contentsline {section}{\numberline {7.2}Future Work}{25}
-\contentsline {section}{\numberline {7.3}Final Words}{25}
-\contentsline {chapter}{Bibliography}{27}
+\contentsline {section}{\numberline {5.1}Ambiguity in Original Classification Schema}{19}
+\contentsline {section}{\numberline {5.2}Support Vector Machines (SVM)}{20}
+\contentsline {section}{\numberline {5.3}Convolutional Neural Networks (CNN)}{21}
+\contentsline {section}{\numberline {5.4}Evaluation}{21}
+\contentsline {section}{\numberline {5.5}Potential Candidate of classifiers}{21}
+\contentsline {chapter}{\numberline {6}Parallel Distribution}{23}
+\contentsline {section}{\numberline {6.1}Message Passing Interface for Python (MPI4PY)}{23}
+\contentsline {section}{\numberline {6.2}CPU Hogging and Memory Thrashing Prevention}{24}
+\contentsline {section}{\numberline {6.3}Error Recovery and Progress Record}{24}
+\contentsline {chapter}{\numberline {7}Conclusion}{27}
+\contentsline {section}{\numberline {7.1}Results}{27}
+\contentsline {section}{\numberline {7.2}Future Work}{27}
+\contentsline {section}{\numberline {7.3}Final Words}{27}
+\contentsline {chapter}{Bibliography}{29}

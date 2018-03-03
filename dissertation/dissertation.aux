@@ -27,8 +27,8 @@
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{fig:classes}{{2.1}{7}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.3}Pipeline Classifier}{7}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.4}Qiqi's Voting Constraints}{7}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Pipeline Classifier designed by Matthew, modified\relax }}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Yu's Voting Constraints}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Pipeline Classifier designed by Pugh, modified\relax }}{8}}
 \newlabel{fig:pipeline}{{2.2}{8}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {3}Data Source}{9}}
 \@writefile{lof}{\addvspace {10\p@ }}
@@ -43,7 +43,7 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Standard Stream based Extraction Script}{11}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Translation of Binary Data}{11}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.3}Ground Truth Dataset}{12}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Number of Ground Truth Targets in each class at different sites\relax }}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Number of Fish/Non-Fish at different sites in original Ground Truth Dataset\relax }}{12}}
 \newlabel{fig:gtdist}{{3.2}{12}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {4}Preprocessing}{13}}
 \@writefile{lof}{\addvspace {10\p@ }}
@@ -60,40 +60,48 @@
 \@writefile{toc}{\contentsline {section}{\numberline {4.3}Frame Edge Indicator Function (FEIF)}{16}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.4}Feature Extraction}{16}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}Pugh's Features}{17}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}F4K Feature}{17}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.3}PCA Analysis}{17}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}Image Processing For CNN}{17}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Images on different stage of pre-process\relax }}{18}}
-\newlabel{fig:imageprepro}{{4.3}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}Principle Component Analysis}{17}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Variance Explained\relax }}{18}}
+\newlabel{fig:pcsused}{{4.3}{18}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Image Processing For CNN}{18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Images on first stages of pre-process\relax }}{18}}
+\newlabel{fig:imageprepro}{{4.4}{18}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {5}Classification}{19}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Support Vector Machines (SVM)}{19}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Average score of 10-fold cross validation of rbf kernel SVMs\relax }}{19}}
-\newlabel{fig:svmparameter}{{5.1}{19}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Convolutional Neural Networks (CNN)}{20}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Evaluation}{20}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.4}Potential Candidate of classifiers}{20}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Parallel Distribution}{21}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Ambiguity in Original Classification Schema}{19}}
+\newlabel{AmbigCS}{{5.1}{19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Detection changing from class 8 (Bad Boundary) to 6 (Clean Boundary).\relax }}{19}}
+\newlabel{fig:class68}{{5.1}{19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces A track of detection, changing from class 5 (Unknown) to 6 (Fish).\relax }}{20}}
+\newlabel{fig:class56}{{5.2}{20}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Support Vector Machines (SVM)}{20}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces SVM's result on unseen dataset\relax }}{21}}
+\newlabel{fig:svmacc}{{5.3}{21}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Convolutional Neural Networks (CNN)}{21}}
+\newlabel{sec:cnn}{{5.3}{21}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Evaluation}{21}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.5}Potential Candidate of classifiers}{21}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Parallel Distribution}{23}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}Message Passing Interface for Python (MPI4PY)}{21}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces Running the MPI program on MATE terminal\relax }}{22}}
-\newlabel{fig:mpi}{{6.1}{22}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}CPU Hogging and Memory Thrashing Prevention}{22}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.3}Error Recovery and Progress Record}{22}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Message Passing Interface for Python (MPI4PY)}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces Running the MPI program on MATE terminal\relax }}{24}}
+\newlabel{fig:mpi}{{6.1}{24}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}CPU Hogging and Memory Thrashing Prevention}{24}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}Error Recovery and Progress Record}{24}}
 \bibstyle{unsrt}
 \bibdata{dissertation}
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusion}{25}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusion}{27}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {7.1}Results}{25}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.2}Future Work}{25}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.3}Final Words}{25}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Results}{27}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.2}Future Work}{27}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.3}Final Words}{27}}
 \bibcite{P1}{1}
 \bibcite{P2}{2}
 \bibcite{P3}{3}
 \bibcite{L5}{4}
 \bibcite{L3}{5}
 \bibcite{L4}{6}
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{27}}
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{29}}

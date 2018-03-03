@@ -25,6 +25,43 @@ import pickle
 
 ### ===================================================== Util ===================================================== ###
 
+def toBinary(vector, acceptRange):
+    l = len(vector)
+    output = [False] * l
+    for i in range(l):
+        output[i] = vector[i] in acceptRange
+    return np.array(output)
+
+def validateResult(yhat, gts, yrange=[6,8], grange=[6,8]):
+    yb = toBinary(yhat,yrange)
+    gb = toBinary(gts, grange)
+    
+    nyb = np.bitwise_not(yb)
+    ngb = np.bitwise_not(gb)
+    
+    tp = sum(np.bitwise_and(yb,gb))*1.0
+    fp = sum(np.bitwise_and(yb,ngb))*1.0
+    tn = sum(np.bitwise_and(nyb,ngb))*1.0
+    fn = sum(np.bitwise_and(nyb,gb))*1.0
+    
+    tot = len(yhat)*1.0
+    
+    print("True Positive Rate: {0}".format(tp/tot))
+    print("True Negative Rate: {0}".format(tn/tot))
+    print("False Positive Rate: {0}".format(fp/tot))
+    print("False Negative Rate: {0}".format(fn/tot))
+    print()
+    print("Accuracy: {0}".format((tp+tn)/tot))
+    print("Precision: {0}".format(tp/(tp+fp)))
+    print()
+    print("Good Fish Kept Rate: {0}".format(tp/(tp+fn))) #Recall
+    print("Good Fish Lost Rate: {0}".format(fn/(tp+fn))) #Miss Rate
+    print()
+    print("None Fish Kept Rate: {0}".format(fp/(fp+tn))) #False Alarm Rate
+    print("None Fish Lost Rate: {0}".format(tn/(fp+tn))) 
+    
+    return ((tp+tn)/tot)
+
 def cleanLine(a):
     # Input:  corrupt 01 string
     # Return: cleaned  01 string
@@ -531,7 +568,7 @@ def loadSampleFeatures():
             features = np.vstack((features,comb))
     return features
 
-def loadNewGT(movid, frames, validation=False):
+def loadNewGT(movid, frames, validation=False, spacing=1):
     location = "/afs/inf.ed.ac.uk/user/s14/s1413557/f4k/newgt/"
     if validation:
         location = "/afs/inf.ed.ac.uk/user/s14/s1413557/f4k/newgt/validation/"
@@ -546,12 +583,12 @@ def loadNewGT(movid, frames, validation=False):
             string += l.strip()
             
     for i in range(len(string)):
-        gts[i] = int(string[i])
-        if string[i] == "0": gts[i]=10
+        gts[i*spacing] = int(string[i])
+        if string[i] == "0": gts[i*spacing]=10
     
     return gts
 
-def loadValidationSet(filta=None):
+def loadValidationSet(filta=None,split=None):
     movs = loadMovids()
     movs_length = loadLengths()
     
@@ -564,14 +601,26 @@ def loadValidationSet(filta=None):
                     396720,396733,396778,396815,396820,396827,396830,396834,396879,396890,
                     396840,396841,396845,396849,396850,396851,396867,396883,396887,396891,
                     396785,396802,396811,396822,396838,396844,396873,396875,396881,396888])
+            
+    if filta != None:
+        index = [37,38,39,40,41,42,43,44,46].index(filta)
+        #idl = idl[np.arange(index*10+offset,index*10+offset+shift)]    
+        idl = idl.reshape(9,10)[index,:]
+        
+    if split != None:
+        idl = idl.reshape(-1,2)[:,split-1]
     
     location = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/training/features/"
     start = True
     
     for i in idl:
         idee = movs[i][0]
+        length = movs_length[i]
+        spacing = 1
+        if length >= 200:
+            spacing = length/100
         pca_feature = np.load(location+idee+".pcaFeature.npy")
-        gts = loadNewGT(idee, movs_length[i])
+        gts = loadNewGT(idee, movs_length[i],spacing)
         gts = np.array(gts)
         mask = gts != None
         
@@ -648,6 +697,7 @@ def loadTrainDataSet(includeNew=False, filta=None):
     idl = np.hstack((np.arange(30598,30633),np.arange(30634,30638)))
     
     if filta!=None:
+        filta = str(filta)
         mask = movs[idl][:,1]==filta
         idl = idl[mask]
     
@@ -754,7 +804,7 @@ def loadSql(path, frame_info, returnDict=False):
     else:
         return mask, sql, fid
     
-def loadVideo(video_id, print_info=False, print_time=False,):
+def loadVideo(video_id, print_info=False, print_time=False, alt_path=False):
     
     camera_id = video_id[1]
     if video_id[2] == "1":
@@ -774,6 +824,10 @@ def loadVideo(video_id, print_info=False, print_time=False,):
     if os.name == "nt":
         path = 'E:/f4k_extracted_image/output/summaries/{0}/{01}/'.format(f1,f2)
         path2 = 'E:/f4ktable/{0}/{01}/'.format(f1,f2)
+        
+    if alt_path:
+        path = '/afs/inf.ed.ac.uk/group/project/F4KC/summaries/{0}/{01}/'.format(f1,f2)
+        path2 = '/afs/inf.ed.ac.uk/group/project/F4KC/sqldump/{0}/{01}/'.format(f1,f2)
     
     headm = 'summary_'
     tailm = '.avi'

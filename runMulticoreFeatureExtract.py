@@ -114,6 +114,7 @@ class MySlave(Slave):
         super(MySlave, self).__init__()
         self.ranges = loadRange()
         self.pca = loadPCA(self.ranges)
+        self.svm = load
            
     def run(self):
         super(MySlave, self).run()
