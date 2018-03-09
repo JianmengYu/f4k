@@ -32,7 +32,7 @@ def toBinary(vector, acceptRange):
         output[i] = vector[i] in acceptRange
     return np.array(output)
 
-def validateResult(yhat, gts, yrange=[6,8], grange=[6,8]):
+def validateResult(yhat, gts, yrange=[6,8], grange=[6,8], succint=False, value=False, ret=False):
     yb = toBinary(yhat,yrange)
     gb = toBinary(gts, grange)
     
@@ -45,20 +45,41 @@ def validateResult(yhat, gts, yrange=[6,8], grange=[6,8]):
     fn = sum(np.bitwise_and(nyb,gb))*1.0
     
     tot = len(yhat)*1.0
+    #A\G|  F | NF
+    #=============
+    #F  | TP | FN
+    #=============
+    #NF | FP | TN
+    #=============
+    if ret:
+        #supress output
+        return (tp,fn,fp,tn)
     
-    print("True Positive Rate: {0}".format(tp/tot))
-    print("True Negative Rate: {0}".format(tn/tot))
-    print("False Positive Rate: {0}".format(fp/tot))
-    print("False Negative Rate: {0}".format(fn/tot))
-    print()
-    print("Accuracy: {0}".format((tp+tn)/tot))
-    print("Precision: {0}".format(tp/(tp+fp)))
-    print()
-    print("Good Fish Kept Rate: {0}".format(tp/(tp+fn))) #Recall
-    print("Good Fish Lost Rate: {0}".format(fn/(tp+fn))) #Miss Rate
-    print()
-    print("None Fish Kept Rate: {0}".format(fp/(fp+tn))) #False Alarm Rate
-    print("None Fish Lost Rate: {0}".format(tn/(fp+tn))) 
+    if succint:
+        if value:
+            just = 4
+            print("Good Fish Kept: {0}; Lost: {1};".format(str(int(tp)).ljust(just),str(int(fn)).ljust(just)))
+            print("None Fish Kept: {0}; Lost: {1};".format(str(int(fp)).ljust(just),str(int(tn)).ljust(just)))
+            print("Accuracy: {0}".format((tp+tn)/tot))
+            return (tp,fn,fp,tn)
+            #print("None Fish Kept: {0}; Lost: {1};".format(fp,tn))
+        else:
+            print("Good Fish Kept Rate: {0}, Lost Rate: {1}".format(tp/(tp+fn),fn/(tp+fn))) #Recall
+            print("None Fish Kept Rate: {0}, Lost Rate: {1}".format(fp/(fp+tn),tn/(fp+tn))) #False Alarm Rate          
+    else:
+        print("True Positive Rate: {0}".format(tp/tot))
+        print("True Negative Rate: {0}".format(tn/tot))
+        print("False Positive Rate: {0}".format(fp/tot))
+        print("False Negative Rate: {0}".format(fn/tot))
+        print()
+        print("Accuracy: {0}".format((tp+tn)/tot))
+        print("Precision: {0}".format(tp/(tp+fp)))
+        print()
+        print("Good Fish Kept Rate: {0}".format(tp/(tp+fn))) #Recall
+        print("Good Fish Lost Rate: {0}".format(fn/(tp+fn))) #Miss Rate
+        print()
+        print("None Fish Kept Rate: {0}".format(fp/(fp+tn))) #False Alarm Rate
+        print("None Fish Lost Rate: {0}".format(tn/(fp+tn))) 
     
     return ((tp+tn)/tot)
 
