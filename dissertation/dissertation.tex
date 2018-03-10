@@ -4,6 +4,7 @@
 \usepackage{appendix}
 \usepackage{listings}
 \usepackage{physics}
+\usepackage{enumitem}
 
 \begin{document}
 
@@ -58,7 +59,7 @@ After 5 years of recording, the project collected about 524,000 10-minute video 
 %TODO ask Bob who extracted these.
 Attempting to reduce the dataset, the F4K project developed and applied a species recognition algorithm. 
 This algorithm extracts all detections as 100x100 RGB images and their description files, reducing the dataset to approximately 839 million detections, having a combined size of 1.6 TB
-This dataset is called Reduced FDS (RDS), a more detailed composition of these files are described in Chapter \ref{sec:datasource}.
+This dataset is called Reduced FDS (RDS), a more detailed composition of these files are described in Chapter \ref{chap:datasource}.
 
 \section{Project Motivation}
 
@@ -89,40 +90,47 @@ F4K project's feature extraction MATLAB code is untranslated and is called withi
 For validation of Pugh's classifier performance, a set of separate videos were marked. After testing the classifiers on this dataset, it's discovered that Pugh's classifiers over-fits on the training dataset. Also by inspecting the training code, it is found that the training set were heavily biased. A new complementary ground truth dataset were marked for training new classifiers. 
 
 The classification step was originally going to use Pugh's trained SVM and CNN. Due to the problem above, the SVM parameters used are re-calibrated for higher accuracy on unseen dataset. 
+The Python's {\tt sklearn.svm.SVC} were used to achieve the same result instead of translation. The CNN implemented with lua torch are rewritten and called with Lutorpy library.
 
-Also, a fatal mistake were found in the CNN design, this causes 2 out of 3 CNN trained by Pugh almost useless. Details about the fault and the re-train attempt were included in (TODO)
+A fatal mistake were found in the CNN design, this causes 2 out of 3 CNN trained by Pugh almost useless. Details about the fault and the re-train attempt were included in (TODO).
 %TODO 
-
-The SVM was not directly translated, the Python's {\tt sklearn.svm.SVC} were used to achieve the same result. The CNN implemented with lua torch are rewritten and called with Lutorpy library.
+Due to this mistake, an attempt of re-use Yu's previously developed voting classifier to increase the accuracy were made. 
 
 (TODO) Possible reconstruction of the SQL and video is needed? Some of the FEIF rejected images still seems to be useful.
 
 \section{Document Structure}
 
-\textbf{Chapter 2} discusses the concepts, designs used and more detailed previous works of the project. 
+\textbf{Chapter \ref{chap:bg}} discusses the designs used and previous work details of the project. 
 
-\textbf{Chapter 3} described the details of the data sources, storage and preprocessing used in the cleaning algorithm.
+\textbf{Chapter \ref{chap:datasource}} described the details of the data sources, storage and preprocessing used in the cleaning algorithm.
 
-\textbf{Chapter 4} describes the first stages of the cleaning: early detection removal, feature extraction, preprocessing for classification in the next stage.
+\textbf{Chapter \ref{chap:prepro}} describes the first stages of the cleaning: early detection removal, feature extraction, preprocessing for classification in the next stage.
 
-\textbf{Chapter 5} discusses the final classifiers used in the cleaning, with evaluation of the results and comparison between different algorithms. 
+\textbf{Chapter \ref{chap:classify}} discusses the final classifiers used in the cleaning, with evaluation of the results and comparison between different algorithms. 
 
-\textbf{Chapter 6} talks about the task distribution system used in this project, and some of the difficulties and solutions.
+\textbf{Chapter \ref{chap:voting}} described the voting strategies to increase the accuracy of classifiers.
 
-\textbf{Chapter 7} contains the conclusions and possible future work needed for the project.
+\textbf{Chapter \ref{chap:parallel}} talks about the task distribution system used in this project, and some of the difficulties and solutions.
+
+\textbf{Chapter \ref{chap:conclusion}} contains the conclusions and possible future work needed for the project.
 \newpage
 
 \chapter{Backgrounds}
+\label{chap:bg}
 
-\section{Big Data}
+\section{Big Data and Distributed Computing}
 
 Big data is one of the hottest trending topics recently, where the amount of the data generated is not possible to be manually analysed. 
 Different to the popular text stream analysing, the project is more focused on image processing of a large collection. 
-There are already some image processing libraries with work distribution framework, for example: Hadoop Image Processing Interface\cite{L3}, Apache Spark based 4Quant\cite{L4}, and other toolkits for parallelization.
+There are already some image processing libraries with work distribution framework, for example: Hadoop Image Processing Interface\cite{L3}, Apache Spark based 4Quant\cite{L4}, and other tool-kits for distributed parallelization.
 
-Due to the limit of the project scale, the cleaning could not use dedicated servers, the Distributed Informatics Computing Environment (DICE) with Scientific Linux 7 (SL7) is used instead. 
-The DICE machines are provided by The University of Edinburgh, in this project, approximately 200-300 student lab DICE were used.
-Also, 1 TB and 256 GB of disk space quota on Andrew File System (AFS) was used for this project.
+Due to the limit of the project scale, the project could not use dedicated servers for cleaning the dataset.
+Instead, this project uses the student lab machines provided by The University of Edinburgh.
+These machines have Distributed Informatics Computing Environment (DICE) desktop installed, and using Andrew File System (AFS) for storage, this provides immense convenience on the project's need of fast and distributed I/O.   
+Approximately 200-300 student lab DICE, a 1 TB and 256 GB disk space on AFS were used for this project.
+
+The DICE machines used in the project does not have a shared memory, this means the project will also need tools for distribution of the task before parallelized locally.
+Since a shared file system is already provided, the more standard and portable Message Passing Interface (MPI) is used for distribution of the task. More specifically, the MPI4PY\cite{MPI4PY}, a MPI library designed for Python is used for this project, details of the task distribution design used are described in Chapter \ref{chap:parallel}.
 
 \section{Classification Schema}
 \label{sec:schema}
@@ -134,45 +142,48 @@ In previous work of Pugh\cite{P1}, ten different detection classes were used to 
 
 These 10 classes can be divided into 3 main categories:
 
-\renewcommand{\labelenumi}{\Roman{enumi}}
-\renewcommand{\labelenumii}{\arabic{enumii}}
-\renewcommand{\labelenumiii}{\roman{enumiii}}
+\renewcommand{\labelenumi}{\bfseries\Roman{enumi}}
+\renewcommand{\labelenumii}{\bfseries\arabic{enumii}}
+\renewcommand{\labelenumiii}{\bfseries\roman{enumiii}}
+
 \begin{enumerate}
- \item Not A Fish - These detection are marked for removal in future.
+   \setlength{\parskip}{3pt}
+
+ \item \textbf{Not A Fish} - These detection are marked for removal in future.
  \begin{enumerate}
-   \item Compression Artefact - During the process of recording video, some bits were dropped during transmission of the compressed video. These detections usually have rigid square shapes.
-   \item Illumination Artefact - Changes of brightness recognized as fish, they are usually refraction caused by turbid water, or light reflecting plankton.
-   \item Background Vegetation - Some of the video are captured with dynamic backgrounds, where the swaying plants are recognized as fish.
-   \item Others - Everything else, this includes large floating matter, empty contours created by faults in previous algorithms.
-   \item Unknown - Due to issues like lighting, blurry and stretched video frames, it's uncertain the detection is fish or not.
+   \item \textbf{Compression Artefact} - During the process of recording video, some bits were dropped during transmission of the compressed video. These detections usually have rigid square shapes.
+   \item \textbf{Illumination Artefact} - Changes of brightness recognized as fish, they are usually refraction caused by turbid water, or light reflecting plankton.
+   \item \textbf{Background Vegetation} - Some of the video are captured with dynamic backgrounds, where the swaying plants are recognized as fish.
+   \item \textbf{Others} - Everything else, this includes large floating matter, empty contours created by faults in previous algorithms.
+   \item \textbf{Unknown} - Due to issues like lighting, blurry and stretched video frames, it's uncertain the detection is fish or not.
  \end{enumerate}
  
- \item A Fish - These frames are useful for future researchers.
+ \item \textbf{A Fish} - These frames are useful for future researchers.
  \begin{enumerate}
    \setcounter{enumii}{5} 
-   \item Good Boundary - With clear ocean as background, these fish have good boundaries, and are useful for future species recognition.
-   \item Partial Fish - Mostly good detection boundary, but part of the fish is cut-off for various reasons:
+   \item \textbf{Good Boundary} - With clear ocean as background, these fish have good boundaries, and are useful for future species recognition.
+   \item \textbf{Partial Fish} - Mostly good detection boundary, but part of the fish is cut-off for various reasons:
     \begin{enumerate}
       \item Fishes cut by frame boundaries.
       \item Fishes are covered by vegetation or other fishes.
       \item The fish is too big and cropped by the 100x100 boundary.
     \end{enumerate}
-   \item Bad Boundary - The fish is clearly captured, but the boundary extracted is erratic and useless for research. 
+   \item \textbf{Bad Boundary} - The fish is clearly captured, but the boundary extracted is erratic and useless for research. 
  \end{enumerate}
  
- \item A Fish, but not useful - These frames detects fish correctly, but misleading information may be extracted, it's unsure these frames should be kept or not.
+ \item \textbf{A Fish, but not useful} - These frames detects fish correctly, but misleading information may be extracted, it's unsure these frames should be kept or not.
  \begin{enumerate}
    \setcounter{enumii}{8} 
-   \item Other Errors - like compression artefact are found in the image.
-   \item Multiple Fish - with shared contour.
+   \item \textbf{Other Errors} - like compression artefact are found in the image.
+   \item \textbf{Multiple Fish} - with shared contour.
  \end{enumerate}
 \end{enumerate}
 
-Fig \ref{fig:classes} shows manually picked examples from each of these classes.
+However, this classification schema was not good enough for evaluating accuracy of the classifiers due to the similarity between the classes, this limitation is described in Section \ref{sec:AmbigCS}.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.44]{graph/class_sample.png}
+    \includegraphics[scale=0.4]{graph/class_sample.png}
     \caption{Example Detections From Each Class}
     \label{fig:classes}
 \end{figure}
@@ -189,26 +200,29 @@ More details of this modification is in Section \ref{sec:sqld}.
 
 Before sending the data into the classifiers, preprocessing is needed to give a more sensible result.
 %The data pre-processing is the slowest part of the pipeline after removing the SQL server. 
-In Pugh's thesis\cite{P1}, a Frame Edge Indicator Function (FEIF) is used to directly reduce the number of frames need to be classified, after improvements and some new additions on dataset reduction, pre-processing cleans out about 20\% of the detections. More details on the reduction are in Chapter \ref{sec:datasource}.
+In Pugh's thesis\cite{P1}, a Frame Edge Indicator Function (FEIF) is used to directly reduce the number of frames need to be classified, after improvements and some new additions on dataset reduction, pre-processing cleans out about 20\% of the detections. More details on the reduction are in Chapter \ref{chap:datasource}.
 
 After extracting and reducing features, they are fed into 3 Convolutional Neural Networks (CNN) and 10 Support Vector Machines (SVM), then applying a top N algorithm to produce the final result. 
 
-\begin{figure}[!t]
+\begin{figure}[!h]
     \centering
-    \includegraphics[scale=0.34]{graph/Pipeline_Classifier.png}
+    \includegraphics[scale=0.3]{graph/Pipeline_Classifier.png}
     \caption{Pipeline Classifier designed by Pugh, modified}
     \label{fig:pipeline}
 \end{figure}
 
 \section{Yu's Voting Constraints}
 
-In 2016, Yu 
+In 2016, Yu\cite{P3} tried to add a voting constraint on the Pipeline Classifier. 
+Yu evaluated her 3 voting method on the result obtained by Pugh, and tested it against the obtained result of the Top-N method. 
+Yu's evaluation discovered that this method would reduce the total runtime by 10\%, however this process decrease the True Positive Rate (TPR) by 5\% and is not considered useful for the project. 
 
-(TODO) Not used because it doesn't reduce much workload.
+However after further evaluation of both Pugh and Yu's work, it is discovered that Pugh's final classifier over-fits on the training dataset due to the coverage, and mistakes in preprocessing steps. Details of this problem is discussed in Section \ref{sec:gt} and Section \ref{sec:CNNprepro}. 
 
+Since Yu's evaluation were based on the results of Pugh's experimental classifiers, it is shown that Pugh's classifier would obtain promising accuracy if the mistake in Section \ref{sec:cnn} is fixed. Due to the high cost of training, this project will use a modified version of Qiqi's voting strategy to make use of the results from the over-fitted classifiers. Detail of the modification and evaluation are included in Chapter \ref{chap:voting}.
 
 \chapter{Data Source}
-\label{sec:datasource}
+\label{chap:datasource}
 
 After the species recognition of the F4K project, three types of output files are stored:
 \begin{itemize}
@@ -313,6 +327,7 @@ All other bits - Chain Code of the contour, 3 bits each. Pointing towards next c
 This process allows quick extraction of the contour, loading the image, summaries, and the contour information of a 1000 frame video into memory from AFS only took 1 second now and removes the need to maintain a running SQL server.
 
 \section{Ground Truth Dataset}
+\label{sec:gt}
 
 In order to train and evaluate the classifiers, Pugh and Yu manually marked a set of detections with the schema above. They chose a subset of the RDS, which is some of the videos having id start with "13b". This subset of the RDS consists of 39 video files and 61,101 detections. 
 
@@ -329,7 +344,7 @@ After extracting some statistics on this dataset, it is discovered that this dat
 
 
 \chapter{Preprocessing}
-\label{sec:prepro}
+\label{chap:prepro}
 
 While the data source problem is solved, the most costly part of the pipeline will be the feature extraction for the SVM part. 
 It's not sensible to send all of the RGB values of a image as direct input for the SVM, hence feature extraction and dimensionality reduction is needed.
@@ -454,6 +469,7 @@ Also due to storages limit of the project, about 100 features per frame could be
 \end{figure}
 
 \section{Image Processing For CNN}
+\label{sec:CNNprepro}
 
 In Pugh's pipeline classifier, 3 different CNNs were used on different type of preprocessed images.
 In  {\tt CNN\_N}, normal image is used, in {\tt CNN\_WC} and {\tt CNN\_BC}, a masked image is used, filling the pixels outside the contour with white and black respectively.
@@ -478,9 +494,10 @@ This causes the CNN\_N and CNN\_BC almost useless, classifying almost every unse
 \end{figure}
 
 \chapter{Classification}
+\label{chap:classify}
 
 \section{Ambiguity in Original Classification Schema}
-\label{AmbigCS}
+\label{sec:AmbigCS}
 
 For the Pipeline Classifier, 10 classes of different detections were proposed in Section \ref{sec:schema}, but there are many limitations on this schema.
 For example, some cases could be appearing simultaneously, a detection could have an erratic boundary, and also touching the boundary of a frame. Pugh's thesis didn't state clearly different priority among classes used. 
@@ -530,34 +547,73 @@ The only different between MATLAB and Python's SVM is the parameter \(\gamma\) u
 In Pugh's design, due to the limitations of an incomplete training dataset, the result is heavily biased. After testing on unseen data, it classifies almost every detection as class 7 (partial fish visible). In order to fully utilize the features extracted, another search of parameter over C and \(\sigma\) is needed.
 
 Pugh's search for optimal parameters involves finding \(\gamma\in[2^{-5},2^{-3}...2^{13},2^{15}]\) that gives the highest accuracy among the pre-split dataset, due to the amount of features used and the size of the dataset, training a single SVM could take from 30-minute to 2-hour. Using the new grid search involving C and K-Folding, about 500 new SVM are needed to fit for finding the optimal value, it would take over months to complete.
-
 With the help of the task distribution system developed, it took about 4 hours to find the
 new optimal \(\sigma = 10^{-3}\), and \(C = 1\).
+The result of the SVM is shown in Fig \ref{fig:svmacc}.
 
 \begin{figure}[h]
 \centering
     \includegraphics[scale=0.44]{graph/svmresult.png}
     \caption{SVM's result and normalized result on unseen dataset}
     \label{fig:svmacc}
-\end{figure}
-
-The result of the SVM shown in Fig \ref{fig:svmacc}, 
+\end{figure} 
 
 \section{Convolutional Neural Networks (CNN)}
 \label{sec:cnn}
 
+%TODO voting link.
+As mentioned before in Section \ref{sec:CNNprepro}, the result of the CNN were heavily affected by the preprocessing error. This causes the one of the CNN learning too many unnecessary and random features of the image, which produces a poor accuracy on the unseen dataset, marking almost every image it sees into class 2 or 7. 
+%%%INSERTHERE
+
+However even under this fault, the CNN\_WC (CNN using image with white mask) still manages to produce reasonable result, and after testing different voting strategies, it's discovered that CNN\_BC (CNN using image with black mask) could also contribute in final classification.
+
+Since the classification gives a poor result compared to the accuracy achieved in Pugh's thesis\cite{P1}, it is first suspected that the translated Python code perform differently than the MATLAB's extraction.
+After discussion with Pugh he mentioned the extraction procedure were different in his final pipeline.
+
+His previous work uses MATLAB to experiment and evaluate on different classifiers, however  when it comes to the extraction process, Python's OpenCV library were used instead of the MATLAB ones.
+OpenCV stores a image in BGR space by default, and Lua loads the extracted images in RGB.
+
+Because of lacking a second set of validation data, the final training were not validated, the mistake in color space is not noticed until this project actually uses the trained model.
+
+At the time of the project it is considered the re-train of a new model, the original model were trained with CUDA support, were the machine nodes used in this project does not have a NVIDIA video card. 
+After evaluating Pugh's source code, each epoch of the training could take a full day on a single node, and re-train with the current frame work would take 20 days on 200 machines, not to mention the disruption caused by the high memory usage. 
+It is also considered to apply for a specialized cluster for the re-train, but due to the lack of time, re-train were not used in this project.
 
 
-\section{Evaluation}
-\section{Potential Candidate of classifiers}
+
+
+\begin{figure}[h]
+\centering
+    \includegraphics[scale=0.44]{graph/cnnwc.png}
+    \caption{CNN\_WC's result and normalized result on unseen dataset}
+    \label{fig:cnnbcacc}
+\end{figure} 
+
+%\begin{figure}[h]
+%\centering
+%    \includegraphics[scale=0.44]{graph/cnnbc.png}
+%    \caption{CNN\_BC's result and normalized result on unseen dataset}
+%    \label{fig:cnnwcacc}
+%\end{figure} 
+
+%\section{Evaluation}
+%\section{Potential Candidate of classifiers}
+
+\chapter{Voting Strategy}
+\label{chap:voting}
+
+In 2016, Yu tried to add voting constraint on the classifier and evaluated the efficiency. Originally this step are not used in the final Pipeline classifier, but due to the CNN fault, this step of classification is tested on Pugh's result and produced \underline{\hspace{40pt}} result. %TODO
+
+\section{Evaluation of Yu's approach}
+
+Yu's thesis explored three tracked-based voting methods, which removes a detection track entirely if less than 50\% of the detection is classified as non-fish.
 
 \chapter{Parallel Distribution}
-
-The project uses the student lab DICE machines as processor nodes, these machines have a shared file-system - AFS, and they have distributed memory. 
-
-With the need to communicate between the processes, Message Passing Interface (MPI) is used for the project. This allows quick startup of the work queues, and gives scalability on the machines used.
+\label{chap:parallel}
 
 \section{Message Passing Interface for Python (MPI4PY)}
+
+MPI4PY is
 
 Mpi-master-slave, a small python library with MPI4PY is used to distribute all the job among the available machines. 
 For example, if there are 4 machines available, with the following command: 
@@ -612,9 +668,37 @@ In the case of master crashes and other situations that MPI process is killed, a
 \newpage
 
 \chapter{Conclusion}
-\section{Results}
+\label{chap:conclusion}
+
+\section{Project Outcome}
+
+Initially the project goal is to further reduce the size of the RDS dataset from 1.6 TB to an acceptable size, however given the accuracy obtained from actual run, doing so would essentially causing 25\% of the good detections lost in the process. Also due to need of maintaining consistency in the {\tt .sql} file and video files, this final step is not used.
+
+Instead, this project produces 2 types of {\tt .npy} file (saved Numpy Arrays). 
+One of them is the predicted probability of each class obtained by the 4 major classifier used, taking about 260 GB disk space. 
+Another one is the final binary array of decisions, marking each frame as good detection or else, this is more compact than the other, using about 750 MB disk space.
+
+Also the by-product of the process may also be useful for future cleaning attempt on the dataset, this includes:
+\begin{itemize}
+\item A 323 GB folder, contains extracted {\tt .sql} records.
+\item A 510 GB folder, contains normalized and PCA transformed first 100 features.
+\item About 20,000 marked ground truth dataset, covering the videos both Pugh and Yu misses during ground truth process.
+\item A Python mpi application to distribute the classification work on DICE machines, and a Python script to obtain unused DICE machines.
+\item Translated utility functions in Python, some are from Pugh's MATLAB code and some of them are implemented in this project. This contains several Jupyter Notebooks, and two Python libraries. Which allows easier visualisation on the dataset, without the need to go through multiple extraction and SQL connection stage in MATLAB. 
+\end{itemize}
+
+%TODO add accuracy when you are done.
+
 \section{Future Work}
+\label{sec:future}
+
+Due to the image extraction fault in the training stage of the CNN, a over-fitted version of CNN is used in this project, in order to achieve expected accuracy in Pugh's thesis\cite{P1}, re-train of the network will be needed.
+%TODO zhuang-bi
+
+
+
 \section{Final Words}
+%TODO shuai-guo
 
 
 % use the following and \cite{} as above if you use BibTeX

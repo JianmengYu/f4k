@@ -30,4 +30,10 @@ Introduction to hadoop image processing interface {(HIPI)}.
 \newblock \url{http://4quant.com/}.
 \newblock Accessed: 2018-01-10.
 
+\bibitem{MPI4PY}
+Lisandro Dalcín, Rodrigo Paz, and Mario Storti.
+\newblock Mpi for python.
+\newblock {\em Journal of Parallel and Distributed Computing}, 65(9):1108 --
+  1115, 2005.
+
 \end{thebibliography}

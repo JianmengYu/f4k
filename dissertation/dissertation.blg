@@ -3,50 +3,44 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: dissertation.aux
 The style file: unsrt.bst
 Database file #1: dissertation.bib
-I was expecting a `,' or a `}'---line 47 of file dissertation.bib
- : 
- : @misc{L5,
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
-You've used 6 entries,
+You've used 7 entries,
             1791 wiz_defined-function locations,
-            476 strings with 4089 characters,
-and the built_in function-call counts, 696 in all, are:
-= -- 64
-> -- 12
+            485 strings with 4227 characters,
+and the built_in function-call counts, 975 in all, are:
+= -- 89
+> -- 23
 < -- 0
-+ -- 8
-- -- 2
-* -- 6
-:= -- 103
-add.period$ -- 18
-call.type$ -- 6
-change.case$ -- 8
++ -- 12
+- -- 5
+* -- 31
+:= -- 146
+add.period$ -- 21
+call.type$ -- 7
+change.case$ -- 9
 chr.to.int$ -- 0
-cite$ -- 6
-duplicate$ -- 32
-empty$ -- 95
-format.name$ -- 2
-if$ -- 167
+cite$ -- 7
+duplicate$ -- 41
+empty$ -- 123
+format.name$ -- 5
+if$ -- 229
 int.to.chr$ -- 0
-int.to.str$ -- 6
-missing$ -- 0
-newline$ -- 33
-num.names$ -- 2
-pop$ -- 38
+int.to.str$ -- 7
+missing$ -- 1
+newline$ -- 38
+num.names$ -- 3
+pop$ -- 39
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 14
+skip$ -- 17
 stack$ -- 0
-substring$ -- 0
-swap$ -- 4
+substring$ -- 33
+swap$ -- 5
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 2
-width$ -- 7
-write$ -- 60
-(There was 1 error message)
+while$ -- 4
+width$ -- 8
+write$ -- 71

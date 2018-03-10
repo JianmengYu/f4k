@@ -4,10 +4,10 @@
 \contentsline {section}{\numberline {1.3}Contribution}{2}
 \contentsline {section}{\numberline {1.4}Document Structure}{3}
 \contentsline {chapter}{\numberline {2}Backgrounds}{5}
-\contentsline {section}{\numberline {2.1}Big Data}{5}
-\contentsline {section}{\numberline {2.2}Classification Schema}{5}
+\contentsline {section}{\numberline {2.1}Big Data and Distributed Computing}{5}
+\contentsline {section}{\numberline {2.2}Classification Schema}{6}
 \contentsline {section}{\numberline {2.3}Pipeline Classifier}{7}
-\contentsline {section}{\numberline {2.4}Yu's Voting Constraints}{7}
+\contentsline {section}{\numberline {2.4}Yu's Voting Constraints}{8}
 \contentsline {chapter}{\numberline {3}Data Source}{9}
 \contentsline {section}{\numberline {3.1}Extracted Images}{9}
 \contentsline {section}{\numberline {3.2}SQL dump file}{10}
@@ -26,14 +26,14 @@
 \contentsline {section}{\numberline {5.1}Ambiguity in Original Classification Schema}{19}
 \contentsline {section}{\numberline {5.2}Support Vector Machines (SVM)}{20}
 \contentsline {section}{\numberline {5.3}Convolutional Neural Networks (CNN)}{21}
-\contentsline {section}{\numberline {5.4}Evaluation}{21}
-\contentsline {section}{\numberline {5.5}Potential Candidate of classifiers}{21}
-\contentsline {chapter}{\numberline {6}Parallel Distribution}{23}
-\contentsline {section}{\numberline {6.1}Message Passing Interface for Python (MPI4PY)}{23}
-\contentsline {section}{\numberline {6.2}CPU Hogging and Memory Thrashing Prevention}{24}
-\contentsline {section}{\numberline {6.3}Error Recovery and Progress Record}{24}
-\contentsline {chapter}{\numberline {7}Conclusion}{27}
-\contentsline {section}{\numberline {7.1}Results}{27}
-\contentsline {section}{\numberline {7.2}Future Work}{27}
-\contentsline {section}{\numberline {7.3}Final Words}{27}
-\contentsline {chapter}{Bibliography}{29}
+\contentsline {chapter}{\numberline {6}Voting Strategy}{23}
+\contentsline {section}{\numberline {6.1}Evaluation of Yu's approach}{23}
+\contentsline {chapter}{\numberline {7}Parallel Distribution}{25}
+\contentsline {section}{\numberline {7.1}Message Passing Interface for Python (MPI4PY)}{25}
+\contentsline {section}{\numberline {7.2}CPU Hogging and Memory Thrashing Prevention}{25}
+\contentsline {section}{\numberline {7.3}Error Recovery and Progress Record}{26}
+\contentsline {chapter}{\numberline {8}Conclusion}{29}
+\contentsline {section}{\numberline {8.1}Project Outcome}{29}
+\contentsline {section}{\numberline {8.2}Future Work}{30}
+\contentsline {section}{\numberline {8.3}Final Words}{30}
+\contentsline {chapter}{Bibliography}{31}
