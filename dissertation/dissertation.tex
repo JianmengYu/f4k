@@ -5,6 +5,9 @@
 \usepackage{listings}
 \usepackage{physics}
 \usepackage{enumitem}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
 
 \begin{document}
 
@@ -16,9 +19,9 @@
 
 \abstract{
 \pagenumbering{roman}
-This project applies the decision algorithm\cite{P1} developed by Pugh on a massive parallel scale. This aims to remove a large amount of False Positive fish detections in the Fish4Knowledge (F4K) dataset\cite{P2}, without losing too many True Positives.
+This project applies the decision algorithm\cite{Pugh} developed by Pugh on a massive parallel scale. This aims to remove a large amount of False Positive fish detections in the Fish4Knowledge (F4K) dataset\cite{F4K}, without losing too many True Positives.
 
-According to Qiqi Yu's estimated runtime\cite{P3}, the cleaning process will take more than 1000 days to complete on a 40-core machine. Simply running the process on a parallel scale will not be sufficient, optimization of the code is also essential for making the processing more feasible.
+According to Qiqi Yu's estimated runtime\cite{Yu}, the cleaning process will take more than 1000 days to complete on a 40-core machine. Simply running the process on a parallel scale will not be sufficient, optimization of the code is also essential for making the processing more feasible.
 
 This document describes the detail of various approach to reduce unnecessary work during pre-processing and improve the cleaning algorithm. In this process, efficiency evaluation for different implementations of the machine learning techniques is used to reduce computational time cost. 
 A more detailed roadmap this project is provided in Chapter 1.
@@ -54,7 +57,7 @@ The Fish4Knowledge (F4K) project, funded by EU's Seventh Framework Programme (FP
 
 The project acquired video data collected by Taiwan Ocean Research Institute. 
 They set up 9 cameras in different coral reef areas in Taiwan such as Nanwan National Park (NPP-3), Lanyu, and Houbi Lake (HoBiHu). 
-After 5 years of recording, the project collected about 524,000 10-minute video clips, with a total size of 91 TB, and approximately 1.4 billion fish detection found in the videos, we call this the F4K Original Data Set (FDS).
+After 5 years of recording, the project collected about 524,000 10-minute video clips, with a total size of 91 TB, and approximately 1.4 billion fish detection found in the videos, we call this the F4K Original Data Set (FDS). Samples of the dataset could be found at F4K homepage\cite{F4Khome}.
 
 %TODO ask Bob who extracted these.
 Attempting to reduce the dataset, the F4K project developed and applied a species recognition algorithm. 
@@ -63,10 +66,10 @@ This dataset is called Reduced FDS (RDS), a more detailed composition of these f
 
 \section{Project Motivation}
 
-In 2015, Pugh\cite{P1} developed a cleaning algorithm for RDS, which would approximately remove 90\% of the False Positives (objects that are not fish, recognized as fish), while only losing about 8\% of True Positives (true fish detections). 
+In 2015, Pugh\cite{Pugh} developed a cleaning algorithm for RDS based on Huang's thesis\cite{Huang}, which would approximately remove 90\% of the False Positives (objects that are not fish, recognized as fish), while only losing about 8\% of True Positives (true fish detections). 
 
 However, due to lack of time and resource, the cleaning was not used on the dataset.
-In 2016, Yu\cite{P3} attempted to add voting constraints on the cleaning algorithm, and evaluated the time cost of the algorithm.
+In 2016, Yu\cite{Yu} attempted to add voting constraints on the cleaning algorithm, and evaluated the time cost of the algorithm.
 The cleaning wasn't applied because the constraint could not improve much to the efficiency of cleaning.
 
 It is evaluated cleaning a 1,000 detection video on a 40-core machine would take 200 seconds.
@@ -85,7 +88,7 @@ The pipeline classifier is also re-written in Python, unfinished part of the ori
 Due to the removal of the SQL server in the pipeline, the extraction and visualization MATLAB scripts created by Pugh are re-engineered into Python functions. 
 Some metrics algorithms used is translated from MATLAB for loops to Numpy/Scipy operations to increase efficiency.
 
-F4K project's feature extraction MATLAB code is untranslated and is called within Python using PyMatlab library. Some minor changes like replacing edge extraction algorithm used, and error handling added to one of the unstable {\tt getCstd()} function. 
+F4K project's feature extraction MATLAB code developed by Huang\cite{Huang} is untranslated and is called within Python using PyMatlab library. Some minor changes like replacing edge extraction algorithm used, and error handling added to one of the unstable {\tt getCstd()} function. 
 
 For validation of Pugh's classifier performance, a set of separate videos were marked. After testing the classifiers on this dataset, it's discovered that Pugh's classifiers over-fits on the training dataset. Also by inspecting the training code, it is found that the training set were heavily biased. A new complementary ground truth dataset were marked for training new classifiers. 
 
@@ -115,6 +118,7 @@ Due to this mistake, an attempt of re-use Yu's previously developed voting class
 \textbf{Chapter \ref{chap:conclusion}} contains the conclusions and possible future work needed for the project.
 \newpage
 
+
 \chapter{Backgrounds}
 \label{chap:bg}
 
@@ -138,7 +142,7 @@ Since a shared file system is already provided, the more standard and portable M
 The reduction procedure of F4K project removed some of the False Positives from FDS. 
 However, there are still a lot of False Positives in the RDS, to resolve this issue, a classification schema is created to identify the detections.
 
-In previous work of Pugh\cite{P1}, ten different detection classes were used to ground truth the dataset, which is later used to train different classifiers used in the cleaning. 
+In previous work of Pugh\cite{Pugh}, ten different detection classes were used to ground truth the dataset, which is later used to train different classifiers used in the cleaning. 
 
 These 10 classes can be divided into 3 main categories:
 
@@ -190,7 +194,7 @@ However, this classification schema was not good enough for evaluating accuracy 
 
 \section{Pipeline Classifier}
 
-The main part of the project is to translate and apply the pipeline classifier, designed by Pugh\cite{P1}. 
+The main part of the project is to translate and apply the pipeline classifier, designed by Pugh\cite{Pugh}. 
 However, under limitations, the pipeline itself could not be applied directly on a parallel scale.
 
 The first limitation is the SQL database, which stores the track and contour information of the image. 
@@ -200,7 +204,7 @@ More details of this modification is in Section \ref{sec:sqld}.
 
 Before sending the data into the classifiers, preprocessing is needed to give a more sensible result.
 %The data pre-processing is the slowest part of the pipeline after removing the SQL server. 
-In Pugh's thesis\cite{P1}, a Frame Edge Indicator Function (FEIF) is used to directly reduce the number of frames need to be classified, after improvements and some new additions on dataset reduction, pre-processing cleans out about 20\% of the detections. More details on the reduction are in Chapter \ref{chap:datasource}.
+In Pugh's thesis\cite{Pugh}, a Frame Edge Indicator Function (FEIF) is used to directly reduce the number of frames need to be classified, after improvements and some new additions on dataset reduction, pre-processing cleans out about 20\% of the detections. More details on the reduction are in Chapter \ref{chap:datasource}.
 
 After extracting and reducing features, they are fed into 3 Convolutional Neural Networks (CNN) and 10 Support Vector Machines (SVM), then applying a top N algorithm to produce the final result. 
 
@@ -213,7 +217,7 @@ After extracting and reducing features, they are fed into 3 Convolutional Neural
 
 \section{Yu's Voting Constraints}
 
-In 2016, Yu\cite{P3} tried to add a voting constraint on the Pipeline Classifier. 
+In 2016, Yu\cite{Yu} tried to add a voting constraint on the Pipeline Classifier. 
 Yu evaluated her 3 voting method on the result obtained by Pugh, and tested it against the obtained result of the Top-N method. 
 Yu's evaluation discovered that this method would reduce the total runtime by 10\%, however this process decrease the True Positive Rate (TPR) by 5\% and is not considered useful for the project. 
 
@@ -419,7 +423,7 @@ Using the above patterns and observed distribution in Fig \ref{fig:vidlength}, i
 
 \section{Frame Edge Indicator Function (FEIF)}
 
-In Pugh's thesis\cite{P1}, the FEIF is used to identify if a fish is being partially cut by the frame. In FEIF, a boundary of video is defined, and if the number of the contour points outside of the boundary exceeds 25, the detection is then rejected.
+In Pugh's thesis\cite{Pugh}, the FEIF is used to identify if a fish is being partially cut by the frame. In FEIF, a boundary of video is defined, and if the number of the contour points outside of the boundary exceeds 25, the detection is then rejected.
 
 However this function could not achieve the intention on some cases, for example, some videos have a darker frame edge, so even if a fish is cut by boundary, the contour points will be inside the boundary. Also, a large fish slightly touching the boundary will be rejected because the 25 limit, and small fishes may bypass the heuristics because of the size.
 
@@ -427,7 +431,7 @@ Following modification is added to solve the problem, by shrinking the boundary 
 
 \section{Feature Extraction}
 
-During the species recognition stage of the F4K project, 2626 features were used for computing detection certainty. 
+During the species recognition stage of the F4K project, 2626 features were used for computing detection certainty.
 On that basis, Pugh added 29 new features focused on the edges of the contour. Then dimensionality reduction is applied to the features to reduce dimension from 2655 to 88. 
 
 This process takes about 0.3 seconds for each frame, Analysing the computational time shows the following result, sorted by time cost:
@@ -567,7 +571,7 @@ As mentioned before in Section \ref{sec:CNNprepro}, the result of the CNN were h
 
 However even under this fault, the CNN\_WC (CNN using image with white mask) still manages to produce reasonable result, and after testing different voting strategies, it's discovered that CNN\_BC (CNN using image with black mask) could also contribute in final classification.
 
-Since the classification gives a poor result compared to the accuracy achieved in Pugh's thesis\cite{P1}, it is first suspected that the translated Python code perform differently than the MATLAB's extraction.
+Since the classification gives a poor result compared to the accuracy achieved in Pugh's thesis\cite{Pugh}, it is first suspected that the translated Python code perform differently than the MATLAB's extraction.
 After discussion with Pugh he mentioned the extraction procedure were different in his final pipeline.
 
 His previous work uses MATLAB to experiment and evaluate on different classifiers, however  when it comes to the extraction process, Python's OpenCV library were used instead of the MATLAB ones.
@@ -611,9 +615,43 @@ Yu's thesis explored three tracked-based voting methods, which removes a detecti
 \chapter{Parallel Distribution}
 \label{chap:parallel}
 
-\section{Message Passing Interface for Python (MPI4PY)}
+Originally the deploy of the cleaning task will be in the form of a pipeline.
+But with sufficient disk space and the need to translate the pipeline parts, the project change the pipeline these stages of processing:
 
-MPI4PY is
+\begin{itemize}
+   \setlength{\parskip}{3pt}
+   \item Preprocessing, Feature Extraction and Transformation for SVM
+   \item Classify using SVM and CNN
+   \item Final Classification
+\end{itemize}
+Where first two stages are separated due to them cost the most of the time, and the final stage is separated due to the need of experiments to improve accuracy.
+
+\section{Message Passing Interface for Python (MPI4PY)}
+%TODO Jargon on MPI4PY
+%
+%\begin{algorithm}
+%\caption{Master Workflow}
+%\begin{algorithmic}
+%\STATE WorkQueue $\leftarrow$ []
+%\FOR {VideoID $\in$ VideoNameList}
+%\STATE WorkQueue.append(VideoID)
+%\ENDFOR
+%\WHILE{not WorkQueue.done}
+%\FOR {Slave $\in$ SlaveList}
+%\IF {mpi.receive(Slave,"Ready")}
+%\STATE Slave.assign(WorkQueue.unassigned)
+%\ENDIF
+%\ENDFOR
+%\IF{$N$ is even}
+%\STATE $X \leftarrow X \times X$
+%\STATE $N \leftarrow N / 2$
+%\ELSE[$N$ is odd]
+%\STATE $y \leftarrow y \times X$
+%\STATE $N \leftarrow N - 1$
+%\ENDIF
+%\ENDWHILE
+%\end{algorithmic} 
+%\end{algorithm}
 
 Mpi-master-slave, a small python library with MPI4PY is used to distribute all the job among the available machines. 
 For example, if there are 4 machines available, with the following command: 
@@ -692,10 +730,32 @@ Also the by-product of the process may also be useful for future cleaning attemp
 \section{Future Work}
 \label{sec:future}
 
-Due to the image extraction fault in the training stage of the CNN, a over-fitted version of CNN is used in this project, in order to achieve expected accuracy in Pugh's thesis\cite{P1}, re-train of the network will be needed.
-%TODO zhuang-bi
+This project successfully applies the cleaning algorithms designed by Pugh\cite{Pugh}, however it did not achieve the same level of accuracy as Pugh's thesis described.
+In order to increase the accuracy of the classifiers, following improvements will be needed.
 
+\subsection{More Annotation}
 
+As stated in Section \ref{sec:gt}, the current Ground Truth Dataset is heavily biased, which completely misses out the detections at some site of filming. 
+Even after adding 20,000 detections across every site, the dataset still have incomplete coverage on the RDS. 
+
+Pugh also mentioned about this problem in his thesis, where more human annotator might be needed for the project.
+With the limitation of the current classification schema, the ground truth process is irritating and tedious due to the ambiguity mentioned in Section \ref{sec:AmbigCS}.
+
+An alternative maybe using an online survey for ground truth, however it is not fully implemented at this stage of the project.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.38]{graph/query.png}
+    \caption{A prototype online ground truth interface}
+    \label{fig:gto}
+\end{figure}
+
+\subsection{Training New CNNs}
+
+Due to the image extraction fault in the training stage of the CNN, a over-fitted version of CNN is used in this project. 
+In order to achieve expected accuracy in Pugh's thesis\cite{Pugh}, re-train of the network will be needed.
+
+The accuracy obtained by the training dataset on CNN\_WC has shown promising accuracy even with completely wrong color space. Combining with Pugh's result obtained in experiment stage, and the difference in performance on Training/Validation dataset obtained in this project, it's almost certain a well-trained CNN would obtain at least 70\% accuracy on the cleaning task. 
 
 \section{Final Words}
 %TODO shuai-guo

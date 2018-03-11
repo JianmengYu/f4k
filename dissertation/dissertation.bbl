@@ -1,19 +1,32 @@
 \begin{thebibliography}{1}
 
-\bibitem{P1}
+\bibitem{Pugh}
 Matthew Pugh.
 \newblock Removing false detections from a large fish image data-set.
 \newblock Msc dissertation, The University of Edinburgh, 2015.
 
-\bibitem{P2}
+\bibitem{F4K}
+Daniela Giordano Lynda Hardman Fang-Pang~Lin Robert B~Fisher, Yun-Heh
+  Chen-Burger.
+\newblock {\em Fish4Knowledge: collecting and analyzing massive coral reef fish
+  video data}.
+\newblock Springer, 2016.
+
+\bibitem{Yu}
+Qiqi Yu.
+\newblock Adding temporal constraints to a large data cleaning problem.
+\newblock Msc dissertation, The University of Edinburgh, 2016.
+
+\bibitem{F4Khome}
 Fish4knowledge homepage.
 \newblock \url{http://fish4knowledge.eu/}.
 \newblock Accessed: 2018-01-08.
 
-\bibitem{P3}
-Qiqi Yu.
-\newblock Adding temporal constraints to a large data cleaning problem.
-\newblock Msc dissertation, The University of Edinburgh, 2016.
+\bibitem{Huang}
+Phoenix~X. Huang.
+\newblock {\em Balance-guaranteed optimized tree with reject option for live
+  fish recognition}.
+\newblock PhD thesis, The University of Edinburgh, 2014.
 
 \bibitem{L5}
 luca-s: mpi-master-slave github repository.

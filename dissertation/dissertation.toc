@@ -30,10 +30,12 @@
 \contentsline {section}{\numberline {6.1}Evaluation of Yu's approach}{23}
 \contentsline {chapter}{\numberline {7}Parallel Distribution}{25}
 \contentsline {section}{\numberline {7.1}Message Passing Interface for Python (MPI4PY)}{25}
-\contentsline {section}{\numberline {7.2}CPU Hogging and Memory Thrashing Prevention}{25}
-\contentsline {section}{\numberline {7.3}Error Recovery and Progress Record}{26}
+\contentsline {section}{\numberline {7.2}CPU Hogging and Memory Thrashing Prevention}{26}
+\contentsline {section}{\numberline {7.3}Error Recovery and Progress Record}{27}
 \contentsline {chapter}{\numberline {8}Conclusion}{29}
 \contentsline {section}{\numberline {8.1}Project Outcome}{29}
 \contentsline {section}{\numberline {8.2}Future Work}{30}
-\contentsline {section}{\numberline {8.3}Final Words}{30}
-\contentsline {chapter}{Bibliography}{31}
+\contentsline {subsection}{\numberline {8.2.1}More Annotation}{30}
+\contentsline {subsection}{\numberline {8.2.2}Training New CNNs}{31}
+\contentsline {section}{\numberline {8.3}Final Words}{31}
+\contentsline {chapter}{Bibliography}{33}

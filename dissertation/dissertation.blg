@@ -3,44 +3,49 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: dissertation.aux
 The style file: unsrt.bst
 Database file #1: dissertation.bib
-You've used 7 entries,
+Too many commas in name 1 of "Robert B Fisher, Yun-Heh Chen-Burger, Daniela Giordano, Lynda Hardman, Fang-Pang Lin" for entry F4K
+while executing---line 944 of file unsrt.bst
+Too many commas in name 1 of "Robert B Fisher, Yun-Heh Chen-Burger, Daniela Giordano, Lynda Hardman, Fang-Pang Lin" for entry F4K
+while executing---line 944 of file unsrt.bst
+You've used 9 entries,
             1791 wiz_defined-function locations,
-            485 strings with 4227 characters,
-and the built_in function-call counts, 975 in all, are:
-= -- 89
-> -- 23
+            495 strings with 4523 characters,
+and the built_in function-call counts, 1243 in all, are:
+= -- 113
+> -- 31
 < -- 0
-+ -- 12
-- -- 5
-* -- 31
-:= -- 146
-add.period$ -- 21
-call.type$ -- 7
++ -- 16
+- -- 7
+* -- 38
+:= -- 194
+add.period$ -- 27
+call.type$ -- 9
 change.case$ -- 9
 chr.to.int$ -- 0
-cite$ -- 7
-duplicate$ -- 41
-empty$ -- 123
-format.name$ -- 5
-if$ -- 229
+cite$ -- 9
+duplicate$ -- 58
+empty$ -- 153
+format.name$ -- 7
+if$ -- 289
 int.to.chr$ -- 0
-int.to.str$ -- 7
-missing$ -- 1
-newline$ -- 38
-num.names$ -- 3
-pop$ -- 39
+int.to.str$ -- 9
+missing$ -- 3
+newline$ -- 48
+num.names$ -- 5
+pop$ -- 48
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 17
+skip$ -- 21
 stack$ -- 0
 substring$ -- 33
-swap$ -- 5
+swap$ -- 7
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 4
-width$ -- 8
-write$ -- 71
+while$ -- 6
+width$ -- 10
+write$ -- 92
+(There were 2 error messages)
