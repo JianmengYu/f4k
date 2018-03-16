@@ -39,3 +39,5 @@
 \contentsline {subsection}{\numberline {8.2.2}Training New CNNs}{31}
 \contentsline {section}{\numberline {8.3}Final Words}{31}
 \contentsline {chapter}{Bibliography}{33}
+\contentsline {chapter}{\numberline {A}Master/Slave Framework Pseudo-Code}{35}
+\contentsline {chapter}{\numberline {B}Sample of Lengthy Videos}{37}

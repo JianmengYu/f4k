@@ -7,45 +7,45 @@ Too many commas in name 1 of "Robert B Fisher, Yun-Heh Chen-Burger, Daniela Gior
 while executing---line 944 of file unsrt.bst
 Too many commas in name 1 of "Robert B Fisher, Yun-Heh Chen-Burger, Daniela Giordano, Lynda Hardman, Fang-Pang Lin" for entry F4K
 while executing---line 944 of file unsrt.bst
-You've used 9 entries,
+You've used 10 entries,
             1791 wiz_defined-function locations,
-            495 strings with 4523 characters,
-and the built_in function-call counts, 1243 in all, are:
-= -- 113
-> -- 31
+            507 strings with 4816 characters,
+and the built_in function-call counts, 1711 in all, are:
+= -- 153
+> -- 58
 < -- 0
-+ -- 16
-- -- 7
-* -- 38
-:= -- 194
-add.period$ -- 27
-call.type$ -- 9
-change.case$ -- 9
++ -- 25
+- -- 15
+* -- 90
+:= -- 277
+add.period$ -- 31
+call.type$ -- 10
+change.case$ -- 10
 chr.to.int$ -- 0
-cite$ -- 9
-duplicate$ -- 58
-empty$ -- 153
-format.name$ -- 7
-if$ -- 289
+cite$ -- 10
+duplicate$ -- 71
+empty$ -- 189
+format.name$ -- 15
+if$ -- 386
 int.to.chr$ -- 0
-int.to.str$ -- 9
-missing$ -- 3
-newline$ -- 48
-num.names$ -- 5
-pop$ -- 48
+int.to.str$ -- 10
+missing$ -- 5
+newline$ -- 54
+num.names$ -- 7
+pop$ -- 41
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 21
+skip$ -- 23
 stack$ -- 0
-substring$ -- 33
-swap$ -- 7
+substring$ -- 93
+swap$ -- 8
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 6
-width$ -- 10
-write$ -- 92
+while$ -- 10
+width$ -- 12
+write$ -- 107
 (There were 2 error messages)

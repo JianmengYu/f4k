@@ -57,7 +57,7 @@ The Fish4Knowledge (F4K) project, funded by EU's Seventh Framework Programme (FP
 
 The project acquired video data collected by Taiwan Ocean Research Institute. 
 They set up 9 cameras in different coral reef areas in Taiwan such as Nanwan National Park (NPP-3), Lanyu, and Houbi Lake (HoBiHu). 
-After 5 years of recording, the project collected about 524,000 10-minute video clips, with a total size of 91 TB, and approximately 1.4 billion fish detection found in the videos, we call this the F4K Original Data Set (FDS). Samples of the dataset could be found at F4K homepage\cite{F4Khome}.
+After 5 years of recording, the project collected about 524,000 10-minute video clips, with a total size of 91 TB, and approximately 1.4 billion fish detection found in the videos, we call this the F4K Original Data Set (FDS). 
 
 %TODO ask Bob who extracted these.
 Attempting to reduce the dataset, the F4K project developed and applied a species recognition algorithm. 
@@ -388,6 +388,7 @@ Scipy.NDImage's convolve, giving almost same performance as MATLAB.
 After this analysis, it's clear that re-engineering the MATLAB code is likely to spend more time, so a library called PyMatlab will be used to compute the F4K features in a MATLAB session instead, while other unfinished parts of the pipeline will be translated to Python.
 
 \section{Early Video Removal}
+\label{sec:earlyremove}
 
 During the feature extraction tests, it is discovered that loading a 40,000 frame video and extract features from it would take about 8 GB of memory space. 
 If such video is processed on a node with RAM less than 8 GB, it will cause serious thrashing, rendering the node unresponsive. For machines having a RAM higher than 8 GB, it will still causes some disruption during loading.  
@@ -606,9 +607,11 @@ It is also considered to apply for a specialized cluster for the re-train, but d
 \chapter{Voting Strategy}
 \label{chap:voting}
 
-In 2016, Yu tried to add voting constraint on the classifier and evaluated the efficiency. Originally this step are not used in the final Pipeline classifier, but due to the CNN fault, this step of classification is tested on Pugh's result and produced \underline{\hspace{40pt}} result. %TODO
+As the classifier do not work as expected as in Pugh's thesis, some 
 
 \section{Evaluation of Yu's approach}
+
+In 2016, Yu tried to add voting constraint on the classifier and evaluated the efficiency. Originally this step are not used in the final Pipeline classifier, but due to the CNN fault, this step of classification is tested on Pugh's result and produced \underline{\hspace{40pt}} result.
 
 Yu's thesis explored three tracked-based voting methods, which removes a detection track entirely if less than 50\% of the detection is classified as non-fish.
 
@@ -627,33 +630,10 @@ But with sufficient disk space and the need to translate the pipeline parts, the
 Where first two stages are separated due to them cost the most of the time, and the final stage is separated due to the need of experiments to improve accuracy.
 
 \section{Message Passing Interface for Python (MPI4PY)}
-%TODO Jargon on MPI4PY
-%
-%\begin{algorithm}
-%\caption{Master Workflow}
-%\begin{algorithmic}
-%\STATE WorkQueue $\leftarrow$ []
-%\FOR {VideoID $\in$ VideoNameList}
-%\STATE WorkQueue.append(VideoID)
-%\ENDFOR
-%\WHILE{not WorkQueue.done}
-%\FOR {Slave $\in$ SlaveList}
-%\IF {mpi.receive(Slave,"Ready")}
-%\STATE Slave.assign(WorkQueue.unassigned)
-%\ENDIF
-%\ENDFOR
-%\IF{$N$ is even}
-%\STATE $X \leftarrow X \times X$
-%\STATE $N \leftarrow N / 2$
-%\ELSE[$N$ is odd]
-%\STATE $y \leftarrow y \times X$
-%\STATE $N \leftarrow N - 1$
-%\ENDIF
-%\ENDWHILE
-%\end{algorithmic} 
-%\end{algorithm}
 
-Mpi-master-slave, a small python library with MPI4PY is used to distribute all the job among the available machines. 
+In 2005, researchers have tried to add MPI support for Python\cite{MPI4PY}, and extends the capabilities for MPI-2 standard in 2008\cite{MPI4PY2}. The current version of MPI4PY\cite{MPI4PY3} were implemented in Cython, where the MPI calls were handled in C, ensuring high performance and compatibility.
+
+Mpi-master-slave\cite{L5}, a small python library with MPI4PY is used to distribute all the job among the available machines. 
 For example, if there are 4 machines available, with the following command: 
 \lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
 \begin{lstlisting}[frame=single]
@@ -767,42 +747,95 @@ The accuracy obtained by the training dataset on CNN\_WC has shown promising acc
 \bibliography{dissertation}
 
 
-%\begin{appendices}
-%\chapter{Sample of Lengthy Videos}
-%\label{sec:samplelong}
+\begin{appendices}
+
+\chapter{Master/Slave Framework Pseudo-Code}
+
+With this framework design, if we want to process any stage of the pipeline classifier, we only need to overwrite the \underline{\textbf{DoWork}(VideoID)} function of slave code.
+
+If the framework are used in work other than process the videos, (in this project's case: finding SVM parameters), the  \underline{\textbf{VideoIDList}} can be changed to adapt the new tasks.
+
+\begin{algorithm}
+\caption{Master Workflow}
+\begin{algorithmic}
+\STATE WorkQueue $\leftarrow$ []
+\FOR {VideoID $\in$ \underline{\textbf{VideoIDList}}}
+	\STATE WorkQueue.addTask(VideoID)
+\ENDFOR
+\WHILE{not WorkQueue.done}
+	\FOR {Slave $\in$ mpi.getList(SlaveList,"READY")}
+		\STATE \textbf{if} WorkQueue.done \textbf{then} BREAK 
+		\STATE mpi.send(Slave,"START",WorkQueue.getTask)
+	\ENDFOR
+	\FOR {(Data,VideoID) $\in$ mpi.getList(SlaveList,"FINISH")}
+		\STATE WorkQueue.markComplete(VideoID)
+		\IF {Data = "Fail"}
+			\STATE WorkQueue.addTask(VideoID)
+		\ENDIF
+	\ENDFOR
+\ENDWHILE
+\STATE mpi.broadcast("EXIT")
+\end{algorithmic} 
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Slave Workflow}
+\begin{algorithmic}
+\WHILE{not mpi.receive("EXIT")}
+	\STATE mpi.send(Master,"READY")
+	\IF {mpi.receive(Master,"START",VideoID)}
+		\STATE Success $\leftarrow$ \underline{\textbf{DoWork}(VideoID)}
+		\STATE \textbf{if} Success \textbf{then}
+		\STATE \hspace{10pt}mpi.send(Master,"FINISH","Success",VideoID)
+		\STATE \textbf{else}
+		\STATE \hspace{10pt}mpi.send(Master,"FINISH","Fail",VideoID)
+		\STATE \textbf{end if}
+	\ENDIF
+\ENDWHILE
+\STATE mpi.broadcast("EXIT")
+\end{algorithmic} 
+\end{algorithm}
+
+\chapter{Sample of Lengthy Videos}
+\label{sec:samplelong}
+
 %TODO say something
 %The videos below are some sample frames.
+In Section \ref{sec:earlyremove}, a classification method based on file-name is proposed.
+If a video have over 30,000 frames and is filmed at a specific time and location, every frame of the video will be marked as non-fish. 
+As each of video of RDS originate from a 10-minute video, having such amount of detection essentially means there are over 50 fish captured per second of original FDS.
 
-%Words
+For the most of the case, such video are full of compression error, planktons, or having background extraction fault caused by moving vegetation. These cases were shown in Fig \ref{fig:sample_night}, Fig \ref{fig:sample_corrupt}, and Fig \ref{fig:sample_vegetation}.
 
-%Paragraphs
+By manually looking through the samples from the longest videos, a limit of 30,000 is set due to the need of keeping good detection such as ones in Fig \ref{fig:sample_fish}. This ensures the good fish lost will be less than 1\% of the bad detection this method removes.
 
-%\begin{figure}
-%\centering
-%    \includegraphics[scale=0.46]%{graph/sample_night.png}
-%    \caption{Sample frames from a video filmed at night.}
-%    \label{fig:sample_night}
-%\end{figure}
+\begin{figure}
+\centering
+    \includegraphics[scale=0.46]{graph/sample_night.png}
+    \caption{Sample frames from a video filmed at night.}
+    \label{fig:sample_night}
+\end{figure}
 
-%\begin{figure}
-%\centering
-%    \includegraphics[scale=0.46]{graph/sample_corrupt.png}
-%    \caption{Sample frames from a corrupted video.}
-%    \label{fig:sample_corrupt}
-%\end{figure}
+\begin{figure}
+\centering
+    \includegraphics[scale=0.46]{graph/sample_corrupt.png}
+    \caption{Sample frames from a corrupted video.}
+    \label{fig:sample_corrupt}
+\end{figure}
 
-%\begin{figure}
-%\centering
-%    \includegraphics[scale=0.46]%{graph/sample_vegetation.png}
-%    \caption{Sample frames from a video with dynamic background.}
-%    \label{fig:sample_vegetation}
-%\end{figure}
-%\begin{figure}
-%\centering
-%    \includegraphics[scale=0.46]{graph/sample_fish.png}
-%    \caption{Sample frames from a video with abnormal amount of fish.}
-%    \label{fig:sample_fish}
-%\end{figure}
-%\end{appendices}
+\begin{figure}
+\centering
+    \includegraphics[scale=0.46]{graph/sample_vegetation.png}
+    \caption{Sample frames from a video with dynamic background.}
+    \label{fig:sample_vegetation}
+\end{figure}
+\begin{figure}
+\centering
+    \includegraphics[scale=0.46]{graph/sample_fish.png}
+    \caption{Sample frames from a video with abnormal amount of fish.}
+    \label{fig:sample_fish}
+\end{figure}
+
+\end{appendices}
 
 \end{document}
