@@ -111,7 +111,7 @@ Due to this mistake, an attempt of re-use Yu's previously developed voting class
 
 \textbf{Chapter \ref{chap:classify}} discusses the final classifiers used in the cleaning, with evaluation of the results and comparison between different algorithms. 
 
-\textbf{Chapter \ref{chap:voting}} described the voting strategies to increase the accuracy of classifiers.
+%\textbf{Chapter \ref{chap:voting}} described the voting strategies to increase the accuracy of classifiers.
 
 \textbf{Chapter \ref{chap:parallel}} talks about the task distribution system used in this project, and some of the difficulties and solutions.
 
@@ -223,7 +223,8 @@ Yu's evaluation discovered that this method would reduce the total runtime by 10
 
 However after further evaluation of both Pugh and Yu's work, it is discovered that Pugh's final classifier over-fits on the training dataset due to the coverage, and mistakes in preprocessing steps. Details of this problem is discussed in Section \ref{sec:gt} and Section \ref{sec:CNNprepro}. 
 
-Since Yu's evaluation were based on the results of Pugh's experimental classifiers, it is shown that Pugh's classifier would obtain promising accuracy if the mistake in Section \ref{sec:cnn} is fixed. Due to the high cost of training, this project will use a modified version of Qiqi's voting strategy to make use of the results from the over-fitted classifiers. Detail of the modification and evaluation are included in Chapter \ref{chap:voting}.
+Since Yu's evaluation were based on the results of Pugh's experimental classifiers, it is shown that Pugh's classifier would obtain promising accuracy if the mistake in Section \ref{sec:cnn} is fixed. Due to the high cost of training, this project will use a modified version of Qiqi's voting strategy to make use of the results from the over-fitted classifiers. 
+%Detail of the modification and evaluation are included in Chapter \ref{sec:voting}.
 
 \chapter{Data Source}
 \label{chap:datasource}
@@ -584,9 +585,6 @@ At the time of the project it is considered the re-train of a new model, the ori
 After evaluating Pugh's source code, each epoch of the training could take a full day on a single node, and re-train with the current frame work would take 20 days on 200 machines, not to mention the disruption caused by the high memory usage. 
 It is also considered to apply for a specialized cluster for the re-train, but due to the lack of time, re-train were not used in this project.
 
-
-
-
 \begin{figure}[h]
 \centering
     \includegraphics[scale=0.44]{graph/cnnwc.png}
@@ -604,16 +602,24 @@ It is also considered to apply for a specialized cluster for the re-train, but d
 %\section{Evaluation}
 %\section{Potential Candidate of classifiers}
 
-\chapter{Voting Strategy}
-\label{chap:voting}
+%\chapter{Voting Strategy}
+%\label{chap:voting}
 
-As the classifier do not work as expected as in Pugh's thesis, some 
+\section{Voting Strategy}
+\label{sec:voting}
 
-\section{Evaluation of Yu's approach}
+As the classifier do not work as expected as in Pugh's thesis, it is reconsidered to apply the previously failed attempts on increasing accuracy of the classifiers.
+One of the method tested is to add a voting method on the predicted probabilities obtained by different classifiers, to test out different combination of the classifier results.
 
-In 2016, Yu tried to add voting constraint on the classifier and evaluated the efficiency. Originally this step are not used in the final Pipeline classifier, but due to the CNN fault, this step of classification is tested on Pugh's result and produced \underline{\hspace{40pt}} result.
 
-Yu's thesis explored three tracked-based voting methods, which removes a detection track entirely if less than 50\% of the detection is classified as non-fish.
+
+
+
+%\subsection{Evaluation of Yu's approach}
+%In 2016, Yu\cite{Yu} tried to add voting constraint on the classifier and evaluated the %efficiency.
+%Where Yu introduced a method of removing 
+%However the voting strategy does not work as intended due to the following assumption:
+%Yu's thesis explored three tracked-based voting methods, which removes a detection track entirely if less than 50\% of the detection is classified as non-fish.
 
 \chapter{Parallel Distribution}
 \label{chap:parallel}
