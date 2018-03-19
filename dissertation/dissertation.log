@@ -1,28 +1,26 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.7.13)  17 MAR 2018 06:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6600 64-bit) (preloaded format=pdflatex 2018.3.2)  19 MAR 2018 10:44
 entering extended mode
- restricted \write18 enabled.
- %&-line parsing enabled.
-**dissertation.tex
-(./dissertation.tex
+**./dissertation.tex
+(dissertation.tex
 LaTeX2e <2017-04-15>
-Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
-(/opt/texlive/texmf-local/tex/latex/informatics/infthesis/infthesis.cls
-Document Class: infthesis 2013/02/07 v3.7 School of Informatics Thesis Class
-(/opt/texlive/2017/texmf-dist/tex/latex/geometry/geometry.sty
+Babel <3.17> and hyphenation patterns for 75 language(s) loaded.
+(infthesis.cls
+Document Class: infthesis 2015/12/19 v3.8 School of Informatics Thesis Class
+("C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.sty"
 Package: geometry 2010/09/12 v5.6 Page Geometry
 
-(/opt/texlive/2017/texmf-dist/tex/latex/graphics/keyval.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks14
 )
-(/opt/texlive/2017/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
 Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
 )
-(/opt/texlive/2017/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifvtex.sty"
 Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
 Package ifvtex Info: VTeX not detected.
 )
-(/opt/texlive/2017/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+("C:\Program Files\MiKTeX 2.9\tex\generic\ifxetex\ifxetex.sty"
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
 \Gm@cnth=\count79
@@ -37,58 +35,49 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@layouthoffset=\dimen108
 \Gm@layoutvoffset=\dimen109
 \Gm@dimlist=\toks15
-)
-(/opt/texlive/2017/texmf-dist/tex/latex/base/ifthen.sty
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\geometry\geometry.cfg"))
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\ifthen.sty"
 Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2017/04/14 v1.1b Standard LaTeX Graphics (DPC,SPQR)
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
 
-(/opt/texlive/2017/texmf-dist/tex/latex/graphics/trig.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty"
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+("C:\Users\YuJianmeng\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics-cfg\
+graphics.cfg"
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 99.
-
-(/opt/texlive/2017/texmf-dist/tex/latex/graphics-def/pdftex.def
-File: pdftex.def 2017/01/12 v0.06k Graphics/color for pdfTeX
-
-(/opt/texlive/2017/texmf-dist/tex/generic/oberdiek/infwarerr.sty
-Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
-)
-(/opt/texlive/2017/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
-Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
-)
-\Gread@gobject=\count82
-))
-(/opt/texlive/2017/texmf-dist/tex/latex/tools/xspace.sty
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-def\pdftex.def"
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
+)) ("C:\Program Files\MiKTeX 2.9\tex\latex\tools\xspace.sty"
 Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
-)
-(/opt/texlive/texmf-local/tex/latex/common/logos/eushield.sty
+) (eushield.sty
 Package: eushield 2006/08/28\ v1.1\ Commands for including the EU shield graphi
 c
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/base/report.cls
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\report.cls"
 Document Class: report 2014/09/29 v1.4h Standard LaTeX document class
-(/opt/texlive/2017/texmf-dist/tex/latex/base/size12.clo
+("C:\Program Files\MiKTeX 2.9\tex\latex\base\size12.clo"
 File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
-\c@part=\count83
-\c@chapter=\count84
-\c@section=\count85
-\c@subsection=\count86
-\c@subsubsection=\count87
-\c@paragraph=\count88
-\c@subparagraph=\count89
-\c@figure=\count90
-\c@table=\count91
+\c@part=\count82
+\c@chapter=\count83
+\c@section=\count84
+\c@subsection=\count85
+\c@subsubsection=\count86
+\c@paragraph=\count87
+\c@subparagraph=\count88
+\c@figure=\count89
+\c@table=\count90
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen110
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/pslatex/pslatex.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\pslatex\pslatex.sty"
 Package: pslatex 1996/07/24 v1.2 pslatex emulation (DPC)
 LaTeX Font Info:    Redeclaring symbol font `operators' on input line 65.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
@@ -123,14 +112,14 @@ LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
 (Font)                  OT1/cmr/bx/it --> OT1/ptm/m/it on input line 75.
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/sectsty/sectsty.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\sectsty\sectsty.sty"
 Package: sectsty 2002/02/25 v2.0.2 Commands to change all sectional heading sty
 les
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/caption/caption.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\caption.sty"
 Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
 
-(/opt/texlive/2017/texmf-dist/tex/latex/caption/caption3.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\caption3.sty"
 Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
 Package caption3 Info: TeX engine: e-TeX on input line 67.
 \captionmargin=\dimen111
@@ -141,65 +130,64 @@ Package caption3 Info: TeX engine: e-TeX on input line 67.
 \caption@parindent=\dimen116
 \caption@hangindent=\dimen117
 )
-\c@ContinuedFloat=\count92
+\c@ContinuedFloat=\count91
 ))
-(/opt/texlive/2017/texmf-dist/tex/latex/parskip/parskip.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\ltxmisc\parskip.sty"
 Package: parskip 2001/04/09 non-zero parskip adjustments
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/url/url.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\url\url.sty"
 \Urlmuskip=\muskip10
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
+Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
 \Gin@req@height=\dimen118
 \Gin@req@width=\dimen119
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/appendix/appendix.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\appendix\appendix.sty"
 Package: appendix 2009/09/02 v1.2b extra appendix facilities
-\c@@pps=\count93
-\c@@ppsavesec=\count94
-\c@@ppsaveapp=\count95
+\c@@pps=\count92
+\c@@ppsavesec=\count93
+\c@@ppsaveapp=\count94
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count96
+(C:\Users\YuJianmeng\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\listings.sty
+\lst@mode=\count95
 \lst@gtempboxa=\box26
 \lst@token=\toks16
-\lst@length=\count97
+\lst@length=\count96
 \lst@currlwidth=\dimen120
-\lst@column=\count98
-\lst@pos=\count99
+\lst@column=\count97
+\lst@pos=\count98
 \lst@lostspace=\dimen121
 \lst@width=\dimen122
-\lst@newlines=\count100
-\lst@lineno=\count101
+\lst@newlines=\count99
+\lst@lineno=\count100
 \lst@maxwidth=\dimen123
-
-(/opt/texlive/2017/texmf-dist/tex/latex/listings/lstmisc.sty
+(C:\Users\YuJianmeng\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstmisc.sty
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
-\c@lstnumber=\count102
-\lst@skipnumbers=\count103
+\c@lstnumber=\count101
+\lst@skipnumbers=\count102
 \lst@framebox=\box27
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/listings/listings.cfg
+(C:\Users\YuJianmeng\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\listings.cfg
 File: listings.cfg 2015/06/04 1.6 listings configuration
 ))
 Package: listings 2015/06/04 1.6 (Carsten Heinz)
-
-(/opt/texlive/2017/texmf-dist/tex/latex/physics/physics.sty
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\physics\physics.sty"
 Package: physics 
 
-(/opt/texlive/2017/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
-(/opt/texlive/2017/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2017/05/13 L3 programming layer (loader) 
+("C:\Program Files\MiKTeX 2.9\tex\latex\l3packages\xparse\xparse.sty"
+("C:\Program Files\MiKTeX 2.9\tex\latex\l3kernel\expl3.sty"
+Package: expl3 2018/03/05 L3 programming layer (loader) 
 
-(/opt/texlive/2017/texmf-dist/tex/latex/l3kernel/expl3-code.tex
-Package: expl3 2017/05/13 L3 programming layer (code)
-\c_max_int=\count104
-\l_tmpa_int=\count105
-\l_tmpb_int=\count106
-\g_tmpa_int=\count107
-\g_tmpb_int=\count108
+("C:\Program Files\MiKTeX 2.9\tex\latex\l3kernel\expl3-code.tex"
+Package: expl3 2018/03/05 L3 programming layer (code)
+\c_max_int=\count103
+\l_tmpa_int=\count104
+\l_tmpb_int=\count105
+\g_tmpa_int=\count106
+\g_tmpb_int=\count107
+\g__intarray_font_int=\count108
 \g__prg_map_int=\count109
 \c_log_iow=\count110
 \l_iow_line_count_int=\count111
@@ -248,6 +236,53 @@ Package: expl3 2017/05/13 L3 programming layer (code)
 \l__sort_A_int=\count136
 \l__sort_B_int=\count137
 \l__sort_C_int=\count138
+\l__tl_build_start_index_int=\count139
+\l__tl_build_index_int=\count140
+\l__tl_analysis_normal_int=\count141
+\l__tl_analysis_index_int=\count142
+\l__tl_analysis_nesting_int=\count143
+\l__tl_analysis_type_int=\count144
+\l__regex_internal_a_int=\count145
+\l__regex_internal_b_int=\count146
+\l__regex_internal_c_int=\count147
+\l__regex_balance_int=\count148
+\l__regex_group_level_int=\count149
+\l__regex_mode_int=\count150
+\c__regex_cs_in_class_mode_int=\count151
+\c__regex_cs_mode_int=\count152
+\l__regex_catcodes_int=\count153
+\l__regex_default_catcodes_int=\count154
+\c__regex_catcode_D_int=\count155
+\c__regex_catcode_S_int=\count156
+\c__regex_catcode_L_int=\count157
+\c__regex_catcode_O_int=\count158
+\c__regex_catcode_A_int=\count159
+\c__regex_all_catcodes_int=\count160
+\l__regex_show_lines_int=\count161
+\l__regex_min_state_int=\count162
+\l__regex_max_state_int=\count163
+\l__regex_left_state_int=\count164
+\l__regex_right_state_int=\count165
+\l__regex_capturing_group_int=\count166
+\l__regex_min_pos_int=\count167
+\l__regex_max_pos_int=\count168
+\l__regex_curr_pos_int=\count169
+\l__regex_start_pos_int=\count170
+\l__regex_success_pos_int=\count171
+\l__regex_curr_char_int=\count172
+\l__regex_curr_catcode_int=\count173
+\l__regex_last_char_int=\count174
+\l__regex_case_changed_char_int=\count175
+\l__regex_curr_state_int=\count176
+\l__regex_step_int=\count177
+\l__regex_min_active_int=\count178
+\l__regex_max_active_int=\count179
+\l__regex_replacement_csnames_int=\count180
+\l__regex_match_count_int=\count181
+\l__regex_min_submatch_int=\count182
+\l__regex_submatch_int=\count183
+\l__regex_zeroth_submatch_int=\count184
+\g__regex_trace_regex_int=\count185
 \c_empty_box=\box28
 \l_tmpa_box=\box29
 \l_tmpb_box=\box30
@@ -289,62 +324,61 @@ Package: expl3 2017/05/13 L3 programming layer (code)
 \l__coffin_scaled_total_height_dim=\dimen153
 \l__coffin_scaled_width_dim=\dimen154
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/l3kernel/l3pdfmode.def
+("C:\Program Files\MiKTeX 2.9\tex\latex\l3kernel\l3pdfmode.def"
 File: l3pdfmode.def 2017/03/18 v L3 Experimental driver: PDF mode
-\l__driver_color_stack_int=\count139
-\l__driver_tmp_box=\box43
+\l__driver_color_stack_int=\count186
 ))
-Package: xparse 2017/05/13 L3 Experimental document command parser
-\l__xparse_current_arg_int=\count140
-\g__xparse_grabber_int=\count141
-\l__xparse_m_args_int=\count142
-\l__xparse_mandatory_args_int=\count143
-\l__xparse_v_nesting_int=\count144
+Package: xparse 2018/02/21 L3 Experimental document command parser
+\l__xparse_current_arg_int=\count187
+\g__xparse_grabber_int=\count188
+\l__xparse_m_args_int=\count189
+\l__xparse_mandatory_args_int=\count190
+\l__xparse_v_nesting_int=\count191
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/amsmath/amsmath.sty
-Package: amsmath 2016/11/05 v2.16a AMS math features
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty"
+Package: amsmath 2017/09/02 v2.17a AMS math features
 \@mathmargin=\skip49
 
 For additional information on amsmath, use the `?' option.
-(/opt/texlive/2017/texmf-dist/tex/latex/amsmath/amstext.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amstext.sty"
 Package: amstext 2000/06/29 v2.01 AMS text
 
-(/opt/texlive/2017/texmf-dist/tex/latex/amsmath/amsgen.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsgen.sty"
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks17
 \ex@=\dimen155
 ))
-(/opt/texlive/2017/texmf-dist/tex/latex/amsmath/amsbsy.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsbsy.sty"
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 \pmbraise@=\dimen156
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/amsmath/amsopn.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty"
 Package: amsopn 2016/03/08 v2.02 operator names
 )
-\inf@bad=\count145
+\inf@bad=\count192
 LaTeX Info: Redefining \frac on input line 213.
-\uproot@=\count146
-\leftroot@=\count147
+\uproot@=\count193
+\leftroot@=\count194
 LaTeX Info: Redefining \overline on input line 375.
-\classnum@=\count148
-\DOTSCASE@=\count149
+\classnum@=\count195
+\DOTSCASE@=\count196
 LaTeX Info: Redefining \ldots on input line 472.
 LaTeX Info: Redefining \dots on input line 475.
 LaTeX Info: Redefining \cdots on input line 596.
-\Mathstrutbox@=\box44
-\strutbox@=\box45
+\Mathstrutbox@=\box43
+\strutbox@=\box44
 \big@size=\dimen157
 LaTeX Font Info:    Redeclaring font encoding OML on input line 712.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
-\macc@depth=\count150
-\c@MaxMatrixCols=\count151
+\macc@depth=\count197
+\c@MaxMatrixCols=\count198
 \dotsspace@=\muskip17
-\c@parentequation=\count152
-\dspbrk@lvl=\count153
+\c@parentequation=\count199
+\dspbrk@lvl=\count266
 \tag@help=\toks18
-\row@=\count154
-\column@=\count155
-\maxfields@=\count156
+\row@=\count267
+\column@=\count268
+\maxfields@=\count269
 \andhelp@=\toks19
 \eqnshift@=\dimen158
 \alignsep@=\dimen159
@@ -395,6 +429,31 @@ LaTeX Info: Redefining \] on input line 2818.
 . Defining command \@quantity with sig. ' t\big t\Big t\bigg t\Bigg g o d()
 . d|| ' on line 62.
 .................................................
+
+*************************************************
+* LaTeX warning: "xparse/not-single-char"
+* 
+* Argument delimiter '\big ' for the command '\@quantity' should be a single
+* character.
+*************************************************
+*************************************************
+* LaTeX warning: "xparse/not-single-char"
+* 
+* Argument delimiter '\Big ' for the command '\@quantity' should be a single
+* character.
+*************************************************
+*************************************************
+* LaTeX warning: "xparse/not-single-char"
+* 
+* Argument delimiter '\bigg ' for the command '\@quantity' should be a single
+* character.
+*************************************************
+*************************************************
+* LaTeX warning: "xparse/not-single-char"
+* 
+* Argument delimiter '\Bigg ' for the command '\@quantity' should be a single
+* character.
+*************************************************
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
@@ -527,12 +586,60 @@ LaTeX Info: Redefining \] on input line 2818.
 . Defining command \@braces with sig. ' s t\big t\Big t\bigg t\Bigg m m m ' on
 . line 156.
 .................................................
+*************************************************
+* LaTeX warning: "xparse/not-single-char"
+* 
+* Argument delimiter '\big ' for the command '\@braces' should be a single
+* character.
+*************************************************
+*************************************************
+* LaTeX warning: "xparse/not-single-char"
+* 
+* Argument delimiter '\Big ' for the command '\@braces' should be a single
+* character.
+*************************************************
+*************************************************
+* LaTeX warning: "xparse/not-single-char"
+* 
+* Argument delimiter '\bigg ' for the command '\@braces' should be a single
+* character.
+*************************************************
+*************************************************
+* LaTeX warning: "xparse/not-single-char"
+* 
+* Argument delimiter '\Bigg ' for the command '\@braces' should be a single
+* character.
+*************************************************
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
 . Defining command \fbraces with sig. ' s t\big t\Big t\bigg t\Bigg m m m m '
 . on line 174.
 .................................................
+*************************************************
+* LaTeX warning: "xparse/not-single-char"
+* 
+* Argument delimiter '\big ' for the command '\fbraces' should be a single
+* character.
+*************************************************
+*************************************************
+* LaTeX warning: "xparse/not-single-char"
+* 
+* Argument delimiter '\Big ' for the command '\fbraces' should be a single
+* character.
+*************************************************
+*************************************************
+* LaTeX warning: "xparse/not-single-char"
+* 
+* Argument delimiter '\bigg ' for the command '\fbraces' should be a single
+* character.
+*************************************************
+*************************************************
+* LaTeX warning: "xparse/not-single-char"
+* 
+* Argument delimiter '\Bigg ' for the command '\fbraces' should be a single
+* character.
+*************************************************
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
@@ -1064,6 +1171,12 @@ LaTeX Info: Redefining \] on input line 2818.
 . 
 . Defining command \bra with sig. ' s m t\ket s g ' on line 526.
 .................................................
+*************************************************
+* LaTeX warning: "xparse/not-single-char"
+* 
+* Argument delimiter '\ket ' for the command '\bra' should be a single
+* character.
+*************************************************
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
@@ -1236,59 +1349,66 @@ LaTeX Info: Redefining \] on input line 2818.
 . 
 . Defining command \homework with sig. '' on line 764.
 .................................................
-)
-(/opt/texlive/2017/texmf-dist/tex/latex/enumitem/enumitem.sty
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\enumitem\enumitem.sty"
 Package: enumitem 2011/09/28 v3.5.2 Customized lists
 \labelindent=\skip52
 \enit@outerparindent=\dimen164
 \enit@toks=\toks22
-\enit@inbox=\box46
-\enitdp@description=\count157
+\enit@inbox=\box45
+\enitdp@description=\count270
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/algorithms/algorithm.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithms\algorithm.sty"
 Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
 nment
 
-(/opt/texlive/2017/texmf-dist/tex/latex/float/float.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\float\float.sty"
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count158
+\c@float@type=\count271
 \float@exts=\toks23
-\float@box=\box47
+\float@box=\box46
 \@float@everytoks=\toks24
-\@floatcapt=\box48
+\@floatcapt=\box47
 )
 \@float@every@algorithm=\toks25
-\c@algorithm=\count159
+\c@algorithm=\count272
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/algorithms/algorithmic.sty
+("C:\Program Files\MiKTeX 2.9\tex\latex\algorithms\algorithmic.sty"
 Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
-\c@ALC@unique=\count160
-\c@ALC@line=\count161
-\c@ALC@rem=\count162
-\c@ALC@depth=\count163
+\c@ALC@unique=\count273
+\c@ALC@line=\count274
+\c@ALC@rem=\count275
+\c@ALC@depth=\count276
 \ALC@tlm=\skip53
 \algorithmicindent=\skip54
 )
-(./dissertation.aux)
+("C:\Program Files\MiKTeX 2.9\tex\latex\tools\array.sty"
+Package: array 2016/10/06 v2.4d Tabular extension package (FMi)
+\col@sep=\dimen165
+\extrarowheight=\dimen166
+\NC@list=\toks26
+\extratabsurround=\skip55
+\backup@length=\skip56
+) (dissertation.aux)
 \openout1 = `dissertation.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 12.
-LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 12
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 13.
+LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 13
 .
- (/opt/texlive/2017/texmf-dist/tex/latex/psnfss/omspzccm.fd
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omspzccm.fd"
 File: omspzccm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/pzccm.
 )
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -1324,135 +1444,134 @@ LaTeX Font Info:    ... okay on input line 12.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-(/opt/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count164
-\scratchdimen=\dimen165
-\scratchbox=\box49
-\nofMPsegments=\count165
-\nofMParguments=\count166
-\everyMPshowfont=\toks26
-\MPscratchCnt=\count167
-\MPscratchDim=\dimen166
-\MPnumerator=\count168
-\makeMPintoPDFobject=\count169
-\everyMPtoPDFconversion=\toks27
-) (/opt/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
-Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
-)
+\scratchcounter=\count277
+\scratchdimen=\dimen167
+\scratchbox=\box48
+\nofMPsegments=\count278
+\nofMParguments=\count279
+\everyMPshowfont=\toks27
+\MPscratchCnt=\count280
+\MPscratchDim=\dimen168
+\MPnumerator=\count281
+\makeMPintoPDFobject=\count282
+\everyMPtoPDFconversion=\toks28
+) ("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\epstopdf-base.sty"
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
-(/opt/texlive/2017/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\grfext.sty"
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\kvdefinekeys.sty"
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)))
+("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\kvoptions.sty"
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\kvsetkeys.sty"
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\etexcmds.sty"
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifluatex.sty"
 Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
+)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\pdftexcmds.sty"
+Package: pdftexcmds 2018/01/21 v0.26 Utility functions of pdfTeX for LuaTeX (HO
 )
 Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
 )
-(/opt/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
-
-(/opt/texlive/2017/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
-
-(/opt/texlive/2017/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
-Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
-))
-(/opt/texlive/2017/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
-
-(/opt/texlive/2017/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
-Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
-
-(/opt/texlive/2017/texmf-dist/tex/generic/oberdiek/etexcmds.sty
-Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
-Package etexcmds Info: Could not find \expanded.
-(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
-(etexcmds)             that some package has redefined \expanded.
-(etexcmds)             In the latter case, load this package earlier.
-)))
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 38.
 Package grfext Info: Graphics extension search list:
-(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
-
-(/opt/texlive/2017/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
-))
+)
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
-\c@lstlisting=\count170
+\c@lstlisting=\count283
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20.74> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 31.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 32.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <20.74> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 31.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 32.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 18.66588pt on input line 31.
-
+(Font)              scaled to size 18.66588pt on input line 32.
 <eushield-normal.pdf, id=1, 369.38pt x 373.395pt>
 File: eushield-normal.pdf Graphic file (type pdf)
- <use eushield-normal.pdf>
-Package pdftex.def Info: eushield-normal.pdf used on input line 31.
+<use eushield-normal.pdf>
+Package pdftex.def Info: eushield-normal.pdf  used on input line 32.
 (pdftex.def)             Requested size: 369.37909pt x 373.39409pt.
+ [1
 
-[1
-
-{/opt/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map} </opt/texlive/
-texmf-local/tex/latex/common/logos/eushield-normal.pdf>] [2
+{C:/Users/YuJianmeng/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./eush
+ield-normal.pdf>] [2
 
 ]
 LaTeX Font Info:    Font shape `OT1/phv/m/n' will be
-(Font)              scaled to size 10.79993pt on input line 31.
+(Font)              scaled to size 10.79993pt on input line 32.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 31.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 32.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 10.79993pt on input line 31.
+(Font)              scaled to size 10.79993pt on input line 32.
 LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 31.
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 32.
 LaTeX Font Info:    Font shape `OT1/phv/m/sl' will be
-(Font)              scaled to size 10.79993pt on input line 31.
+(Font)              scaled to size 10.79993pt on input line 32.
  [1]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 33.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 33.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 34.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 15.55188pt on input line 33.
- [2] [3]
-[4
+(Font)              scaled to size 15.55188pt on input line 34.
+ [2] [3] [4
 
 ]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 44.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 45.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 44.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 45.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 22.39185pt on input line 44.
- (./dissertation.toc
+(Font)              scaled to size 22.39185pt on input line 45.
+ (dissertation.toc
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
 LaTeX Font Info:    Try loading font information for OT1+ptmcm on input line 2.
 
 
-(/opt/texlive/2017/texmf-dist/tex/latex/psnfss/ot1ptmcm.fd
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1ptmcm.fd"
 File: ot1ptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ptmcm.
 )
 LaTeX Font Info:    Try loading font information for OML+ptmcm on input line 2.
 
 
-(/opt/texlive/2017/texmf-dist/tex/latex/psnfss/omlptmcm.fd
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omlptmcm.fd"
 File: omlptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ptmcm.
 )
 LaTeX Font Info:    Try loading font information for OMX+psycm on input line 2.
 
 
-(/opt/texlive/2017/texmf-dist/tex/latex/psnfss/omxpsycm.fd
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omxpsycm.fd"
 File: omxpsycm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/psycm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
@@ -1467,42 +1586,42 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
 Chapter 1.
 [1
 
-] [2] [3] [4
-
-]
+] [2] [3] [4]
 Chapter 2.
-[5] [6] <graph/class_sample.png, id=57, 861.2175pt x 355.3275pt>
-File: graph/class_sample.png Graphic file (type png)
+[5
 
+] [6]
+<graph/class_sample.png, id=56, 861.2175pt x 355.3275pt>
+File: graph/class_sample.png Graphic file (type png)
 <use graph/class_sample.png>
-Package pdftex.def Info: graph/class_sample.png used on input line 190.
+Package pdftex.def Info: graph/class_sample.png  used on input line 210.
 (pdftex.def)             Requested size: 344.4809pt x 142.12846pt.
  [7 <./graph/class_sample.png>]
-<graph/Pipeline_Classifier.png, id=63, 1165.35374pt x 352.31625pt>
+<graph/Pipeline_Classifier.png, id=62, 1165.35374pt x 352.31625pt>
 File: graph/Pipeline_Classifier.png Graphic file (type png)
-
 <use graph/Pipeline_Classifier.png>
-Package pdftex.def Info: graph/Pipeline_Classifier.png used on input line 213.
+Package pdftex.def Info: graph/Pipeline_Classifier.png  used on input line 238.
+
 (pdftex.def)             Requested size: 349.60883pt x 105.69568pt.
  [8 <./graph/Pipeline_Classifier.png>]
 Chapter 3.
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
-(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 235.
+(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 261.
 
-<graph/extraction.png, id=68, 1003.75pt x 501.875pt>
-File: graph/extraction.png Graphic file (type png)
-
-<use graph/extraction.png>
-Package pdftex.def Info: graph/extraction.png used on input line 257.
-(pdftex.def)             Requested size: 301.12732pt x 150.56366pt.
- [9
+[9
 
 ]
-(/opt/texlive/2017/texmf-dist/tex/latex/listings/lstlang1.sty
+<graph/extraction.png, id=71, 1003.75pt x 501.875pt>
+File: graph/extraction.png Graphic file (type png)
+<use graph/extraction.png>
+Package pdftex.def Info: graph/extraction.png  used on input line 285.
+(pdftex.def)             Requested size: 301.12732pt x 150.56366pt.
+
+(C:\Users\YuJianmeng\AppData\Roaming\MiKTeX\2.9\tex\latex\listings\lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
 LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <6> not available
-(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 279.
+(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 306.
 Missing character: There is no â in font pcrr7tn!
 Missing character: There is no € in font pcrr7tn!
 Missing character: There is no ˜ in font pcrr7tn!
@@ -1594,109 +1713,105 @@ Missing character: There is no â in font pcrr7tn!
 Missing character: There is no € in font pcrr7tn!
 Missing character: There is no ˜ in font pcrr7tn!
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 298.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 323.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 298.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 323.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 12.9599pt on input line 298.
+(Font)              scaled to size 12.9599pt on input line 323.
  [10 <./graph/extraction.png>]
 LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <10.95> not available
-(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 308.
-LaTeX Font Info:    Try loading font information for OMS+pcr on input line 318.
+(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 333.
+LaTeX Font Info:    Try loading font information for OMS+pcr on input line 348.
 
- (/opt/texlive/2017/texmf-dist/tex/latex/psnfss/omspcr.fd
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omspcr.fd"
 File: omspcr.fd 
 )
 LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 318.
-
-[11] <graph/classdist.png, id=82, 1176.395pt x 307.1475pt>
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 348.
+ [11]
+<graph/classdist.png, id=81, 1176.395pt x 307.1475pt>
 File: graph/classdist.png Graphic file (type png)
-
 <use graph/classdist.png>
-Package pdftex.def Info: graph/classdist.png used on input line 345.
+Package pdftex.def Info: graph/classdist.png  used on input line 379.
 (pdftex.def)             Requested size: 399.96901pt x 104.42876pt.
  [12 <./graph/classdist.png>]
 Chapter 4.
 [13
 
-] <graph/benchmark.png, id=90, 381.425pt x 266.9975pt>
+]
+<graph/benchmark.png, id=89, 381.425pt x 266.9975pt>
 File: graph/benchmark.png Graphic file (type png)
-
 <use graph/benchmark.png>
-Package pdftex.def Info: graph/benchmark.png used on input line 376.
+Package pdftex.def Info: graph/benchmark.png  used on input line 411.
 (pdftex.def)             Requested size: 190.71202pt x 133.49841pt.
  [14 <./graph/benchmark.png>]
-<graph/frame_distribution.png, id=95, 603.25375pt x 252.945pt>
+<graph/frame_distribution.png, id=94, 603.25375pt x 252.945pt>
 File: graph/frame_distribution.png Graphic file (type png)
-
 <use graph/frame_distribution.png>
-Package pdftex.def Info: graph/frame_distribution.png used on input line 417.
+Package pdftex.def Info: graph/frame_distribution.png  used on input line 452.
 (pdftex.def)             Requested size: 241.29723pt x 101.17621pt.
  [15 <./graph/frame_distribution.png>]
-[16] <graph/pcas.png, id=103, 498.86375pt x 321.2pt>
+[16]
+<graph/pcas.png, id=102, 498.86375pt x 321.2pt>
 File: graph/pcas.png Graphic file (type png)
- <use graph/pcas.png>
-Package pdftex.def Info: graph/pcas.png used on input line 472.
+<use graph/pcas.png>
+Package pdftex.def Info: graph/pcas.png  used on input line 507.
 (pdftex.def)             Requested size: 199.54196pt x 128.47772pt.
-
-[17] <graph/imagepre.png, id=108, 1028.84375pt x 126.4725pt>
+ [17]
+<graph/imagepre.png, id=107, 1028.84375pt x 126.4725pt>
 File: graph/imagepre.png Graphic file (type png)
-
 <use graph/imagepre.png>
-Package pdftex.def Info: graph/imagepre.png used on input line 497.
+Package pdftex.def Info: graph/imagepre.png  used on input line 532.
 (pdftex.def)             Requested size: 411.53021pt x 50.58809pt.
  [18 <./graph/pcas.png> <./graph/imagepre.png>]
 Chapter 5.
-<graph/6-8.png, id=114, 1141.26375pt x 224.84pt>
+<graph/6-8.png, id=113, 1141.26375pt x 224.84pt>
 File: graph/6-8.png Graphic file (type png)
- <use graph/6-8.png>
-Package pdftex.def Info: graph/6-8.png used on input line 515.
+<use graph/6-8.png>
+Package pdftex.def Info: graph/6-8.png  used on input line 550.
 (pdftex.def)             Requested size: 388.02454pt x 76.44458pt.
-
-<graph/5-6.png, id=115, 1141.26375pt x 224.84pt>
+<graph/5-6.png, id=114, 1141.26375pt x 224.84pt>
 File: graph/5-6.png Graphic file (type png)
- <use graph/5-6.png>
-Package pdftex.def Info: graph/5-6.png used on input line 524.
+<use graph/5-6.png>
+Package pdftex.def Info: graph/5-6.png  used on input line 559.
 (pdftex.def)             Requested size: 388.02454pt x 76.44458pt.
- [19
+[19
 
  <./graph/6-8.png>] [20 <./graph/5-6.png>]
-<graph/svmresult.png, id=127, 864.22874pt x 322.20375pt>
+<graph/svmresult.png, id=126, 864.22874pt x 322.20375pt>
 File: graph/svmresult.png Graphic file (type png)
-
 <use graph/svmresult.png>
-Package pdftex.def Info: graph/svmresult.png used on input line 562.
+Package pdftex.def Info: graph/svmresult.png  used on input line 597.
 (pdftex.def)             Requested size: 380.26181pt x 141.77008pt.
  [21 <./graph/svmresult.png>]
-<graph/cnnwc.png, id=132, 871.255pt x 334.24875pt>
+<graph/cnnwc.png, id=131, 871.255pt x 334.24875pt>
 File: graph/cnnwc.png Graphic file (type png)
- <use graph/cnnwc.png>
-Package pdftex.def Info: graph/cnnwc.png used on input line 590.
+<use graph/cnnwc.png>
+Package pdftex.def Info: graph/cnnwc.png  used on input line 625.
 (pdftex.def)             Requested size: 383.3534pt x 147.0699pt.
 
 [22 <./graph/cnnwc.png>] [23] [24
 
 ]
 Chapter 6.
-[25] <graph/sample_terminal.png, id=147, 1173.38374pt x 400.49625pt>
+[25]
+<graph/sample_terminal.png, id=146, 1173.38374pt x 400.49625pt>
 File: graph/sample_terminal.png Graphic file (type png)
-
 <use graph/sample_terminal.png>
-Package pdftex.def Info: graph/sample_terminal.png used on input line 660.
+Package pdftex.def Info: graph/sample_terminal.png  used on input line 696.
 (pdftex.def)             Requested size: 352.01784pt x 120.1498pt.
- [26 <./graph/sample_terminal.png>] [27]
-[28
+ [26 <./graph/sample_terminal.png>] [27] [28
 
 ]
 Chapter 7.
-[29] <graph/query.png, id=162, 415.5525pt x 402.50375pt>
+[29]
+<graph/query.png, id=161, 415.5525pt x 402.50375pt>
 File: graph/query.png Graphic file (type png)
- <use graph/query.png>
-Package pdftex.def Info: graph/query.png used on input line 733.
+<use graph/query.png>
+Package pdftex.def Info: graph/query.png  used on input line 769.
 (pdftex.def)             Requested size: 157.91159pt x 152.953pt.
-
-[30 <./graph/query.png>] (./dissertation.bbl [31] [32
+ [30 <./graph/query.png>] (dissertation.bbl [31] [32
 
 ]
 Missing character: There is no Ã in font ptmr7t!
@@ -1714,62 +1829,53 @@ Missing character: There is no ­ in font ptmr7t!
 Appendix A.
 [35] [36]
 Appendix B.
-<graph/sample_night.png, id=186, 861.2175pt x 344.28625pt>
+<graph/sample_night.png, id=185, 861.2175pt x 344.28625pt>
 File: graph/sample_night.png Graphic file (type png)
-
 <use graph/sample_night.png>
-Package pdftex.def Info: graph/sample_night.png used on input line 819.
+Package pdftex.def Info: graph/sample_night.png  used on input line 856.
 (pdftex.def)             Requested size: 396.16486pt x 158.37358pt.
-
-<graph/sample_corrupt.png, id=187, 861.2175pt x 344.28625pt>
+<graph/sample_corrupt.png, id=186, 861.2175pt x 344.28625pt>
 File: graph/sample_corrupt.png Graphic file (type png)
-
 <use graph/sample_corrupt.png>
-Package pdftex.def Info: graph/sample_corrupt.png used on input line 826.
+Package pdftex.def Info: graph/sample_corrupt.png  used on input line 863.
 (pdftex.def)             Requested size: 396.16486pt x 158.37358pt.
-
-<graph/sample_vegetation.png, id=188, 861.2175pt x 344.28625pt>
+<graph/sample_vegetation.png, id=187, 861.2175pt x 344.28625pt>
 File: graph/sample_vegetation.png Graphic file (type png)
-
 <use graph/sample_vegetation.png>
-Package pdftex.def Info: graph/sample_vegetation.png used on input line 833.
+Package pdftex.def Info: graph/sample_vegetation.png  used on input line 870.
 (pdftex.def)             Requested size: 396.16486pt x 158.37358pt.
-
-<graph/sample_fish.png, id=189, 861.2175pt x 344.28625pt>
+<graph/sample_fish.png, id=188, 861.2175pt x 344.28625pt>
 File: graph/sample_fish.png Graphic file (type png)
-
 <use graph/sample_fish.png>
-Package pdftex.def Info: graph/sample_fish.png used on input line 839.
+Package pdftex.def Info: graph/sample_fish.png  used on input line 876.
 (pdftex.def)             Requested size: 396.16486pt x 158.37358pt.
- [37
+[37
 
  <./graph/sample_night.png>] [38 <./graph/sample_corrupt.png> <./graph/sample_v
-egetation.png> <./graph/sample_fish.png>]
-(./dissertation.aux) ) 
+egetation.png> <./graph/sample_fish.png>] (dissertation.aux) ) 
 Here is how much of TeX's memory you used:
- 14516 strings out of 492995
- 253347 string characters out of 6101534
- 352343 words of memory out of 5000000
- 17883 multiletter control sequences out of 15000+600000
- 43924 words of font info for 89 fonts, out of 8000000 for 9000
+ 15471 strings out of 493303
+ 276189 string characters out of 3138504
+ 376049 words of memory out of 3000000
+ 18840 multiletter control sequences out of 15000+200000
+ 570556 words of font info for 97 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,6n,47p,10409b,1181s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/opt/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc
-}</opt/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></opt/
-texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></opt/texlive/
-2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></opt/texlive/2017/te
-xmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></opt/texlive/2017/texmf-dist/fonts
-/type1/urw/courier/ucrr8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1/urw/hel
-vetic/uhvb8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.
-pfb></opt/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb></opt/te
-xlive/2017/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></opt/texlive/2017/texmf-
-dist/fonts/type1/urw/times/utmb8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1
-/urw/times/utmr8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri
-8a.pfb>
-Output written on dissertation.pdf (46 pages, 2541220 bytes).
+ 43i,6n,47p,10411b,1181s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Users/YuJianm
+eng/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program F
+iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiK
+TeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
+e1/urw/courier/ucrb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/courier/
+ucrr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C:
+/Program Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Program Files
+/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvro8a.pfb><C:/Program Files/MiKTeX 2.9/f
+onts/type1/urw/symbol/usyr.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/tim
+es/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:
+/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on dissertation.pdf (46 pages, 2566022 bytes).
 PDF statistics:
- 243 PDF objects out of 1000 (max. 8388607)
- 144 compressed objects within 2 object streams
+ 240 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  96 words of extra memory for PDF output out of 10000 (max. 10000000)
 

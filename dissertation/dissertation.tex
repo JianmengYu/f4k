@@ -7,6 +7,7 @@
 \usepackage{enumitem}
 \usepackage{algorithm}
 \usepackage{algorithmic}
+\usepackage{array}
 
 
 \begin{document}
@@ -57,9 +58,8 @@ The Fish4Knowledge (F4K) project, funded by EU's Seventh Framework Programme (FP
 
 The project acquired video data collected by Taiwan Ocean Research Institute. 
 They set up 9 cameras in different coral reef areas in Taiwan such as Nanwan National Park (NPP-3), Lanyu, and Houbi Lake (HoBiHu). 
-After 5 years of recording, the project collected about 524,000 10-minute video clips, with a total size of 91 TB, and approximately 1.4 billion fish detection found in the videos, we call this the F4K Original Data Set (FDS). 
+The project collected 5 years of recording, about 524,000 10-minute video clips with a total size of 91 TB. Approximately 1.4 billion fish detection found in the videos, we call this the F4K Original Data Set (FDS). 
 
-%TODO ask Bob who extracted these.
 Attempting to reduce the dataset, the F4K project developed and applied a species recognition algorithm. 
 This algorithm extracts all detections as 100x100 RGB images and their description files, reducing the dataset to approximately 839 million detections, having a combined size of 1.6 TB
 This dataset is called Reduced FDS (RDS), a more detailed composition of these files are described in Chapter \ref{chap:datasource}.
@@ -68,42 +68,62 @@ This dataset is called Reduced FDS (RDS), a more detailed composition of these f
 
 In 2015, Pugh\cite{Pugh} developed a cleaning algorithm for RDS based on Huang's thesis\cite{Huang}, which would approximately remove 90\% of the False Positives (objects that are not fish, recognized as fish), while only losing about 8\% of True Positives (true fish detections). 
 
-However, due to lack of time and resource, the cleaning was not used on the dataset.
-In 2016, Yu\cite{Yu} attempted to add voting constraints on the cleaning algorithm, and evaluated the time cost of the algorithm.
-The cleaning wasn't applied because the constraint could not improve much to the efficiency of cleaning.
+However, due to lack of time and resource, the framework is not implemented and the cleaning was not applied on the full dataset.
+In 2016, Yu\cite{Yu} attempted to add voting constraints on the cleaning algorithm, to both increase accuracy and reduce runtime, after evaluation it's estimated this constraint could reduce the time cost of the algorithm for about 10\%, at cost of 5\% of accuracy.
 
-It is evaluated cleaning a 1,000 detection video on a 40-core machine would take 200 seconds.
-This gives a 8 second per frame per core (8 {\tt s/fc}), with the available 200 4-core machines in student labs, 1 {\tt s/fc} would result in 12 days of computational time.
+Even after the reduction by Yu, it's evaluated the cleaning algorithm would still took 25,000 hours on a 40-core machine\cite{Yu}.
+This means simply put the task on parallel would not be sufficient, distributed computing over more machines is needed.
+For this purpose, the project uses the lab machines provided by the University of Edinburgh for cleaning. 
+Even with about 800 cores available, the algorithm would still took more than 1,000 hour to finish, this the code should be also optimized for the project to be more scalable.
+
+\section{Project Outcome}
+
+The project manages to reduce the total runtime by 50\% after translating the pipeline classifier developed by Pugh\cite{Pugh}, and removing unnecessary operations in it. 
+It is predicted that this classifier reduces the dataset by about 28\%, with the following statistics:
+
+\newcolumntype{C}{>$c<$}
+\[
+\begin{array}{C|C|C}
+$ $ & Predicted Fish & Predicted Non-Fish \\
+\hline 
+True Fish & 92.528\% & 7.472\% \\
+Non Fish & 57.980\% & 42.020\%
+\end{array}
+\]
+
+However this does not meet the expectation from Pugh's thesis, whereas 90\% of the False Positive is removed. 
+This is caused by a extraction mistake in preprocessing stage, which causes the CNN trained becoming useless. 
+Re-training the CNN could increase the accuracy, but it is not used due to limit of time and resource.
+
+%more machines is needed to change the scope into distributed parallel processing, 
+%The cleaning wasn't applied because the constraint could not improve much to the efficiency of cleaning.
+
+%It is evaluated cleaning a 1,000 detection video on a 40-core machine would take 200 seconds.
+%This gives a 8 second per frame per core (8 {\tt s/fc}), with the available 200 4-core machines in student labs, 1 {\tt s/fc} would result in 12 days of computational time.
 
 \section{Contribution}
 
-After translation and modification on the algorithm used, the project managed to improve the efficiency to about 0.5-0.8 {\tt s/fc}. Distributes and completes the aforementioned cleaning algorithm.
+During this project, the parallel task distribution programme is based on a public GitHub repository "mpi-master-slave" created by user "luca-s"\cite{L5}, minor changes were made to the work queue and protocol for thrashing prevention and crash recovery, the pseudo-code of this framework is provided in Appendix \ref{apped:msf}.
 
-%TODO finish it.
-During this project, the parallel task distribution programme is based on a public GitHub repository "mpi-master-slave" created by user "luca-s"\cite{L5}, minor changes were made to the work queue and protocol for thrashing prevention and crash recovery.
-
-Data extraction pipeline written in Python was created to partition, extract, and parse the raw SQL dump file to comma separated values stored in plain text files. 
+Data extraction pipeline written in Python was created to partition, extract, and parse the raw SQL dump file to comma separated values stored in plain text files, this removes the need of maintaining a SQL server and speeds up the extraction. 
 
 The pipeline classifier is also re-written in Python, unfinished part of the original pipeline is implemented. 
-Due to the removal of the SQL server in the pipeline, the extraction and visualization MATLAB scripts created by Pugh are re-engineered into Python functions. 
+Due to the removal of the SQL server in the pipeline, the extraction and visualization MATLAB scripts created by Pugh are re-written into Python functions. 
 Some metrics algorithms used is translated from MATLAB for loops to Numpy/Scipy operations to increase efficiency.
 
-F4K project's feature extraction MATLAB code developed by Huang\cite{Huang} is untranslated and is called within Python using PyMatlab library. Some minor changes like replacing edge extraction algorithm used, and error handling added to one of the unstable {\tt getCstd()} function. 
+F4K project's feature extraction MATLAB code developed by Huang\cite{Huang} is untranslated and is called within Python using PyMatlab library. Some minor changes like replacing edge extraction algorithm used, and error handling added to some of the unstable functions. 
 
-For validation of Pugh's classifier performance, a set of separate videos were marked. After testing the classifiers on this dataset, it's discovered that Pugh's classifiers over-fits on the training dataset. Also by inspecting the training code, it is found that the training set were heavily biased. A new complementary ground truth dataset were marked for training new classifiers. 
+For validation of Pugh's classifier performance, a separate set of videos were marked. After testing the classifiers on this dataset, it's discovered that Pugh's classifiers over-fits on the training dataset. Also by inspecting the training code, it is found that the training set were heavily biased. A new complementary ground truth dataset were marked for training new classifiers. 
 
 The classification step was originally going to use Pugh's trained SVM and CNN. Due to the problem above, the SVM parameters used are re-calibrated for higher accuracy on unseen dataset. 
 The Python's {\tt sklearn.svm.SVC} were used to achieve the same result instead of translation. The CNN implemented with lua torch are rewritten and called with Lutorpy library.
+A fatal mistake were found in the CNN design, after evaluating the result with voting strategy, it is discovered the CNN trained by Pugh were almost useless. Details about the fault and the re-train attempt were included in Section \ref{sec:cnn}.
 
-A fatal mistake were found in the CNN design, this causes 2 out of 3 CNN trained by Pugh almost useless. Details about the fault and the re-train attempt were included in (TODO).
-%TODO 
-Due to this mistake, an attempt of re-use Yu's previously developed voting classifier to increase the accuracy were made. 
-
-(TODO) Possible reconstruction of the SQL and video is needed? Some of the FEIF rejected images still seems to be useful.
+Reconstruction of the videos were not applied due to the low accuracy, a binary decision vector were generated instead.
 
 \section{Document Structure}
 
-\textbf{Chapter \ref{chap:bg}} discusses the designs used and previous work details of the project. 
+\textbf{Chapter \ref{chap:bg}} discusses the previous work and designs details used in the project. 
 
 \textbf{Chapter \ref{chap:datasource}} described the details of the data sources, storage and preprocessing used in the cleaning algorithm.
 
@@ -144,7 +164,7 @@ However, there are still a lot of False Positives in the RDS, to resolve this is
 
 In previous work of Pugh\cite{Pugh}, ten different detection classes were used to ground truth the dataset, which is later used to train different classifiers used in the cleaning. 
 
-These 10 classes can be divided into 3 main categories:
+These 10 classes can be divided into 3 main categories (with examples in Fig \ref{fig:classes}):
 
 \renewcommand{\labelenumi}{\bfseries\Roman{enumi}}
 \renewcommand{\labelenumii}{\bfseries\arabic{enumii}}
@@ -183,7 +203,7 @@ These 10 classes can be divided into 3 main categories:
  \end{enumerate}
 \end{enumerate}
 
-However, this classification schema was not good enough for evaluating accuracy of the classifiers due to the similarity between the classes, this limitation is described in Section \ref{sec:AmbigCS}.
+However, this classification schema was not good enough for evaluating accuracy of the classifiers due to the similarity between the classes, this limitation and the possible improvements are described in Section \ref{sec:AmbigCS}.
 
 \begin{figure}
     \centering
@@ -195,18 +215,23 @@ However, this classification schema was not good enough for evaluating accuracy 
 \section{Pipeline Classifier}
 
 The main part of the project is to translate and apply the pipeline classifier, designed by Pugh\cite{Pugh}. 
-However, under limitations, the pipeline itself could not be applied directly on a parallel scale.
+However, under limitations, the pipeline itself could not be applied directly on a parallel scale in this project.
 
 The first limitation is the SQL database, which stores the track and contour information of the image. 
-However the SQL is too large and slow for the project, To make the extraction more sensible, a Python script was used to partition the SQL.
-This potentially cuts the runtime to about 10\% of the original design and removed the need for a SQL database server. 
+However the SQL database is too large and is estimated to be slow for the project.
+To make the extraction more sensible, a Python script was used to partition the raw {\tt .SQL} file, this removed the need for a SQL database server. 
 More details of this modification is in Section \ref{sec:sqld}.
 
-Before sending the data into the classifiers, preprocessing is needed to give a more sensible result.
 %The data pre-processing is the slowest part of the pipeline after removing the SQL server. 
 In Pugh's thesis\cite{Pugh}, a Frame Edge Indicator Function (FEIF) is used to directly reduce the number of frames need to be classified, after improvements and some new additions on dataset reduction, pre-processing cleans out about 20\% of the detections. More details on the reduction are in Chapter \ref{chap:datasource}.
 
-After extracting and reducing features, they are fed into 3 Convolutional Neural Networks (CNN) and 10 Support Vector Machines (SVM), then applying a top N algorithm to produce the final result. 
+Before sending the data into the classifiers, preprocessing is needed to give a more sensible result.
+The project uses feature extraction code from both Huang's\cite{Huang} and Pugh's\cite{Pugh} work, normalizing and transforming them with Pricipal Component Analysis (PCA).
+After extracting and reducing the features, they are fed into 3 Convolutional Neural Networks (CNN) and 10-class Support Vector Machine (SVM) to obtain the predicted probability of each class from each classifier.
+Where a voting strategy were used to combine the results from the classifiers into the final decision array.
+
+Fig \ref{fig:pipeline} shows the steps used in the original pipeline classifier designed by Pugh.
+Note that in this project, the SVM were changed to a single multi-class SVM and top-N decision were replaced by a voting strategy.
 
 \begin{figure}[!h]
     \centering
@@ -223,14 +248,15 @@ Yu's evaluation discovered that this method would reduce the total runtime by 10
 
 However after further evaluation of both Pugh and Yu's work, it is discovered that Pugh's final classifier over-fits on the training dataset due to the coverage, and mistakes in preprocessing steps. Details of this problem is discussed in Section \ref{sec:gt} and Section \ref{sec:CNNprepro}. 
 
-Since Yu's evaluation were based on the results of Pugh's experimental classifiers, it is shown that Pugh's classifier would obtain promising accuracy if the mistake in Section \ref{sec:cnn} is fixed. Due to the high cost of training, this project will use a modified version of Qiqi's voting strategy to make use of the results from the over-fitted classifiers. 
+Since Yu's evaluation were based on the results of Pugh's experimental classifiers, it is shown that Pugh's classifier would obtain promising accuracy if the mistake in Section \ref{sec:cnn} is fixed. Due to the high cost of training, this project tested a modified version of Qiqi's voting strategy to make use of the results from the over-fitted classifiers. 
 %Detail of the modification and evaluation are included in Chapter \ref{sec:voting}.
 
 \chapter{Data Source}
 \label{chap:datasource}
 
-After the species recognition of the F4K project, three types of output files are stored:
+The species recognition of the F4K project provided three types of output files:
 \begin{itemize}
+\setlength{\parskip}{1pt}
 \item
 Extracted 100x100 RGB images, compiled into {\tt .avi} video file.
 \item
@@ -239,15 +265,17 @@ Corresponding summary of the video, recording detection id and bounding box size
 A {\tt .sql} dump file of 500GB, from the database used for species extraction.
 \end{itemize}
 
+In the species recognition process, a {\tt video\_id} is generated for each video, this consists of a 32 byte hash of video, a {\tt \#}, and the filming date in {\tt YYYYMMDDhhmm} format. Were each of the {\tt video\_id} have a corresponding {\tt .avi} and {\tt .txt} file.
+
 \section{Extracted Images}
 \label{sec:summaries}
 
-During the species recognition, the bounding box and contour of each detection are computed.
-The bounding box consists of 4 values {\tt x,y,w,h}, where {\tt x} and {\tt y} are the coordinate of the top left corner, {\tt w} and {\tt h} are the width and height of the bounding box. 
+The species recognition in F4K project extracted every detection with {\tt w} and {\tt h} both smaller than 90. 
+This process is illustrated in Figure \ref{fig:extraction}, where a 100x100 area is selected with top left corner coordinate {\tt (w-10)} and {\tt (h-10)} and cropped from the image.
+If the some of selected area are out of the frame, it will be filled with black pixels.
 
-For each video a {\tt video\_id} is generated, it consists of a 32 byte hash of video, a {\tt \#}, and the filming date of {\tt YYYYMMDDhhmm} format. 
-For every detection with {\tt w} and {\tt h} both smaller than 90, a process illustrated in Figure \ref{fig:extraction} is applied, where a 100x100 area is selected with top left corner coordinate {\tt w-10} and {\tt h-10} and cropped from the image. 
-If the selected area is out of the range of the frame, those areas will be filled with black pixels.
+During this process, the contour and the bounding box of the fish were also calculated.
+The bounding box consists of 4 values {\tt x,y,w,h}, where {\tt x} and {\tt y} are the coordinate of the top left corner, {\tt w} and {\tt h} are the width and height of the bounding box. 
 Those cropped images are then stored in file {\tt summary\_(video\_id).avi}, with detection id and {\tt w} and {\tt h} stored in corresponding {\tt frame\_info\_(video\_id).txt}.
 
 There are a total of 396,901 of such videos, consist of 839,465,846 frames, sums up to a total size of 1.14 TB.
@@ -262,11 +290,10 @@ There are a total of 396,901 of such videos, consist of 839,465,846 frames, sums
 \section{SQL dump file}
 \label{sec:sqld}
 
-The {\tt .sql} dump file comes from the SQL workflow of the F4K project, which means not the only details of fish detection are stored. 
-Other components irrelevant to this project is also stored. 
+The {\tt .sql} dump file comes from the SQL workflow used in the F4K project, which means not the only details of fish detection are stored, other irrelevant components like user logs are also stored inside. 
 
+In this project, only the "Fish Detection" and "Camera" table are needed for the cleaning, hence extraction of the relevant information might be needed before the cleaning.
 Below is the schema of the "Fish Detection" table. 
-This table takes about 326 GB, and is the only table that is actually needed for the cleaning.
 
 \lstdefinestyle{sql}{
   language=SQL,
@@ -289,18 +316,16 @@ CREATE TABLE IF NOT EXISTS ‘f4k_db‘.‘fish_detection‘ (
 ‘processed_videos_id‘ INT(11) NOT NULL
 \end{lstlisting}
 
-There are other tables such as "Camera\_Info" that shows the camera used for each video, with relatively small disk usage.
-
-This {\tt .sql} dump file is stored as plain text files that could be parsed into SQL code that loads the stored data.
-Under limitations of disk space and access speed, loading a large SQL database dump file into a server and performing 400,000 queries is very unnecessary and time-consuming, hence making it the slowest part of the cleaning. Also, the provided AFS quota could not hold all the information. 
-An alternative is to use python script with standard stream pipeline to parse and partition the SQL dump file into directly usable files.
+This {\tt .sql} dump file is stored as plain text files that could be loaded with a SQL server.
+Under limitations of disk space and access speed, loading such large SQL database dump file into a server and performing 400,000 queries is unnecessary and very time-consuming, hence making it the slowest part of the cleaning. 
+A Python script with standard stream pipeline is used to parse and partition the SQL dump file into directly usable files instead.
 
 \subsection{Standard Stream based Extraction Script}
 
 In this project, each record needed for the cleaning is independent (given they have different video\_id). 
 If each detection is stored in a corresponding files with its video\_id, the information extraction will be much faster without the need to seek through all the records of other videos.
 
-Because each detection is only need once during the extraction, and the dump file is too large for the RAM, standard stream pipeline a more reasonable choice for the parsing. 
+The project uses standard stream pipeline because each detection is only need once during the extraction, and the dump file is too large to be loaded into the RAM.
 
 With simple Python functions such as {\tt split()}, the record in the dump file of form:
 \lstset{basicstyle=\small\ttfamily,breaklines=true,style=sql}
@@ -309,16 +334,22 @@ With simple Python functions such as {\tt split()}, the record in the dump file 
 \end{lstlisting}
 are parsed into directly usable list of values, separated by {\tt newline} character.
 
-This process makes the time cost for loading the dataset reduced to an almost negligible amount. In Qiqi's estimate, the loading and preprocessing would take 800,000 hours (25,000 hours on a 32 core machine) in the original design (double the time if considering her calculation error). After the pre-extraction, it only took about 0.3 seconds on average for a frame to be load and processed on a single computational thread. Which is about 70,000 hours, essentially cutting down the time used to 10\% of the original design.
+Which reduces the time cost for loading the dataset reduced to an almost negligible amount. 
+The output of this script contains 326 GB of {\tt .csv} files, each one corresponds to the associated {\tt video\_id}.
+
+%In Qiqi's estimate, the loading and preprocessing would take 800,000 hours (25,000 hours on a 32 core machine) in the original design (double the time if considering her calculation error). After the pre-extraction, it only took about 0.3 seconds on average for a frame to be load and processed on a single computational thread. Which is about 70,000 hours, essentially cutting down the time used to 10\% of the original design.
 
 \subsection{Translation of Binary Data} 
 
-With the above extraction, another problem arises, in the schema mentioned in section \ref{sec:sqld}, there is a column called {\tt bb\_cc}, which means "Bounding Box Chain Code". This contains the {\tt x,y,w,h} in original videos, and a chain code to store the fish boundary data in a more compact format.
+With the above extraction, another problem arises, in the schema mentioned in section \ref{sec:sqld}, there is a column called {\tt bb\_cc}, which means "Bounding Box Chain Code". 
+This contains the  a chain code, which is used to store the fish boundary data in a more compact format.
 
-Also, since the binary file is stored as text file, a different encoding is used so it won't cause parsing fault during loading, for example, 8 consecutive 0 bits, the null character, are stored as two bytes in ascii format of {\tt \textbackslash0}. A cleaning function is used to enumerate through the raw bit array to translate them back to original values.
+Since the binary file is stored as text file, a different encoding is used so it won't cause parsing fault during loading.
+For example, the {\tt null} character consists of 8 0-bits, are stored as two bytes in ascii format of {\tt "\textbackslash0"}. A cleaning function is implemented to enumerate through the raw bit array to translate them back to original values.
 
 After comparing binary values of {\tt bb\_cc} and the corresponding detection image, it is found that the binary data is in the following format:
 \begin{itemize}
+\setlength{\parskip}{1pt}
 \item
 First 42 (11,11,10,10) bits - {\tt x,y,w,h} of the bounding box.
 \item
@@ -329,16 +360,19 @@ Following 3 bits - Padding of zeros added to make the length a multiple of 8.
 All other bits - Chain Code of the contour, 3 bits each. Pointing towards next contour point from previous one. 
 \end{itemize}
 
-This process allows quick extraction of the contour, loading the image, summaries, and the contour information of a 1000 frame video into memory from AFS only took 1 second now and removes the need to maintain a running SQL server.
+This process allows a faster extraction of the contour, which accelerates the dataset loading process so it takes significantly less time. 
+By comparing against Yu's\cite{Yu} evaluation, this potentially reduces the runtime for about 50\%, and more importantly removes need of a SQL server, hence gives the cleaning process more portability.
 
 \section{Ground Truth Dataset}
 \label{sec:gt}
 
 In order to train and evaluate the classifiers, Pugh and Yu manually marked a set of detections with the schema above. They chose a subset of the RDS, which is some of the videos having id start with "13b". This subset of the RDS consists of 39 video files and 61,101 detections. 
 
-However, the marking was not able to cover all of the detections because of its size. Moreover, some set of the detection are marked wrong because of the ambiguity of the classification schema. For example, a lot of the planktons are marked as fishes, and since class 9 (good detection with problems) is very rare, it's sometimes mistaken as class 5 (Unknown) or 7 (bad boundary). Some of the error patterns are not included in this video set.
+However, the marking was not able to cover all of the detections because of its size. 
+Some set of the detection are marked wrong because of the ambiguity of the classification schema. 
+For example, a lot of the planktons are marked as fishes; Also, since class 9 (good detection with problems) is very rare, it's sometimes mistaken as class 5 (Unknown) or 7 (bad boundary). Some of the error patterns are not included in this video set. This limitation is discussed in Section \ref{sec:AmbigCS}.
 
-After extracting some statistics on this dataset, it is discovered that this dataset is heavily biased, it fails to include normal videos filmed at 2 sites. Due to need for re-calibration and future validation. Two subset with 10,000 detections each were marked.
+After extracting statistics on this dataset, it is discovered that this dataset is heavily biased, it fails to include normal videos filmed at 2 sites. The distribution of detection on each site is shown in Fig \ref{fig:gtdist}, note that the detections marked at HoBiHu-site are significantly lower than other sites, and they contain almost no good detections.
 
 \begin{figure}[h]
     \centering
@@ -347,6 +381,7 @@ After extracting some statistics on this dataset, it is discovered that this dat
     \label{fig:gtdist}
 \end{figure}
 
+Due to need for re-calibration and future validation. Two separate subset of videos, containing a total of 18,000 detections were marked.
 
 \chapter{Preprocessing}
 \label{chap:prepro}
@@ -756,6 +791,7 @@ The accuracy obtained by the training dataset on CNN\_WC has shown promising acc
 \begin{appendices}
 
 \chapter{Master/Slave Framework Pseudo-Code}
+\label{apped:msf}
 
 With this framework design, if we want to process any stage of the pipeline classifier, we only need to overwrite the \underline{\textbf{DoWork}(VideoID)} function of slave code.
 
