@@ -57,78 +57,86 @@
 \newlabel{sec:gt}{{3.3}{12}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Number of Fish/Non-Fish at different sites in original Ground Truth Dataset\relax }}{12}}
 \newlabel{fig:gtdist}{{3.2}{12}}
+\citation{Pugh}
 \@writefile{toc}{\contentsline {chapter}{\numberline {4}Preprocessing}{13}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \newlabel{chap:prepro}{{4}{13}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Translation from MATLAB to Python}{13}}
-\newlabel{sec:translate}{{4.1}{13}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Test runtime of different 2D convolve algorithms.\relax }}{14}}
-\newlabel{fig:benchmark}{{4.1}{14}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Early Video Removal}{14}}
-\newlabel{sec:earlyremove}{{4.2}{14}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Log Scale Histogram of Detection Length\relax }}{15}}
-\newlabel{fig:vidlength}{{4.2}{15}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Early Video Removal}{13}}
+\newlabel{sec:earlyremove}{{4.1}{13}}
 \citation{Pugh}
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}Frame Edge Indicator Function (FEIF)}{16}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Feature Extraction}{16}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}Pugh's Features}{17}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}Principle Component Analysis}{17}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Variance Explained\relax }}{18}}
-\newlabel{fig:pcsused}{{4.3}{18}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}Image Processing For CNN}{18}}
-\newlabel{sec:CNNprepro}{{4.5}{18}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Images on first stages of pre-process\relax }}{18}}
-\newlabel{fig:imageprepro}{{4.4}{18}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Classification}{19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Log Scale Histogram of Detection Length\relax }}{14}}
+\newlabel{fig:vidlength}{{4.1}{14}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Frame Edge Indicator Function (FEIF)}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Removed Areas of the modified FEIF\relax }}{15}}
+\newlabel{fig:feifzone}{{4.2}{15}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Evaluation on Reduction Algorithms}{15}}
+\newlabel{sec:reduction}{{4.3}{15}}
+\citation{Huang}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}Translation from MATLAB to Python}{16}}
+\newlabel{sec:translate}{{4.4}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Test runtime of different 2D convolve algorithms.\relax }}{16}}
+\newlabel{fig:benchmark}{{4.3}{16}}
+\citation{Huang}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Feature Extraction}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}Huang's Features}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}Pugh's Features}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.3}Principle Component Analysis}{18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Cumulative Variance Explained against Number of Features Used\relax }}{19}}
+\newlabel{fig:pcsused}{{4.4}{19}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}Image Processing For CNN}{19}}
+\newlabel{sec:CNNprepro}{{4.6}{19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Images on first stages of pre-process\relax }}{20}}
+\newlabel{fig:imageprepro}{{4.5}{20}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Classification}{21}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chap:classify}{{5}{19}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Ambiguity in Original Classification Schema}{19}}
-\newlabel{sec:AmbigCS}{{5.1}{19}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Detection changing from class 8 (Bad Boundary) to 6 (Clean Boundary).\relax }}{19}}
-\newlabel{fig:class68}{{5.1}{19}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces A track of detection, changing from class 5 (Unknown) to 6 (Fish).\relax }}{20}}
-\newlabel{fig:class56}{{5.2}{20}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Support Vector Machines (SVM)}{20}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces SVM's result and normalized result on unseen dataset\relax }}{21}}
-\newlabel{fig:svmacc}{{5.3}{21}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Convolutional Neural Networks (CNN)}{21}}
-\newlabel{sec:cnn}{{5.3}{21}}
+\newlabel{chap:classify}{{5}{21}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Ambiguity in Original Classification Schema}{21}}
+\newlabel{sec:AmbigCS}{{5.1}{21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Detection changing from class 8 (Bad Boundary) to 6 (Clean Boundary).\relax }}{21}}
+\newlabel{fig:class68}{{5.1}{21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces A track of detection, changing from class 5 (Unknown) to 6 (Fish).\relax }}{22}}
+\newlabel{fig:class56}{{5.2}{22}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Support Vector Machines (SVM)}{22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces SVM's result and normalized result on unseen dataset\relax }}{23}}
+\newlabel{fig:svmacc}{{5.3}{23}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Convolutional Neural Networks (CNN)}{23}}
+\newlabel{sec:cnn}{{5.3}{23}}
 \citation{Pugh}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces CNN\_WC's result and normalized result on unseen dataset\relax }}{22}}
-\newlabel{fig:cnnbcacc}{{5.4}{22}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.4}Voting Strategy}{23}}
-\newlabel{sec:voting}{{5.4}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces CNN\_WC's result and normalized result on unseen dataset\relax }}{24}}
+\newlabel{fig:cnnbcacc}{{5.4}{24}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Voting Strategy}{25}}
+\newlabel{sec:voting}{{5.4}{25}}
 \citation{MPI4PY}
 \citation{MPI4PY2}
 \citation{MPI4PY3}
 \citation{L5}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Parallel Distribution}{25}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Parallel Distribution}{27}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chap:parallel}{{6}{25}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}Message Passing Interface for Python (MPI4PY)}{25}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces Running the MPI program on MATE terminal\relax }}{26}}
-\newlabel{fig:mpi}{{6.1}{26}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}CPU Hogging and Memory Thrashing Prevention}{26}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.3}Error Recovery and Progress Record}{27}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusion}{29}}
+\newlabel{chap:parallel}{{6}{27}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Message Passing Interface for Python (MPI4PY)}{27}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces Running the MPI program on MATE terminal\relax }}{28}}
+\newlabel{fig:mpi}{{6.1}{28}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}CPU Hogging and Memory Thrashing Prevention}{28}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}Error Recovery and Progress Record}{29}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusion}{31}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chap:conclusion}{{7}{29}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.1}Project Outcome}{29}}
+\newlabel{chap:conclusion}{{7}{31}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Project Outcome}{31}}
 \citation{Pugh}
 \citation{Pugh}
-\@writefile{toc}{\contentsline {section}{\numberline {7.2}Future Work}{30}}
-\newlabel{sec:future}{{7.2}{30}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.1}More Annotation}{30}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7.1}{\ignorespaces A prototype online ground truth interface\relax }}{30}}
-\newlabel{fig:gto}{{7.1}{30}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.2}Future Work}{32}}
+\newlabel{sec:future}{{7.2}{32}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.1}More Annotation}{32}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.1}{\ignorespaces A prototype online ground truth interface\relax }}{32}}
+\newlabel{fig:gto}{{7.1}{32}}
 \bibstyle{unsrt}
 \bibdata{dissertation}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.2}Training New CNNs}{31}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.3}Final Words}{31}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.2}Training New CNNs}{33}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.3}Final Words}{33}}
 \bibcite{Pugh}{1}
 \bibcite{F4K}{2}
 \bibcite{Yu}{3}
@@ -139,22 +147,22 @@
 \bibcite{MPI4PY}{8}
 \bibcite{MPI4PY2}{9}
 \bibcite{MPI4PY3}{10}
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{33}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}Master/Slave Framework Pseudo-Code}{35}}
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{35}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Master/Slave Framework Pseudo-Code}{37}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{apped:msf}{{A}{35}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Master Workflow\relax }}{35}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Slave Workflow\relax }}{36}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {B}Sample of Lengthy Videos}{37}}
+\newlabel{apped:msf}{{A}{37}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Master Workflow\relax }}{37}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Slave Workflow\relax }}{38}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {B}Sample of Lengthy Videos}{39}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{sec:samplelong}{{B}{37}}
-\@writefile{lof}{\contentsline {figure}{\numberline {B.1}{\ignorespaces Sample frames from a video filmed at night.\relax }}{37}}
-\newlabel{fig:sample_night}{{B.1}{37}}
-\@writefile{lof}{\contentsline {figure}{\numberline {B.2}{\ignorespaces Sample frames from a corrupted video.\relax }}{38}}
-\newlabel{fig:sample_corrupt}{{B.2}{38}}
-\@writefile{lof}{\contentsline {figure}{\numberline {B.3}{\ignorespaces Sample frames from a video with dynamic background.\relax }}{38}}
-\newlabel{fig:sample_vegetation}{{B.3}{38}}
-\@writefile{lof}{\contentsline {figure}{\numberline {B.4}{\ignorespaces Sample frames from a video with abnormal amount of fish.\relax }}{38}}
-\newlabel{fig:sample_fish}{{B.4}{38}}
+\newlabel{append:samplelong}{{B}{39}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.1}{\ignorespaces Sample frames from a video filmed at night.\relax }}{39}}
+\newlabel{fig:sample_night}{{B.1}{39}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.2}{\ignorespaces Sample frames from a corrupted video.\relax }}{40}}
+\newlabel{fig:sample_corrupt}{{B.2}{40}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.3}{\ignorespaces Sample frames from a video with dynamic background.\relax }}{40}}
+\newlabel{fig:sample_vegetation}{{B.3}{40}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.4}{\ignorespaces Sample frames from a video with abnormal amount of fish.\relax }}{40}}
+\newlabel{fig:sample_fish}{{B.4}{40}}

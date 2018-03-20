@@ -16,28 +16,30 @@
 \contentsline {subsection}{\numberline {3.2.2}Translation of Binary Data}{11}
 \contentsline {section}{\numberline {3.3}Ground Truth Dataset}{12}
 \contentsline {chapter}{\numberline {4}Preprocessing}{13}
-\contentsline {section}{\numberline {4.1}Translation from MATLAB to Python}{13}
-\contentsline {section}{\numberline {4.2}Early Video Removal}{14}
-\contentsline {section}{\numberline {4.3}Frame Edge Indicator Function (FEIF)}{16}
-\contentsline {section}{\numberline {4.4}Feature Extraction}{16}
-\contentsline {subsection}{\numberline {4.4.1}Pugh's Features}{17}
-\contentsline {subsection}{\numberline {4.4.2}Principle Component Analysis}{17}
-\contentsline {section}{\numberline {4.5}Image Processing For CNN}{18}
-\contentsline {chapter}{\numberline {5}Classification}{19}
-\contentsline {section}{\numberline {5.1}Ambiguity in Original Classification Schema}{19}
-\contentsline {section}{\numberline {5.2}Support Vector Machines (SVM)}{20}
-\contentsline {section}{\numberline {5.3}Convolutional Neural Networks (CNN)}{21}
-\contentsline {section}{\numberline {5.4}Voting Strategy}{23}
-\contentsline {chapter}{\numberline {6}Parallel Distribution}{25}
-\contentsline {section}{\numberline {6.1}Message Passing Interface for Python (MPI4PY)}{25}
-\contentsline {section}{\numberline {6.2}CPU Hogging and Memory Thrashing Prevention}{26}
-\contentsline {section}{\numberline {6.3}Error Recovery and Progress Record}{27}
-\contentsline {chapter}{\numberline {7}Conclusion}{29}
-\contentsline {section}{\numberline {7.1}Project Outcome}{29}
-\contentsline {section}{\numberline {7.2}Future Work}{30}
-\contentsline {subsection}{\numberline {7.2.1}More Annotation}{30}
-\contentsline {subsection}{\numberline {7.2.2}Training New CNNs}{31}
-\contentsline {section}{\numberline {7.3}Final Words}{31}
-\contentsline {chapter}{Bibliography}{33}
-\contentsline {chapter}{\numberline {A}Master/Slave Framework Pseudo-Code}{35}
-\contentsline {chapter}{\numberline {B}Sample of Lengthy Videos}{37}
+\contentsline {section}{\numberline {4.1}Early Video Removal}{13}
+\contentsline {section}{\numberline {4.2}Frame Edge Indicator Function (FEIF)}{15}
+\contentsline {section}{\numberline {4.3}Evaluation on Reduction Algorithms}{15}
+\contentsline {section}{\numberline {4.4}Translation from MATLAB to Python}{16}
+\contentsline {section}{\numberline {4.5}Feature Extraction}{17}
+\contentsline {subsection}{\numberline {4.5.1}Huang's Features}{17}
+\contentsline {subsection}{\numberline {4.5.2}Pugh's Features}{18}
+\contentsline {subsection}{\numberline {4.5.3}Principle Component Analysis}{18}
+\contentsline {section}{\numberline {4.6}Image Processing For CNN}{19}
+\contentsline {chapter}{\numberline {5}Classification}{21}
+\contentsline {section}{\numberline {5.1}Ambiguity in Original Classification Schema}{21}
+\contentsline {section}{\numberline {5.2}Support Vector Machines (SVM)}{22}
+\contentsline {section}{\numberline {5.3}Convolutional Neural Networks (CNN)}{23}
+\contentsline {section}{\numberline {5.4}Voting Strategy}{25}
+\contentsline {chapter}{\numberline {6}Parallel Distribution}{27}
+\contentsline {section}{\numberline {6.1}Message Passing Interface for Python (MPI4PY)}{27}
+\contentsline {section}{\numberline {6.2}CPU Hogging and Memory Thrashing Prevention}{28}
+\contentsline {section}{\numberline {6.3}Error Recovery and Progress Record}{29}
+\contentsline {chapter}{\numberline {7}Conclusion}{31}
+\contentsline {section}{\numberline {7.1}Project Outcome}{31}
+\contentsline {section}{\numberline {7.2}Future Work}{32}
+\contentsline {subsection}{\numberline {7.2.1}More Annotation}{32}
+\contentsline {subsection}{\numberline {7.2.2}Training New CNNs}{33}
+\contentsline {section}{\numberline {7.3}Final Words}{33}
+\contentsline {chapter}{Bibliography}{35}
+\contentsline {chapter}{\numberline {A}Master/Slave Framework Pseudo-Code}{37}
+\contentsline {chapter}{\numberline {B}Sample of Lengthy Videos}{39}

@@ -386,50 +386,40 @@ Due to need for re-calibration and future validation. Two separate subset of vid
 \chapter{Preprocessing}
 \label{chap:prepro}
 
-While the data source problem is solved, the most costly part of the pipeline will be the feature extraction for the SVM part. 
-It's not sensible to send all of the RGB values of a image as direct input for the SVM, hence feature extraction and dimensionality reduction is needed.
+To achieve the goal of removing False Positives without losing too many True Positives, as well as reducing the total runtime, some dataset reduction methods are used on the dataset before extraction of the features: 
 
-To achieve the goal of removing False Positives without losing too many True Positives, some reduction methods are used on the dataset before extraction of the features. 
-Early Video Removal was introduced and an improved version of Frame Edge Indicator Function developed by Pugh was used.
-
-\section{Translation from MATLAB to Python}
-\label{sec:translate}
-
-Initially the project aims to translate the entire pipeline into Python, however when it comes to the feature extraction part, translating the code became an unreasonable solution.
-
-The F4K feature extraction code have about 5,000 lines of code in MATLAB.
-Usually, for most of the MATLAB functions, an equivalent library function from Numpy/Scipy/SKLearn could be found.
-Unfortunately, most of F4K feature extraction consists of customized code that could not be directly translated to Python.
-
-For example, the Gabor Filter used in the project are written by Ahmad Poursaberi from Tehran University, a different implementation (where the scale of the filter is rotated, while their variance isn't) is used. 
-This essentially required the project to re-engineer the whole F4K feature library.
-
-A full translation of the F4K feature could take a few weeks. Since the cleaning algorithm only need to execute once, translation may not be the optimal path to take. After recording performance on various parts of the algorithm, we determined that one of the slowest operation is 2D convolution.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.5]{graph/benchmark.png}
-    \caption{Test runtime of different 2D convolve algorithms.}
-    \label{fig:benchmark}
-\end{figure}
-
-Figure \ref{fig:benchmark} shows the tested performance of various 2D convolution algorithm. During the test, 2000 random 100x100 arrays are generated to simulate images used, and 5 random 5x5 filters are used, simulating both the Gabor Filter and CNN used in the pipeline. By enforcing the maximum computational thread to 1, the result shows that only 2 of the chosen algorithms in Python are faster than MATLAB.
 \begin{itemize}
-\item
-TensorFlow's conv2d, while faster than all other library, it has a significantly higher memory usage due to the tensor data type. It also have a high initialization cost due to the transformation needed.
-\item
-Scipy.NDImage's convolve, giving almost same performance as MATLAB.
+\setlength{\parskip}{1pt}
+\item \textbf{Early Video Removal} - Mark all detections recorded during night as Non-Fish.
+\item \textbf{Frame Edge Indicator Function}, developed by Pugh\cite{Pugh} - Mark all detections with certain amount of contour points touching the edge as Non-Fish. 
 \end{itemize}
 
-After this analysis, it's clear that re-engineering the MATLAB code is likely to spend more time, so a library called PyMatlab will be used to compute the F4K features in a MATLAB session instead, while other unfinished parts of the pipeline will be translated to Python.
+The next part of the pipeline will be the preprocessing stages:
+
+\begin{itemize}
+\setlength{\parskip}{1pt}
+\item \textbf{Feature extraction and dimensionality reduction} for the SVM classifier.
+\item \textbf{Colour space transformation and normalization} for the images CNN used. 
+\end{itemize}
 
 \section{Early Video Removal}
 \label{sec:earlyremove}
 
-During the feature extraction tests, it is discovered that loading a 40,000 frame video and extract features from it would take about 8 GB of memory space. 
-If such video is processed on a node with RAM less than 8 GB, it will cause serious thrashing, rendering the node unresponsive. For machines having a RAM higher than 8 GB, it will still causes some disruption during loading.  
+During the feature extraction tests, it is discovered that loading a 40,000 frame video and extract features from it would use about 8 GB of memory space. 
+And if such video is processed on a node with RAM less than 8 GB, it will cause thrashing problems, rendering the machine unresponsive. 
+It could still causes serious disruption on machines with higher RAM.
 
-While risking the chance of thrashing, these videos took a longer time to process, and most importantly, they are usually filled with False Positive detections. As discussed in Chapter \ref{sec:summaries}, if a camera recorded 30,000 detection in 10 minutes, means that in every frame of the original video, an average of 10 detection is extracted. By looking at these "outlier" videos, some patterns were found:
+\begin{figure}[ht]
+\centering
+    \includegraphics[scale=0.40]{graph/frame_distribution.png}
+    \caption{Log Scale Histogram of Detection Length}
+    \label{fig:vidlength}
+\end{figure}
+
+While risking the chance of thrashing, these videos took a longer time to process, and most importantly, they are usually filled with Non-Fish detections. 
+As discussed in Chapter \ref{sec:summaries}, if a camera recorded 30,000 detection in 10 minutes, means that in every frame of the original video, an average of 10 detection is extracted. 
+Fig \ref{fig:vidlength} shows the Log Distribution of the videos with different length, note that only a few video having detections more than 30,000. 
+By looking at these "outlier" videos, some patterns were found (Images of these case are in Appendix \ref{append:samplelong}):
 
 \begin{itemize}
 \item
@@ -442,70 +432,147 @@ One outlier video had 200,000 detections, consisting of lots of repeating frames
 There are also some good videos with high detections: 
 \begin{itemize}
 \item
-Videos from NPP-3 site camera 3, at January 2010. These videos are captured at a higher frame rate, resulting in more detections. They usually contains lots of good detections.
+Videos from NPP-3 site camera 3, at January 2010. These videos are captured at a higher frame rate, resulting in more good detections.
 \item
 Dynamic background - Videos filled with moving vegetation, or refraction of sunlight. They usually contains lots of good detections.
 \end{itemize}
 
-\begin{figure}[h]
-\centering
-    \includegraphics[scale=0.40]{graph/frame_distribution.png}
-    \caption{Log Scale Histogram of Detection Length}
-    \label{fig:vidlength}
-\end{figure}
-
-Using the above patterns and observed distribution in Fig \ref{fig:vidlength}, if we remove all the videos recorded in the night, videos with 40,000 or more frames, and video recorded with above characteristics and 20,000 or more frames. About 8\% of the detections can be rejected without need to extract them, saving approximately 200 days of computational time.
+If we remove all the videos recorded in the night, videos with 40,000 or more frames, and video recorded with above characteristics and 20,000 or more frames. About 8\% of the detections can be rejected without need to extract them, saving approximately 200 days of computational time.
 %Samples of rejected videos are in Appendix \ref{sec:samplelong}.
-
 
 \section{Frame Edge Indicator Function (FEIF)}
 
-In Pugh's thesis\cite{Pugh}, the FEIF is used to identify if a fish is being partially cut by the frame. In FEIF, a boundary of video is defined, and if the number of the contour points outside of the boundary exceeds 25, the detection is then rejected.
+In Pugh's thesis\cite{Pugh}, the FEIF is used to identify if a fish is being partially cut by the frame. 
+In FEIF, a boundary of video like in Fig \ref{fig:feifzone} is used, the time stamp zone come from the reject area of previous species recognition algorithm. 
+If the number of the contour points inside this zone exceeds 25, the detection is then rejected.
 
-However this function could not achieve the intention on some cases, for example, some videos have a darker frame edge, so even if a fish is cut by boundary, the contour points will be inside the boundary. Also, a large fish slightly touching the boundary will be rejected because the 25 limit, and small fishes may bypass the heuristics because of the size.
+However this function could not achieve the intention on some cases. 
+For example, some videos have a darker frame edge, so even if a fish is cut by boundary, it could still be accepted. 
+Also, a large fish slightly touching the boundary will be rejected because the 25 limit, and small fishes may bypass the heuristics because of the size.
 
-Following modification is added to solve the problem, by shrinking the boundary by 2 pixels, then increasing the limit of 25 to 40, and adding a new restriction: reject all the detections with 25\% of the points touching the boundary. About 15\% of the dataset is rejected by this upgraded FEIF algorithm, saving 400 days of computational time.
+Following modification is added to solve the problem, by padding the boundary for a 2 pixels width, then increasing the limit of 25 to 40, and adding a new restriction: reject all the detections with 25\% of the points touching the boundary. %About 15\% of the dataset is rejected by this upgraded FEIF algorithm, saving 400 days of computational time.
+
+\begin{figure}[h]
+\centering
+    \includegraphics[scale=0.24]{graph/feifzone.png}
+    \caption{Removed Areas of the modified FEIF}
+    \label{fig:feifzone}
+\end{figure}
+
+\section{Evaluation on Reduction Algorithms}
+\label{sec:reduction}
+
+After testing the dataset reduction function on training dataset, statistics on the chart below were obtained. This manages to remove about 40\% of the bad detections, however the heavy loss in True Positives were unacceptable for the project. It is later discovered to be the time stamp setting problem, where significant amount of fish get rejected on videos without the time stamp.
+
+\[
+\begin{array}{C|C|C}
+$ $ & EVR and FEIF kept & EVR and FEIF reject \\
+\hline 
+True Fish & 26702 & 3948 \\
+Non Fish & 27201 & 12532
+\end{array}
+\]
+
+%TODO do I add things here?
+
+\section{Translation from MATLAB to Python}
+\label{sec:translate}
+
+Initially the project aims to translate the entire pipeline into Python, however when it comes to the feature extraction part, translating the code became an unreasonable solution.
+
+The F4K feature extraction code have about 5,000 lines of code in MATLAB.
+Usually, for most of the MATLAB functions, an equivalent library function from Numpy/Scipy/SKLearn could be found.
+Unfortunately, most of F4K feature extraction functions developed by Huang\cite{Huang}, consists of customized code that could not be directly translated to Python.
+
+For example, the Gabor Filter used in the project are written by Ahmad Poursaberi from Tehran University, a different implementation (where the scale of the filter is rotated, while their variance isn't) is used. 
+This essentially required the project to re-write the whole F4K feature library.
+A full translation of the F4K feature could take a few weeks. 
+
+Since the cleaning algorithm only need to execute once, translation may not be the optimal path to take. 
+For this purpose, some benchmarking were tested to see if translating could reduce enough runtime on the project.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{graph/benchmark.png}
+    \caption{Test runtime of different 2D convolve algorithms.}
+    \label{fig:benchmark}
+\end{figure}
+
+Figure \ref{fig:benchmark} shows the tested performance of various 2D convolution algorithm. During the test, 2000 random 100x100 arrays are generated to simulate images used, and 5 random 5x5 filters are used, simulating both the Gabor Filter and CNN used in the pipeline. By enforcing the maximum computational thread to 1, the result shows that only 2 of the chosen algorithms in Python are faster than MATLAB.
+\begin{itemize}
+\setlength{\parskip}{1pt}
+\item
+\textbf{TensorFlow's conv2d}, while faster than all other library, it has a significantly higher memory usage due to the use of tensor data type. Translation using this would be difficult due to the  library being more focused on Neural Networks.
+\item
+\textbf{Scipy.NDImage's convolve}, giving almost same performance as MATLAB.
+\end{itemize}
+
+After this analysis, it's clear that re-engineering the MATLAB code is likely to spend more time, so a library called PyMatlab will be used to compute the F4K features in a MATLAB session instead, while other unfinished parts of the pipeline will be translated to Python.
 
 \section{Feature Extraction}
 
 During the species recognition stage of the F4K project, 2626 features were used for computing detection certainty.
-On that basis, Pugh added 29 new features focused on the edges of the contour. Then dimensionality reduction is applied to the features to reduce dimension from 2655 to 88. 
+On that basis, Pugh added 29 new features focused on the edges of the contour. 
+Then dimensionality reduction is applied to the features to reduce dimension from 2655 to 88.
 
 This process takes about 0.3 seconds for each frame, Analysing the computational time shows the following result, sorted by time cost:
 \begin{itemize}
+\setlength{\parskip}{1pt}
 \item
-Co-occurance Matrix - these 720 features took about 0.2 seconds to compute.
+\textbf{Co-occurance Matrix} - these 720 features took about 0.2 seconds to compute.
 \item
-Affine Moment Invariants - these 105 features took 0.05 seconds to compute.
+\textbf{Affine Moment Invariants} - these 105 features took 0.05 seconds to compute.
 \item
-Gabor Filter - these 160 features took about 0.04 seconds to compute.
-\item
-Rest of the features took almost negligible amount of time to finish.
+\textbf{Gabor Filter} - these 160 features took about 0.04 seconds to compute.
+\item Other features took almost negligible amount of time to finish.
 \end{itemize}
 Unfortunately after checking the features with PCA, these feature all took significant part in the first 50 PCA components, removing any one of the 3 time costly feature will have a high impact on the result.
 
+\subsection{Huang's Features}
+
+Pugh's work were based on the previous work of Huang's\cite{Huang}, were his 2626 features were used to identify the species of a fish.
+Since this part is not translated, only a list of used feature are provided here:
+\begin{itemize}
+\setlength{\parskip}{1pt}
+\item \textbf{RGB and HSV histograms} - 930 features.
+\item \textbf{Curve Tail Shape, Ratio} - 2 features.
+\item \textbf{Fish Density Static} - 12 features.
+\item \textbf{Co-occurance Matrix} - 720 features.
+\item \textbf{Moment Invariant} - 42 features.
+\item \textbf{Pyramid Histogram of Gradient} - 680 features.
+\item \textbf{Fourier Descriptor} - 15 features.
+\item \textbf{Gabor Filter on Textures} - 160 features.
+\item \textbf{Affine Moment Invariants} - 63 features.
+\item \textbf{Tail/Head Contour Point Ratio} - 2 features.
+\end{itemize}
+
 \subsection{Pugh's Features}
 
-Pugh's part of the generated feature consist of 4 parts: Animation Score, Boundary Curvature, Erraticity, and Gabor Filter on edge. This part of the pipeline is translated into Python as the original feature generation script is incomplete. Some inefficient {\tt for} loops were translated using Numpy library to speed them up.
+Pugh's part of the generated feature consist of 4 parts: Animation Score, Boundary Curvature, Erraticity, and Gabor Filter on contours. 
+This part of the pipeline is translated into Python as the original feature generation script is incomplete. Some inefficient {\tt for} loops were translated using Numpy library for maximal single-core performance.
 
-The Animation Score (AS) is calculated for one whole track, where 5 frames are pick from the track, and squared sum of the change in pixels is calculated. This feature isn't very useful because of the dynamic background of the image.
-
-Boundary Curvature (BC), it uses the Curvature Scale Space to measure the change of direction to the contour, the result is blurred with a Gaussian filter and the Skewness and Kurtosis is extracted. 
-
-Temporal Consistency (Erraticity) is similar to Boundary Curvature, where 5 frames are picked and mean of Skewness and Kurtosis is recorded.
-
-Gabor Filters applied on binary image generated using contour, instead of the original image used in the F4K feature extraction. 
+\begin{itemize}
+\setlength{\parskip}{1pt}
+\item
+\textbf{Animation Score (AS)} is calculated for one whole track, where 5 frames are pick from the track, and squared sum of the change in pixels is calculated. This feature isn't very useful because of the dynamic background of the image.
+\item
+\textbf{Boundary Curvature (BC)}, it uses the Curvature Scale Space to measure the change of direction to the contour, the result is blurred with a Gaussian filter and the Skewness and Kurtosis is extracted. 
+\item
+\textbf{Temporal Consistency (Erraticity)} is similar to Boundary Curvature, where 5 frames are picked and mean of Skewness and Kurtosis is recorded.
+\item
+\textbf{Gabor Filters} applied on binary image generated using contour, instead of the original image used in the F4K feature extraction. 
+\end{itemize}
 
 \subsection{Principle Component Analysis}
 
-Originally in Pugh's design, the number of the Principle Components used were selected with Kaiser's Criterion, where only ones with eigenvalue greater than 1 is selected. However the only advantage with this criterion is it being easy to calculate, essentially throwing away 30\% of informations.
+Originally in Pugh's design, the number of the Principle Components used were selected with Kaiser's Criterion, where only ones with eigenvalue greater than 1 is selected. However the only advantage with this criterion is it being easy to calculate, essentially throwing away 30\% of informations. This loss could be directly observed from Fig \ref{fig:pcsused}.
 
 Also due to storages limit of the project, about 100 features per frame could be stored. With this problem, the first 88 Principle Components were used, this express 90\% of the variance of the training dataset.
 
 \begin{figure}[ht]
 \centering
     \includegraphics[scale=0.40]{graph/pcas.png}
-    \caption{Variance Explained}
+    \caption{Cumulative Variance Explained against Number of Features Used}
     \label{fig:pcsused}
 \end{figure}
 
@@ -520,6 +587,7 @@ Before the image is forward into the CNN models, transformation and normalizatio
 Firstly the image is transformed into YUV color space.
 Then the image is normalized globally with mean and standard deviation of the YUV images.
 Finally, local spatial normalization was applied on each channel.
+This process is shown in Fig 4.5
 
 However after tests on the CNN trained, the result obtained weren't even close to the ones Pugh obtained.
 It is discovered that during the preprocessing stage of Pugh, two major mistakes were made.
@@ -527,12 +595,14 @@ Pugh uses OpenCV's {\tt imwrite} for the extraction of the image, the images are
 
 This causes the CNN\_N and CNN\_BC almost useless, classifying almost every unseen data into 1 single class. Some re-train attempt were included in Section \ref{sec:cnn}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
     \includegraphics[scale=0.4]{graph/imagepre.png}
     \caption{Images on first stages of pre-process}
     \label{fig:imageprepro}
 \end{figure}
+
+%TODO add cut in time?
 
 \chapter{Classification}
 \label{chap:classify}
@@ -602,7 +672,6 @@ The result of the SVM is shown in Fig \ref{fig:svmacc}.
 \section{Convolutional Neural Networks (CNN)}
 \label{sec:cnn}
 
-%TODO voting link.
 As mentioned before in Section \ref{sec:CNNprepro}, the result of the CNN were heavily affected by the preprocessing error. This causes the one of the CNN learning too many unnecessary and random features of the image, which produces a poor accuracy on the unseen dataset, marking almost every image it sees into class 2 or 7. 
 %%%INSERTHERE
 
@@ -839,7 +908,7 @@ If the framework are used in work other than process the videos, (in this projec
 \end{algorithm}
 
 \chapter{Sample of Lengthy Videos}
-\label{sec:samplelong}
+\label{append:samplelong}
 
 %TODO say something
 %The videos below are some sample frames.
