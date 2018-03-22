@@ -4,7 +4,7 @@
 \contentsline {section}{\numberline {1.3}Project Outcome}{2}
 \contentsline {section}{\numberline {1.4}Contribution}{3}
 \contentsline {section}{\numberline {1.5}Document Structure}{4}
-\contentsline {chapter}{\numberline {2}Backgrounds}{5}
+\contentsline {chapter}{\numberline {2}Background}{5}
 \contentsline {section}{\numberline {2.1}Big Data and Distributed Computing}{5}
 \contentsline {section}{\numberline {2.2}Classification Schema}{6}
 \contentsline {section}{\numberline {2.3}Pipeline Classifier}{7}
@@ -12,7 +12,7 @@
 \contentsline {chapter}{\numberline {3}Data Source}{9}
 \contentsline {section}{\numberline {3.1}Extracted Images}{9}
 \contentsline {section}{\numberline {3.2}SQL dump file}{10}
-\contentsline {subsection}{\numberline {3.2.1}Standard Stream based Extraction Script}{11}
+\contentsline {subsection}{\numberline {3.2.1}Standard Stream Based Extraction Script}{11}
 \contentsline {subsection}{\numberline {3.2.2}Translation of Binary Data}{11}
 \contentsline {section}{\numberline {3.3}Ground Truth Dataset}{12}
 \contentsline {chapter}{\numberline {4}Preprocessing}{13}
@@ -28,7 +28,7 @@
 \contentsline {chapter}{\numberline {5}Classification}{21}
 \contentsline {section}{\numberline {5.1}Ambiguity in Original Classification Schema}{21}
 \contentsline {section}{\numberline {5.2}Support Vector Machines (SVM)}{22}
-\contentsline {section}{\numberline {5.3}Convolutional Neural Networks (CNN)}{23}
+\contentsline {section}{\numberline {5.3}Convolutional Neural Networks (CNN)}{24}
 \contentsline {section}{\numberline {5.4}Voting Strategy}{25}
 \contentsline {chapter}{\numberline {6}Parallel Distribution}{27}
 \contentsline {section}{\numberline {6.1}Message Passing Interface for Python (MPI4PY)}{27}
