@@ -486,21 +486,19 @@ The following modification is added to solve the problem, by padding the boundar
     \label{fig:feifzone}
 \end{figure}
 
-\section{Evaluation on Reduction Algorithms}
+\section{Remove Rate of Reduction Algorithms}
 \label{sec:reduction}
 
-After testing the dataset reduction function on training dataset, the accuracy statistics below were obtained. This manages to remove about 40\% of the bad detections, however the heavy loss in True Positives were unacceptable for the project. It is later discovered to be the time stamp setting problem, where significant amount of fish get rejected on videos without the time stamp.
+After testing the dataset reduction function on training dataset, the accuracy statistics below were obtained. This manages to remove about 40\% of the bad detections, with about 5-10\% of False Negatives. It is later discovered to be the time stamp setting problem, where significant amount of fish get rejected on videos without the time stamp. More details on the fault is in Section \ref{sec:feiffault}.
 
 \[
 \begin{array}{C|C|C}
 $ $ & EVR and FEIF kept & EVR and FEIF reject \\
 \hline 
-True Fish & 26702 & 3948 \\
-Non Fish & 27201 & 12532
+True Fish & 3060 & 152 \\
+Non Fish & 3303 & 1440
 \end{array}
 \]
-
-%TODO do I add things here?
 
 \section{Translation from MATLAB to Python}
 \label{sec:translate}
@@ -760,15 +758,13 @@ It was also considered to apply for a specialized cluster for the re-training, b
 As the classifier do not work as expected as in Pugh's thesis, it is reconsidered to apply the previously failed attempts on increasing accuracy of the classifiers.
 One of the method tested is to add a voting method on the predicted probabilities obtained by different classifiers, to test out different combination of the classifier results.
 
+The voting strategy is described in the pseudo-code below. 
+The input: {\tt predict} is the predicted probability outputs of the classifiers, while the other parameters are the options used for searching the best combination of the classifiers. 
 
-
-
-%TODO add my approach,
-%TODO section about the voting results, reason of choices. 
 \begin{algorithm}
 \caption{Voting Decision}
 \begin{algorithmic}
-\STATE \textbf{INPUT: } predict, useSVM, useCNN, useCNNB, useCNNW, voteNeed, $\gamma$
+\STATE \textbf{INPUT:} predict, useSVM, useCNN, useCNNB, useCNNW, voteNeed, $\gamma$
 \STATE Count $\leftarrow$ 0
 \STATE \underline{\textbf{KeptClass}} $\leftarrow$ [6,8]
 \STATE \textbf{If} useSVM \textbf{and} sum(predict.getProb(SVM,KeptClass)) \textgreater  $\gamma$ \textbf{ Then:} Count+=1
@@ -778,6 +774,53 @@ One of the method tested is to add a voting method on the predicted probabilitie
 \STATE \textbf{If} Count \textgreater voteNeed \textbf{ Then:} return True \textbf{ Else:} return False
 \end{algorithmic} 
 \end{algorithm}
+
+After testing through different settings, a Receiver Operating Characteristic (ROC) curve of the voting performance is plotted.
+The ROC curve plotted is shown in Fig \ref{fig:roccurve}, this shows the True Positive Rate (good fish kept) against False Positive Rate (bad detections kept) at different thresholds ($\gamma$ value in the pseudo-code).
+
+\begin{figure}[ht]
+\centering
+    \includegraphics[scale=0.6]{graph/roccurve.png}
+    \caption{ROC curve of different settings for voting algorithm}
+    \label{fig:roccurve}
+\end{figure} 
+
+The project can only afford to lose about 10\% of the good fish.
+With this limit, the best classifier it to use SVM's predicted class 6 probability only, the ROC curve of this classifier is the black curve in Fig \ref{fig:roccurve}. 
+
+The chosen gamma value for the criteria is 0.0108, meaning all detection with SVM's class 6 probability higher than 1.1\% is treated as fish.
+Combining this setting with the previous reduction stage, this method is tested on various dataset from ground truth, and the following statistics are obtained.
+
+\[
+\begin{array}{C|C|C|C}
+$ $ Training Dataset & FEIF reject & SVM reject & Detection Kept\\
+\hline 
+True Fish & 3948 & 491 & 26211 \\
+Non Fish & 12532 & 7690 & 19511
+\end{array}
+\]
+
+\[
+\begin{array}{C|C|C|C}
+$ $ Validation Dataset 1 & FEIF reject & SVM reject & Detection Kept\\
+\hline 
+True Fish & 152 & 88 & 2972 \\
+Non Fish & 1440 & 553 & 2750
+\end{array}
+\]
+
+\[
+\begin{array}{C|C|C|C}
+$ $ Validation Dataset 2 & FEIF reject & SVM reject & Detection Kept\\
+\hline 
+True Fish & 14  & 2 & 373 \\
+Non Fish & 171 & 101 & 339
+\end{array}
+\]
+
+For the datasets used: validation dataset 1 consists of evenly sampled 7955 detection from each site/camera, and dataset 2 consists of 1000 random samples across entire RDS.
+Further attempt on reduction of False Negatives are discussed in Section \ref{sec:falsenegative}.
+
 
 
 %\subsection{Evaluation of Yu's approach}
@@ -804,7 +847,7 @@ The first two stages are separated because the they cost most of the computation
 
 In 2005, researchers added MPI support for Python\cite{MPI4PY}, and extended the capabilities for MPI-2 standard in 2008\cite{MPI4PY2}. The current version of MPI4PY\cite{MPI4PY3} was implemented in Cython, where the MPI calls were handled in C, ensuring high performance and compatibility.
 
-Mpi-master-slave\cite{L5}, a small python library with MPI4PY is used to distribute all the jobs among the available machines. 
+Mpi-master-slave\cite{L5}, a small python library with MPI4PY is used to distribute all the jare often plobs among the available machines. 
 For example, if there are 4 machines available, with the following command: 
 \lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
 \begin{lstlisting}[frame=single]
@@ -827,8 +870,8 @@ For all the ``slave'' nodes, Python's MultiProcessing and MATLAB's ParPool are u
 
 \section{CPU Hogging and Memory Thrashing Prevention}
 
-The project uses the public student lab DICE machines provided by The University of Edinburgh. 
-It is important to make sure the cleaning procedure doesn't affect other user's work.
+The project uses the public lab DICE machines provided by The University of Edinburgh. 
+It is important to make sure the cleaning procedure doesn't affect other users.
 
 A Python script using Multi-processing pools, spawning a ``{\tt ssh MachineName w}'' bash process for each machine.
 With the {\tt ssh}'s X11 forwarding enabled, the results printed out at target machine is transferred back to the Python script. 
@@ -842,11 +885,13 @@ After testing it on the machines, it was reported anonymously by other students 
 Loading a video with 10,000 frames and all the library functions will take about 3 GB space in physical memory. 
 After unreferencing every variable and forcing the garbage collecting mechanism, it still leaves 10\% of the memory in use. This eventually piles up and thrashes the memory. 
 
-A solution is to spawn a sub-process for each batch of the video cleaning and kill it after it's finished, but this increases the time to reload the python libraries, taking about 5 to 60 seconds per video.
+A solution is to spawn a sub-process for each batch of the video cleaning and kill it after it's finished. 
+This increases the time to reload the python libraries, taking about 5 to 10 seconds per video. 
+The increase in time cost is almost negligible compared to feature extraction cost, so no further optimization is made. 
 
-%TODO Bob: So what did you do?
-%TODO Me:  What?
-%TODO Bob: What?
+%Bob: So what did you do?
+%Me:  What?
+%Bob: What?
 
 \section{Error Recovery and Progress Record}
 
@@ -859,7 +904,15 @@ When an error is caught when processing a video, it immediately sends the master
 
 In the case of master crashes and other situations that MPI process is killed, all of the nodes will stop and some progress recording mechanism is needed for resuming progress. After all the output is stored on the disk, another empty file with {\tt .complete} suffix is created. So the ``slave'' processes could know if a video is finished processing, or killed before it finishes storage. With this file existence check, repeat work after restart is greatly reduced, hence improving the progress.
 
-%TODO some rant about unpredictable student behavior.
+Even with these issues addressed, the following even could still causes fault.:
+\begin{itemize}
+\setlength{\parskip}{0pt}
+\item \textbf{Rebooted machines}: Some student tends to restart the lab machines before using them, this causes code to terminated by {\tt SIGTERM} or {\tt SIGKILL}.
+\item \textbf{Unplugged machines}: Causes the master node to wait indefinitely for reply.
+\end{itemize}
+With this limitation, the project could only use the framework during night times.
+
+\section{Time Cost Reduction} 
 
 %TODO check the statistacks.
 %TODO time cost for each stage.
@@ -881,6 +934,7 @@ This is more compact than the other, using about 750 MB disk space.
 
 Also the by-product of the process may also be useful for a future cleaning attempt on the dataset, this includes:
 \begin{itemize}
+\setlength{\parskip}{3pt}
 \item A 323 GB folder, contains extracted {\tt .sql} records.
 \item A 510 GB folder, contains normalized and PCA transformed first 100 features.
 \item About 20,000 marked frame of ground truth dataset, covering the videos both Pugh and Yu missed during the ground truth process.
@@ -889,6 +943,17 @@ Also the by-product of the process may also be useful for a future cleaning atte
 This contains several Jupyter Notebooks, and two Python libraries. 
 These allows easier visualisation on the dataset, without the need to go through multiple extraction and SQL connection stage in MATLAB. 
 \end{itemize}
+
+\section{Analyse on False Negatives in cleaning algorithm}
+\label{sec:falsenegative}
+
+The cleaning algorithm produces approximately 5-10\% of False Negatives (rejected good fish). 
+In order to reduce this, the False Negatives were scrutinized to see the causing fault.
+\subsection{FEIF time-stamp fault}
+\label{sec:feiffault}
+
+\subsection{SVM fault}
+\label{sec:svmfault}
 
 %TODO add accuracy when you are done.
 %TODO performance on different accuracies.
@@ -942,7 +1007,7 @@ The accuracy obtained by the training dataset on CNN\_WC has shown promising acc
 
 With this framework design, if we want to process any stage of the pipeline classifier, we only need to overwrite the dummy \underline{\textbf{DoWork}(VideoID)} function of slave code.
 
-If the framework is used in work other than processing the videos, (in this project's case: finding SVM parameters), the  \underline{\textbf{VideoIDList}} can be changed to adapt the new tasks.
+If the framework is used in work other than processing the videos, (e.g. finding SVM parameters), the  \underline{\textbf{VideoIDList}} can be changed to adapt the new tasks.
 
 \begin{algorithm}
 \caption{Master Workflow}

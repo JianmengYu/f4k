@@ -18,7 +18,7 @@
 \contentsline {chapter}{\numberline {4}Preprocessing}{13}
 \contentsline {section}{\numberline {4.1}Early Video Removal}{13}
 \contentsline {section}{\numberline {4.2}Frame Edge Indicator Function (FEIF)}{15}
-\contentsline {section}{\numberline {4.3}Evaluation on Reduction Algorithms}{15}
+\contentsline {section}{\numberline {4.3}Remove Rate of Reduction Algorithms}{15}
 \contentsline {section}{\numberline {4.4}Translation from MATLAB to Python}{16}
 \contentsline {section}{\numberline {4.5}Feature Extraction}{17}
 \contentsline {subsection}{\numberline {4.5.1}Huang's Features}{17}
@@ -34,12 +34,16 @@
 \contentsline {section}{\numberline {6.1}Message Passing Interface for Python (MPI4PY)}{27}
 \contentsline {section}{\numberline {6.2}CPU Hogging and Memory Thrashing Prevention}{28}
 \contentsline {section}{\numberline {6.3}Error Recovery and Progress Record}{29}
+\contentsline {section}{\numberline {6.4}Time Cost Reduction}{30}
 \contentsline {chapter}{\numberline {7}Conclusion}{31}
 \contentsline {section}{\numberline {7.1}Project Outcome}{31}
-\contentsline {section}{\numberline {7.2}Future Work}{32}
-\contentsline {subsection}{\numberline {7.2.1}More Annotation}{32}
-\contentsline {subsection}{\numberline {7.2.2}Training New CNNs}{33}
-\contentsline {section}{\numberline {7.3}Final Words}{33}
+\contentsline {section}{\numberline {7.2}Analyse on False Negatives in cleaning algorithm}{32}
+\contentsline {subsection}{\numberline {7.2.1}FEIF time-stamp fault}{32}
+\contentsline {subsection}{\numberline {7.2.2}SVM fault}{32}
+\contentsline {section}{\numberline {7.3}Future Work}{32}
+\contentsline {subsection}{\numberline {7.3.1}More Annotation}{32}
+\contentsline {subsection}{\numberline {7.3.2}Training New CNNs}{33}
+\contentsline {section}{\numberline {7.4}Final Words}{33}
 \contentsline {chapter}{Bibliography}{35}
 \contentsline {chapter}{\numberline {A}Master/Slave Framework Pseudo-Code}{37}
 \contentsline {chapter}{\numberline {B}Sample of Lengthy Videos}{39}
