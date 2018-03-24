@@ -5,7 +5,7 @@ import errno
 
 #dirf = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/output-delme/"
 #dirf = "/afs/inf.ed.ac.uk/group/ug4-projects/s1413557/CNNoutput/"
-dirf = "/afs/inf.ed.ac.uk/group/project/F4KC/output/"
+dirf = "/afs/inf.ed.ac.uk/group/project/F4KC/final/"
 
 
 for i in range(256):

@@ -262,7 +262,12 @@ Yu's evaluation discovered that this method would reduce the total runtime by 10
 
 However after further evaluation of both Pugh and Yu's work, it is discovered that Pugh's final classifier over-fits on the training dataset due to deep net coverage, and mistakes in preprocessing steps. Details of this problem are discussed in Section \ref{sec:gt} and Section \ref{sec:CNNprepro}. 
 
-Since Yu's evaluation were based on the results of Pugh's experimental classifiers, it is shown that Pugh's classifier would obtain promising accuracy if the mistake in Section \ref{sec:cnn} is fixed. Due to the high cost of training, this project tested a modified version of Qiqi's voting strategy to make use of the results from the over-fitted classifiers. 
+%Since Yu's evaluation were based on the results of Pugh's experimental classifiers, it is shown that Pugh's classifier would obtain promising accuracy if the mistake in Section \ref{sec:cnn} is fixed. 
+To fully utilise the results from the over-fitted classifiers, a voting approach similar to Yu's work was tested and applied. 
+Where the final result will be obtained by voting of 4 classifiers, instead of using the Top-N function.
+Detail of the voting strategy is included in Chapter \ref{sec:voting}.
+
+%Due to the high cost of training, this project tested a modified version of Yu's voting strategy to make use of the results from the over-fitted classifiers. 
 %Detail of the modification and evaluation are included in Chapter \ref{sec:voting}.
 
 \chapter{Data Source}
@@ -755,10 +760,24 @@ It was also considered to apply for a specialized cluster for the re-training, b
 As the classifier do not work as expected as in Pugh's thesis, it is reconsidered to apply the previously failed attempts on increasing accuracy of the classifiers.
 One of the method tested is to add a voting method on the predicted probabilities obtained by different classifiers, to test out different combination of the classifier results.
 
+
+
+
 %TODO add my approach,
-
 %TODO section about the voting results, reason of choices. 
-
+\begin{algorithm}
+\caption{Voting Decision}
+\begin{algorithmic}
+\STATE \textbf{INPUT: } predict, useSVM, useCNN, useCNNB, useCNNW, voteNeed, $\gamma$
+\STATE Count $\leftarrow$ 0
+\STATE \underline{\textbf{KeptClass}} $\leftarrow$ [6,8]
+\STATE \textbf{If} useSVM \textbf{and} sum(predict.getProb(SVM,KeptClass)) \textgreater  $\gamma$ \textbf{ Then:} Count+=1
+\STATE \textbf{If} useCNN \textbf{and} sum(predict.getProb(CNN,KeptClass)) \textgreater  $\gamma$ \textbf{ Then:} Count+=1
+\STATE \textbf{If} useCNNB \textbf{and} sum(predict.getProb(CNNB,KeptClass)) \textgreater  $\gamma$ \textbf{ Then:} Count+=1
+\STATE \textbf{If} useCNNW \textbf{and} sum(predict.getProb(CNNW,KeptClass)) \textgreater  $\gamma$ \textbf{ Then:} Count+=1
+\STATE \textbf{If} Count \textgreater voteNeed \textbf{ Then:} return True \textbf{ Else:} return False
+\end{algorithmic} 
+\end{algorithm}
 
 
 %\subsection{Evaluation of Yu's approach}
