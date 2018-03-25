@@ -28,7 +28,7 @@ This document describes the detail of various approaches to reduce unnecessary w
 
 After translating and optimizing the decision algorithm, the project distributed the task to 200 4-core machines and finishes the decision algorithm in 10 days.
 However due to a mistake in previous work the cleaning does not achieve the expected accuracy, only 42\% of the bad detections were removed instead of 90\%, at the lost of 7\% of good fishes. 
-The cleaning process reduces the total data size by about 600 GB.
+The cleaning process reduces the total data size by 27.8\%, which is about 600 GB.
 
 A more detailed roadmap this project is provided in Chapter 1.
 
@@ -91,14 +91,16 @@ The project manages to reduce the total runtime by 50\% after translating the pi
 It is predicted that this classifier reduces the dataset by about 28\%, with the following statistics:
 
 \newcolumntype{C}{>$c<$}
-\[
-\begin{array}{C|C|C}
+\begin{center}
+\begin{tabular}{ |C|C|C| }
+\hline 
 $ $ & Predicted Fish & Predicted Non-Fish \\
 \hline 
 True Fish & 92.528\% & 7.472\% \\
-Non Fish & 57.980\% & 42.020\%
-\end{array}
-\]
+Non Fish & 57.980\% & 42.020\% \\
+\hline 
+\end{tabular}
+\end{center}
 
 However this does not meet the expectation from Pugh's thesis, whereas 90\% of the False Positive is removed. 
 This is caused by a extraction mistake in preprocessing stage, which causes the CNN trained becoming useless. 
@@ -491,14 +493,17 @@ The following modification is added to solve the problem, by padding the boundar
 
 After testing the dataset reduction function on training dataset, the accuracy statistics below were obtained. This manages to remove about 40\% of the bad detections, with about 5-10\% of False Negatives. It is later discovered to be the time stamp setting problem, where significant amount of fish get rejected on videos without the time stamp. More details on the fault is in Section \ref{sec:feiffault}.
 
-\[
-\begin{array}{C|C|C}
+
+\begin{center}
+\begin{tabular}{|C|C|C|}
+\hline 
 $ $ & EVR and FEIF kept & EVR and FEIF reject \\
 \hline 
 True Fish & 3060 & 152 \\
-Non Fish & 3303 & 1440
-\end{array}
-\]
+Non Fish & 3303 & 1440 \\
+\hline 
+\end{tabular}
+\end{center}
 
 \section{Translation from MATLAB to Python}
 \label{sec:translate}
@@ -791,32 +796,40 @@ With this limit, the best classifier it to use SVM's predicted class 6 probabili
 The chosen gamma value for the criteria is 0.0108, meaning all detection with SVM's class 6 probability higher than 1.1\% is treated as fish.
 Combining this setting with the previous reduction stage, this method is tested on various dataset from ground truth, and the following statistics are obtained.
 
-\[
-\begin{array}{C|C|C|C}
-$ $ Training Dataset & FEIF reject & SVM reject & Detection Kept\\
+\begin{center}
+\begin{tabular}{|C|C|C|C|C|}
 \hline 
-True Fish & 3948 & 491 & 26211 \\
-Non Fish & 12532 & 7690 & 19511
-\end{array}
-\]
+$ $ Training Dataset & EVR reject & FEIF reject & SVM reject & Detection Kept\\
+\hline 
+True Fish & 2858 & 1090 & 491 & 26211 \\
+Non Fish & 1955 & 10577 & 7690 & 19511 \\
+\hline 
+\end{tabular}
+\end{center}
 
-\[
-\begin{array}{C|C|C|C}
-$ $ Validation Dataset 1 & FEIF reject & SVM reject & Detection Kept\\
+\begin{center}
+\begin{tabular}{|C|C|C|C|C|}
 \hline 
-True Fish & 152 & 88 & 2972 \\
-Non Fish & 1440 & 553 & 2750
-\end{array}
-\]
+$ $ Validation Dataset 1 & EVR reject & FEIF reject & SVM reject & Detection Kept\\
+\hline 
+True Fish & 61 & 91 & 88 & 2972 \\
+Non Fish & 266 & 1174  & 553 & 2750 \\
+\hline 
+\end{tabular}
+\end{center}
 
-\[
-\begin{array}{C|C|C|C}
-$ $ Validation Dataset 2 & FEIF reject & SVM reject & Detection Kept\\
+\begin{center}
+\begin{tabular}{|C|C|C|C|C|}
 \hline 
-True Fish & 14  & 2 & 373 \\
-Non Fish & 171 & 101 & 339
-\end{array}
-\]
+$ $ Validation Dataset 2 & EVR reject & FEIF reject & SVM reject & Detection Kept\\
+\hline 
+True Fish & 1 & 13  & 2 & 373 \\
+Non Fish & 38 & 133 & 101 & 339 \\
+\hline 
+\end{tabular}
+\end{center}
+
+Note the high True Fish reject rate in training dataset, this is because the planktons are marked as fishes in Pugh's ground-truthing process. 
 
 For the datasets used: validation dataset 1 consists of evenly sampled 7955 detection from each site/camera, and dataset 2 consists of 1000 random samples across entire RDS.
 Further attempt on reduction of False Negatives are discussed in Section \ref{sec:falsenegative}.
@@ -925,7 +938,7 @@ With this limitation, the project could only use the framework during night time
 
 \section{Project Outcome}
 
-Initially the project goal was to further reduce the size of the RDS dataset from 1.6 TB to an acceptable size, however given the accuracy obtained from actual run, doing so would essentially causing 25\% of the good detections lost in the process. Also due to need for maintaining consistency in the {\tt .sql} file and video files, this final removal process is not used.
+Initially the project goal was to further reduce the size of the RDS dataset from 1.6 TB to an acceptable size, however given the accuracy obtained from actual run, doing so would not remove enough False Positives. Also due to need for maintaining consistency in the {\tt .sql} file and video files, this final removal process is not used.
 
 Instead, this project produces 2 types of {\tt .npy} file (saved Numpy Arrays). 
 One of them is the predicted probability of each class obtained by the 4 major classifier used, taking about 260 GB disk space. 
@@ -935,6 +948,7 @@ This is more compact than the other, using about 750 MB disk space.
 Also the by-product of the process may also be useful for a future cleaning attempt on the dataset, this includes:
 \begin{itemize}
 \setlength{\parskip}{3pt}
+\item A 1 GB folder, contains Numpy dump of final binary decision vector.
 \item A 323 GB folder, contains extracted {\tt .sql} records.
 \item A 510 GB folder, contains normalized and PCA transformed first 100 features.
 \item About 20,000 marked frame of ground truth dataset, covering the videos both Pugh and Yu missed during the ground truth process.
@@ -944,16 +958,37 @@ This contains several Jupyter Notebooks, and two Python libraries.
 These allows easier visualisation on the dataset, without the need to go through multiple extraction and SQL connection stage in MATLAB. 
 \end{itemize}
 
-\section{Analyse on False Negatives in cleaning algorithm}
+\section{False Negatives in cleaning algorithm}
 \label{sec:falsenegative}
+\label{sec:feiffault}
+\label{sec:svmfault}
 
 The cleaning algorithm produces approximately 5-10\% of False Negatives (rejected good fish). 
-In order to reduce this, the False Negatives were scrutinized to see the causing fault.
-\subsection{FEIF time-stamp fault}
-\label{sec:feiffault}
+In order to reduce this, the False Negatives were scrutinized to see the causing reasons of the fault.
 
-\subsection{SVM fault}
-\label{sec:svmfault}
+Most of the False Negatives in the cleaning are caused by FEIF, approximately 2-3\% of the RDS were rejected. 
+Fig \ref{fig:feiffail} shows the sample of False Negatives in the validation dataset.
+Note that the time-stamp in absent from the area highlighted with red lines.
+By looking into the dataset it is discovered that all the videos recorded at NPP-3 site after 2011-Aug-05 is missing the time stamp.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.40]{graph/FEIFfail.png}
+    \caption{Sample False Negatives rejected by FEIF}
+    \label{fig:feiffail}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.30]{graph/feiffail.png}
+    \caption{Contours in the FEIF region}
+    \label{fig:feiffail2}
+\end{figure}
+
+This absence of time stamp was not expected in the cleaning process, hence it was not included in the parameters for FEIF,  %TODO
+
+
+
 
 %TODO add accuracy when you are done.
 %TODO performance on different accuracies.

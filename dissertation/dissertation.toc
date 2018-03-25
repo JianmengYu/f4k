@@ -37,13 +37,11 @@
 \contentsline {section}{\numberline {6.4}Time Cost Reduction}{30}
 \contentsline {chapter}{\numberline {7}Conclusion}{31}
 \contentsline {section}{\numberline {7.1}Project Outcome}{31}
-\contentsline {section}{\numberline {7.2}Analyse on False Negatives in cleaning algorithm}{32}
-\contentsline {subsection}{\numberline {7.2.1}FEIF time-stamp fault}{32}
-\contentsline {subsection}{\numberline {7.2.2}SVM fault}{32}
-\contentsline {section}{\numberline {7.3}Future Work}{32}
-\contentsline {subsection}{\numberline {7.3.1}More Annotation}{32}
+\contentsline {section}{\numberline {7.2}False Negatives in cleaning algorithm}{32}
+\contentsline {section}{\numberline {7.3}Future Work}{33}
+\contentsline {subsection}{\numberline {7.3.1}More Annotation}{33}
 \contentsline {subsection}{\numberline {7.3.2}Training New CNNs}{33}
-\contentsline {section}{\numberline {7.4}Final Words}{33}
+\contentsline {section}{\numberline {7.4}Final Words}{34}
 \contentsline {chapter}{Bibliography}{35}
 \contentsline {chapter}{\numberline {A}Master/Slave Framework Pseudo-Code}{37}
 \contentsline {chapter}{\numberline {B}Sample of Lengthy Videos}{39}
