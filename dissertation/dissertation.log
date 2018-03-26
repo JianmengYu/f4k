@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.7.13)  25 MAR 2018 18:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.7.13)  26 MAR 2018 11:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1724,29 +1724,32 @@ Chapter 7.
 File: graph/FEIFfail.png Graphic file (type png)
 
 <use graph/FEIFfail.png>
-Package pdftex.def Info: graph/FEIFfail.png used on input line 975.
+Package pdftex.def Info: graph/FEIFfail.png used on input line 996.
 (pdftex.def)             Requested size: 344.07939pt x 59.82243pt.
 
 <graph/feiffail.png, id=174, 693.59125pt x 238.8925pt>
 File: graph/feiffail.png Graphic file (type png)
 
 <use graph/feiffail.png>
-Package pdftex.def Info: graph/feiffail.png used on input line 986.
+Package pdftex.def Info: graph/feiffail.png used on input line 1007.
 (pdftex.def)             Requested size: 208.07898pt x 71.66829pt.
  [32 <./graph/FEIFfail.png> <./graph/feiffail.png>]
 <graph/SVMfail.png, id=180, 838.13126pt x 131.49126pt>
 File: graph/SVMfail.png Graphic file (type png)
  <use graph/SVMfail.png>
-Package pdftex.def Info: graph/SVMfail.png used on input line 1001.
+Package pdftex.def Info: graph/SVMfail.png used on input line 1022.
 (pdftex.def)             Requested size: 335.24657pt x 52.59557pt.
 
 [33 <./graph/SVMfail.png>] <graph/query.png, id=185, 415.5525pt x 402.50375pt>
 File: graph/query.png Graphic file (type png)
 
 <use graph/query.png>
-Package pdftex.def Info: graph/query.png used on input line 1026.
+Package pdftex.def Info: graph/query.png used on input line 1047.
 (pdftex.def)             Requested size: 157.91159pt x 152.953pt.
- (./dissertation.bbl [34 <./graph/query.png>]
+ [34 <./graph/query.png>] (./dissertation.bbl [35]
+[36
+
+]
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no ­ in font ptmr7t!
 Missing character: There is no Ã in font ptmr7t!
@@ -1756,45 +1759,42 @@ Missing character: There is no € in font ptmr7t!
 Missing character: There is no ™ in font ptmr7t!
 Missing character: There is no Ã in font ptmr7t!
 Missing character: There is no ­ in font ptmr7t!
-) [35
-
-]
-[36
+) [37] [38
 
 ]
 Appendix A.
-[37] [38]
+[39] [40]
 Appendix B.
-<graph/sample_night.png, id=203, 861.2175pt x 344.28625pt>
+<graph/sample_night.png, id=209, 861.2175pt x 344.28625pt>
 File: graph/sample_night.png Graphic file (type png)
 
 <use graph/sample_night.png>
-Package pdftex.def Info: graph/sample_night.png used on input line 1111.
+Package pdftex.def Info: graph/sample_night.png used on input line 1152.
 (pdftex.def)             Requested size: 396.16486pt x 158.37358pt.
 
-<graph/sample_corrupt.png, id=204, 861.2175pt x 344.28625pt>
+<graph/sample_corrupt.png, id=210, 861.2175pt x 344.28625pt>
 File: graph/sample_corrupt.png Graphic file (type png)
 
 <use graph/sample_corrupt.png>
-Package pdftex.def Info: graph/sample_corrupt.png used on input line 1118.
+Package pdftex.def Info: graph/sample_corrupt.png used on input line 1159.
 (pdftex.def)             Requested size: 396.16486pt x 158.37358pt.
 
-<graph/sample_vegetation.png, id=205, 861.2175pt x 344.28625pt>
+<graph/sample_vegetation.png, id=211, 861.2175pt x 344.28625pt>
 File: graph/sample_vegetation.png Graphic file (type png)
 
 <use graph/sample_vegetation.png>
-Package pdftex.def Info: graph/sample_vegetation.png used on input line 1125.
+Package pdftex.def Info: graph/sample_vegetation.png used on input line 1166.
 (pdftex.def)             Requested size: 396.16486pt x 158.37358pt.
 
-<graph/sample_fish.png, id=206, 861.2175pt x 344.28625pt>
+<graph/sample_fish.png, id=212, 861.2175pt x 344.28625pt>
 File: graph/sample_fish.png Graphic file (type png)
 
 <use graph/sample_fish.png>
-Package pdftex.def Info: graph/sample_fish.png used on input line 1131.
+Package pdftex.def Info: graph/sample_fish.png used on input line 1172.
 (pdftex.def)             Requested size: 396.16486pt x 158.37358pt.
- [39
+ [41
 
- <./graph/sample_night.png>] [40 <./graph/sample_corrupt.png> <./graph/sample_v
+ <./graph/sample_night.png>] [42 <./graph/sample_corrupt.png> <./graph/sample_v
 egetation.png> <./graph/sample_fish.png>]
 (./dissertation.aux) ) 
 Here is how much of TeX's memory you used:
@@ -1818,10 +1818,10 @@ pt/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb></opt/texlive/2
 nts/type1/urw/times/utmb8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1/urw/ti
 mes/utmr8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
 
-Output written on dissertation.pdf (48 pages, 3116959 bytes).
+Output written on dissertation.pdf (50 pages, 3120689 bytes).
 PDF statistics:
- 263 PDF objects out of 1000 (max. 8388607)
- 151 compressed objects within 2 object streams
+ 270 PDF objects out of 1000 (max. 8388607)
+ 156 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  121 words of extra memory for PDF output out of 10000 (max. 10000000)
 

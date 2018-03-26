@@ -926,10 +926,31 @@ With this limitation, the project could only use the framework during night time
 
 \section{Time Cost Reduction} 
 
-%TODO check the statistacks.
-%TODO time cost for each stage.
-%TODO number of nodes, total clock time.
+In Yu's thesis\cite{Yu}, it is estimated the cleaning could take 25,000 hours to complete on a 40-core machine.
+This evaluation is based on the runtime of cleaning a video with 961 detections.
+Finish processing this video took approximately 200 seconds, Yu multiplies this amount by the number of the videos (400,000) to obtain the estimated runtime.
+Within this 200 seconds, half of the time is used for the SVM feature extraction/transformation, half was used for the CNN preprocessing, the final classification took negligible time.
 
+However the estimate wasn't thorough, since there are 839,000,000 detections and the average length of the video is about 2,000 detections.
+The actual runtime would double, having about 1,600,000 hours of runtime on a single core (about 16,000 days on a 4-core machine). 
+
+During the project, about 200 student lab DICE machine was used. 
+The number of available DICE machines actually varies from 50-250 due to heavy experiment period of other students.
+This potentially cuts the previous runtime to 1/200, but due to the disruption to/from other students, the project runs the cleaning mostly during night time (12 A.M. to 8 A.M.).
+
+With this reduction, the project finishes the different stages in the following time:
+\begin{itemize}
+\setlength{\parskip}{0pt}
+\item \textbf{SVM preprocessing}: Approximately three weeks, estimated total runtime of about 200 hours. 
+\item \textbf{CNN preprocessing and classification}: Approximately one week, estimated total runtime of 70 hours. 
+\item \textbf{Other operations}: Like training SVM and generating decision vectors, these all took negligible time (less than 1 day). 
+\end{itemize}
+Note that the SVM took longer due to the high memory requirement for the cleaning mentioned in Section \ref{sec:earlyremove}.
+
+Judging from the result cleaning time, the translation stage of the project manages to cut down the runtime to 1/8 of original speed.
+This is mostly form the benefit of removing the SQL server has brought the project most reduction in runtime. 
+It might also the the remove of unnecessary I/O (saving image to disk and loading them again for multiple times) during CNN stage. 
+The project benefit mostly from the idle student lab machines, this is equivalent to having 20 40-core machines used in Yu's estimation.
 \newpage
 
 \chapter{Conclusion}
@@ -944,7 +965,7 @@ One of them is the predicted probability of each class obtained by the 4 major c
 Another one is the final binary array of decisions, marking each frame as a good detection or not. 
 This is more compact than the other, using about 750 MB disk space.
 
-Also the by-product of the process may also be useful for a future cleaning attempt on the dataset, this includes:
+Also the by-product of the process may be useful for a future cleaning attempt on the dataset, this includes:
 \begin{itemize}
 \setlength{\parskip}{3pt}
 \item A 1 GB folder, contains Numpy dump of final binary decision vector.
@@ -1036,11 +1057,31 @@ In order to achieve expected accuracy in Pugh's thesis\cite{Pugh}, re-training o
 The accuracy obtained by the training dataset on CNN\_WC has shown promising accuracy even with a completely wrong color space. Combining with Pugh's result obtained in the experiment stage, and the difference in performance on Training/Validation dataset obtained in this project, it's almost certain that a well-trained CNN would obtain at least 70\% accuracy on the cleaning task. 
 
 \section{Final Words}
-%TODO talk about importance of TDD in big data, some experience and shit.
+
+The project manages to finish the algorithm originally designed by Pugh, however the expected level of accuracy was not achieved.
+In hindsight, the developing process used was not careful enough. 
+This is mainly reflected in the FEIF behaviour of the project, only reduction rate is considered while setting parameters, details like False Negative Rate was ignored and have led to most of the lost.
+
+Also the project has trusted the previous result blindly at early stages of the cleaning, this have led to the late discover of the CNN fault.
+The validation dataset is marked only after the translation of the algorithms.
+
+With the big data nature of this task, many issues only arise when the project actually runs the cleaning on the distributed scale.
+These issues could be avoided if enough test was created at the start of the project.
+
+For example, MATLAB's parpool uses a local lock file to keep track of the parallel tasks. 
+Combined with the shared file system used, lots of MATLAB segmentation fault crashes have been caused because of this. 
+Due to the ambiguity of the error messages, this problem is only addressed months after first discovery.
+
+Another example would be the {\tt .sql} preprocessing mentioned in Section \ref{sec:sqld}.
+The project misses one of the special character in the blob syntax used, this has caused 30\% of the contour data appears to be missing after extraction.
+This also causes the project to re-run the SVM extraction stage, and causes about 2 week of work lost.
+
+Future work on this project need to fix the existing CNN fault, exploration on other machine learning techniques are also needed in order to achieve a higher accuracy on the classification. 
 
 
-% use the following and \cite{} as above if you use BibTeX
-% otherwise generate bibtem entries
+
+
+
 \bibliographystyle{unsrt}
 \bibliography{dissertation}
 

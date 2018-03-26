@@ -42,6 +42,6 @@
 \contentsline {subsection}{\numberline {7.3.1}More Annotation}{33}
 \contentsline {subsection}{\numberline {7.3.2}Training New CNNs}{34}
 \contentsline {section}{\numberline {7.4}Final Words}{34}
-\contentsline {chapter}{Bibliography}{35}
-\contentsline {chapter}{\numberline {A}Master/Slave Framework Pseudo-Code}{37}
-\contentsline {chapter}{\numberline {B}Sample of Lengthy Videos}{39}
+\contentsline {chapter}{Bibliography}{37}
+\contentsline {chapter}{\numberline {A}Master/Slave Framework Pseudo-Code}{39}
+\contentsline {chapter}{\numberline {B}Sample of Lengthy Videos}{41}
