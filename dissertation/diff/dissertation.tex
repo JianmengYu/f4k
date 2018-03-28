@@ -488,6 +488,7 @@ The following modification is added to solve the problem, by padding the boundar
 After testing the dataset reduction function on training dataset, the accuracy statistics below were obtained. This manages to remove about 40\% of the bad detections, with about 5-10\% of False Negatives. It is later discovered to be the time-stamp setting problem, where a significant amount of fish gets rejected on videos without the time stamp. More details on the fault is in Section \ref{sec:feiffault}.
 
 
+\newcolumntype{C}{>$c<$}
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline 
@@ -763,19 +764,11 @@ One of the methods tested is to add a voting method on the predicted probabiliti
 The voting strategy is described in the pseudo-code below. 
 The input: {\tt predict} is the predicted probability outputs of the classifiers, while the other parameters are the options used for searching the best combination of the classifiers. 
 
-\begin{algorithm}
-\caption{Voting Decision}
-\begin{algorithmic}
-\STATE \textbf{INPUT:} predict, useSVM, useCNN, useCNNB, useCNNW, voteNeed, $\gamma$
-\STATE Count $\leftarrow$ 0
-\STATE \underline{\textbf{KeptClass}} $\leftarrow$ [6,8]
-\STATE \textbf{If} useSVM \textbf{and} sum(predict.getProb(SVM,KeptClass)) \textgreater  $\gamma$ \textbf{ Then:} Count+=1
-\STATE \textbf{If} useCNN \textbf{and} sum(predict.getProb(CNN,KeptClass)) \textgreater  $\gamma$ \textbf{ Then:} Count+=1
-\STATE \textbf{If} useCNNB \textbf{and} sum(predict.getProb(CNNB,KeptClass)) \textgreater  $\gamma$ \textbf{ Then:} Count+=1
-\STATE \textbf{If} useCNNW \textbf{and} sum(predict.getProb(CNNW,KeptClass)) \textgreater  $\gamma$ \textbf{ Then:} Count+=1
-\STATE \textbf{If} Count \textgreater voteNeed \textbf{ Then:} return True \textbf{ Else:} return False
-\end{algorithmic} 
-\end{algorithm}
+\begin{center}
+\vspace{10pt}
+\textbf{Code removed for generating diff.}
+\vspace{10pt}
+\end{center}
 
 After testing through different settings, a Receiver Operating Characteristic (ROC) curve of the voting performance is plotted.
 The ROC curve plotted is shown in Fig \ref{fig:roccurve}, this shows the True Positive Rate (good fish kept) against False Positive Rate (bad detections kept) at different thresholds ($\gamma$ value in the pseudo-code).
@@ -838,7 +831,7 @@ Originally the deployment of the cleaning task was planned to be in the form of 
 But with sufficient disk space and the need to translate the pipeline parts, the project changed the pipeline into these stages of processing:
 
 \begin{itemize}
-   \setlength{\parskip}{0pt}
+   \setlength{\parskip}{3pt}
    \item Preprocessing, Feature Extraction and Transformation for SVM
    \item Classify using SVM and CNN
    \item Final Classification
@@ -851,12 +844,13 @@ In 2005, researchers added MPI support for Python\cite{MPI4PY} and extended the 
 
 Mpi-master-slave\cite{L5}, a small python library with MPI4PY is used to distribute all the jobs among the available machines. 
 For example, if there are 4 machines available, with the following command: 
-\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
-\begin{lstlisting}[frame=single]
->> HOSTS=basso,battaglin,belloni,bergamaschi
->> mpiexec -n 4 -host $HOSTS \
-.. python ~/f4k/runMulticoreFeatureExtract.py
-\end{lstlisting}
+
+\begin{center}
+\vspace{10pt}
+\textbf{Code removed for generating diff.}
+\vspace{10pt}
+\end{center}
+
 The python program will be started on above 4 machines, with the first one (basso) being the master node.
 The master node keeps a list of video that needs to be processed as a work queue and distributes them to slaves nodes, which is every other node in {\tt \$HOSTS}. 
 The slave nodes process the video and store the result on AFS. Upon finish, it notifies the master to receive more tasks. Pseudo-code of the framework can be found in Appendix \ref{apped:msf}.
@@ -937,7 +931,7 @@ With this reduction, the project finishes the different stages in the following 
 \end{itemize}
 Note that the SVM took longer due to the high memory requirement for the cleaning mentioned in Section \ref{sec:earlyremove}.
 
-From the result cleaning time, the translation stage of the project manages to cut down the runtime to 1/8 of the original speed.
+Judging from the result cleaning time, the translation stage of the project manages to cut down the runtime to 1/8 of the original speed.
 This reduction is mostly the benefit of removing the SQL server, which has brought the project most reduction in runtime. 
 It might also be the removal of unnecessary I/O (saving images to disk and loading them again for multiple times) during CNN stage. 
 The project benefit mostly from the idle student lab machines, this is equivalent to having 20 40-core machines used in Yu's estimation.
@@ -1090,46 +1084,11 @@ With this framework design, if we want to process any stage of the pipeline clas
 
 If the framework is used in work other than processing the videos, (e.g. finding SVM parameters), the  \underline{\textbf{VideoIDList}} can be changed to adapt the new tasks.
 
-\begin{algorithm}
-\caption{Master Workflow}
-\begin{algorithmic}
-\STATE WorkQueue $\leftarrow$ []
-\FOR {VideoID $\in$ \underline{\textbf{VideoIDList}}}
-	\STATE WorkQueue.addTask(VideoID)
-\ENDFOR
-\WHILE{not WorkQueue.done}
-	\FOR {Slave $\in$ mpi.getList(SlaveList,``READY'')}
-		\STATE \textbf{if} WorkQueue.done \textbf{then} BREAK 
-		\STATE mpi.send(Slave,"START",WorkQueue.getTask)
-	\ENDFOR
-	\FOR {(Data,VideoID) $\in$ mpi.getList(SlaveList,``FINISH'')}
-		\STATE WorkQueue.markComplete(VideoID)
-		\IF {Data = ``Fail''}
-			\STATE WorkQueue.addTask(VideoID)
-		\ENDIF
-	\ENDFOR
-\ENDWHILE
-\STATE mpi.broadcast(``EXIT'')
-\end{algorithmic} 
-\end{algorithm}
-
-\begin{algorithm}
-\caption{Slave Workflow}
-\begin{algorithmic}
-\WHILE{not mpi.receive(``EXIT'')}
-	\STATE mpi.send(Master,``READY'')
-	\IF {mpi.receive(Master,``START'',VideoID)}
-		\STATE Success $\leftarrow$ \underline{\textbf{DoWork}(VideoID)}
-		\STATE \textbf{if} Success \textbf{then}
-		\STATE \hspace{10pt}mpi.send(Master,``FINISH'',``Success'',VideoID)
-		\STATE \textbf{else}
-		\STATE \hspace{10pt}mpi.send(Master,``FINISH'',``Fail'',VideoID)
-		\STATE \textbf{end if}
-	\ENDIF
-\ENDWHILE
-\STATE mpi.broadcast(``EXIT'')
-\end{algorithmic} 
-\end{algorithm}
+\begin{center}
+\vspace{10pt}
+\textbf{Code removed for generating diff.}
+\vspace{10pt}
+\end{center}
 
 \chapter{Sample of Lengthy Videos}
 \label{append:samplelong}

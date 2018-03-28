@@ -1,0 +1,59 @@
+\begin{thebibliography}{10}
+
+\bibitem{Pugh}
+Matthew Pugh.
+\newblock Removing false detections from a large fish image data-set.
+\newblock Msc dissertation, The University of Edinburgh, 2015.
+
+\bibitem{F4K}
+Robert B Fisher{,} Yun-Heh Chen-Burger{,} Daniela Giordano{,} Lynda Hardman{,}
+  Fang-Pang Lin.
+\newblock {\em Fish4Knowledge: collecting and analyzing massive coral reef fish
+  video data}.
+\newblock Springer, 2016.
+
+\bibitem{Yu}
+Qiqi Yu.
+\newblock Adding temporal constraints to a large data cleaning problem.
+\newblock Msc dissertation, The University of Edinburgh, 2016.
+
+\bibitem{Huang}
+Phoenix~X. Huang.
+\newblock {\em Balance-guaranteed optimized tree with reject option for live
+  fish recognition}.
+\newblock PhD thesis, The University of Edinburgh, 2014.
+
+\bibitem{L5}
+luca-s: mpi-master-slave github repository.
+\newblock \url{https://github.com/luca-s/mpi-master-slave}.
+\newblock Accessed: 2018-01-18.
+
+\bibitem{L3}
+Introduction to hadoop image processing interface {(HIPI)}.
+\newblock \url{http://hipi.cs.virginia.edu/}.
+\newblock Accessed: 2018-01-15.
+
+\bibitem{L4}
+4quant homepage.
+\newblock \url{http://4quant.com/}.
+\newblock Accessed: 2018-01-10.
+
+\bibitem{MPI4PY}
+Lisandro Dalcín, Rodrigo Paz, and Mario Storti.
+\newblock Mpi for python.
+\newblock {\em Journal of Parallel and Distributed Computing}, 65(9):1108 --
+  1115, 2005.
+
+\bibitem{MPI4PY2}
+Lisandro Dalcín, Rodrigo Paz, Mario Storti, and Jorge D’Elía.
+\newblock Mpi for python: Performance improvements and mpi-2 extensions.
+\newblock {\em Journal of Parallel and Distributed Computing}, 68(5):655 --
+  662, 2008.
+
+\bibitem{MPI4PY3}
+Lisandro~D. Dalcin, Rodrigo~R. Paz, Pablo~A. Kler, and Alejandro Cosimo.
+\newblock Parallel distributed computing using python.
+\newblock {\em Advances in Water Resources}, 34(9):1124 -- 1139, 2011.
+\newblock New Computational Methods and Software Tools.
+
+\end{thebibliography}
