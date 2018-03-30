@@ -13,35 +13,38 @@
 \contentsline {section}{\numberline {3.1}Extracted Images}{9}
 \contentsline {section}{\numberline {3.2}SQL dump file}{10}
 \contentsline {subsection}{\numberline {3.2.1}Standard Stream Based Extraction Script}{11}
-\contentsline {subsection}{\numberline {3.2.2}Translation of Binary Data}{11}
-\contentsline {section}{\numberline {3.3}Ground Truth Dataset}{12}
-\contentsline {chapter}{\numberline {4}Preprocessing}{13}
-\contentsline {section}{\numberline {4.1}Early Video Removal}{13}
-\contentsline {section}{\numberline {4.2}Frame Edge Indicator Function (FEIF)}{15}
-\contentsline {section}{\numberline {4.3}Remove Rate of Reduction Algorithms}{15}
-\contentsline {section}{\numberline {4.4}Translation from MATLAB to Python}{16}
-\contentsline {section}{\numberline {4.5}Feature Extraction}{17}
-\contentsline {subsection}{\numberline {4.5.1}Huang's Features}{17}
-\contentsline {subsection}{\numberline {4.5.2}Pugh's Features}{18}
-\contentsline {subsection}{\numberline {4.5.3}Principle Component Analysis}{18}
-\contentsline {section}{\numberline {4.6}Image Processing For CNN}{19}
-\contentsline {chapter}{\numberline {5}Classification}{21}
-\contentsline {section}{\numberline {5.1}Ambiguity in Original Classification Schema}{21}
-\contentsline {section}{\numberline {5.2}Support Vector Machines (SVM)}{22}
-\contentsline {section}{\numberline {5.3}Convolutional Neural Networks (CNN)}{24}
-\contentsline {section}{\numberline {5.4}Voting Strategy}{25}
-\contentsline {chapter}{\numberline {6}Parallel Distribution}{27}
-\contentsline {section}{\numberline {6.1}Message Passing Interface for Python (MPI4PY)}{27}
-\contentsline {section}{\numberline {6.2}CPU Hogging and Memory Thrashing Prevention}{28}
-\contentsline {section}{\numberline {6.3}Error Recovery and Progress Record}{29}
-\contentsline {section}{\numberline {6.4}Time Cost Reduction}{30}
-\contentsline {chapter}{\numberline {7}Conclusion}{31}
-\contentsline {section}{\numberline {7.1}Project Outcome}{31}
-\contentsline {section}{\numberline {7.2}False Negatives in cleaning algorithm}{32}
-\contentsline {section}{\numberline {7.3}Future Work}{33}
-\contentsline {subsection}{\numberline {7.3.1}More Annotation}{33}
-\contentsline {subsection}{\numberline {7.3.2}Training New CNNs}{34}
-\contentsline {section}{\numberline {7.4}Final Words}{34}
-\contentsline {chapter}{Bibliography}{37}
-\contentsline {chapter}{\numberline {A}Master/Slave Framework Pseudo-Code}{39}
-\contentsline {chapter}{\numberline {B}Sample of Lengthy Videos}{41}
+\contentsline {subsection}{\numberline {3.2.2}Translation of Binary Data}{12}
+\contentsline {section}{\numberline {3.3}Ground Truth Dataset}{13}
+\contentsline {subsection}{\numberline {3.3.1}Sample Images at Different Sites}{14}
+\contentsline {subsection}{\numberline {3.3.2}Additional Ground Truth Dataset}{14}
+\contentsline {chapter}{\numberline {4}Preprocessing}{15}
+\contentsline {section}{\numberline {4.1}Plankton Removal (PR)}{15}
+\contentsline {section}{\numberline {4.2}Frame Edge Indicator Function (FEIF)}{17}
+\contentsline {section}{\numberline {4.3}Remove Rate of Reduction Algorithms}{17}
+\contentsline {section}{\numberline {4.4}MATLAB code translation}{18}
+\contentsline {section}{\numberline {4.5}Feature Extraction}{19}
+\contentsline {subsection}{\numberline {4.5.1}Huang's Features}{19}
+\contentsline {subsection}{\numberline {4.5.2}Pugh's Features}{20}
+\contentsline {subsection}{\numberline {4.5.3}Principle Component Analysis}{20}
+\contentsline {section}{\numberline {4.6}Image Processing For CNN}{21}
+\contentsline {chapter}{\numberline {5}Classification}{23}
+\contentsline {section}{\numberline {5.1}Ambiguity in Original Classification Schema}{23}
+\contentsline {section}{\numberline {5.2}Support Vector Machines (SVM)}{24}
+\contentsline {section}{\numberline {5.3}Convolutional Neural Networks (CNN)}{26}
+\contentsline {section}{\numberline {5.4}Voting Strategy}{27}
+\contentsline {chapter}{\numberline {6}Parallel Distribution}{29}
+\contentsline {section}{\numberline {6.1}Message Passing Interface for Python (MPI4PY)}{29}
+\contentsline {section}{\numberline {6.2}CPU Hogging and Memory Thrashing Prevention}{30}
+\contentsline {section}{\numberline {6.3}Error Recovery and Progress Record}{31}
+\contentsline {section}{\numberline {6.4}Time Cost}{32}
+\contentsline {chapter}{\numberline {7}Conclusion}{33}
+\contentsline {section}{\numberline {7.1}Project Outcome}{33}
+\contentsline {section}{\numberline {7.2}Samples of Images Rejected at each stage}{34}
+\contentsline {section}{\numberline {7.3}False Negatives in cleaning algorithm}{34}
+\contentsline {section}{\numberline {7.4}Future Work}{36}
+\contentsline {subsection}{\numberline {7.4.1}More Annotation}{36}
+\contentsline {subsection}{\numberline {7.4.2}Training New CNNs}{37}
+\contentsline {section}{\numberline {7.5}Final Words}{37}
+\contentsline {chapter}{Bibliography}{39}
+\contentsline {chapter}{\numberline {A}Master/Slave Framework Pseudo-Code}{41}
+\contentsline {chapter}{\numberline {B}Sample of Lengthy Videos}{43}

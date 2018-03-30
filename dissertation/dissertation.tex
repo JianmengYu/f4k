@@ -8,6 +8,7 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{array}
+\usepackage{multirow}
 
 
 \begin{document}
@@ -52,12 +53,12 @@ I must also extend gratitude to my friends, and my family back in China, for all
 \tableofcontents
 
 
-
 \chapter{Introduction}
 
 \pagenumbering{arabic}
 
-The main goal of this project is to produce a cleaned subset of a 1.6 TB dataset for future research purposes. And the main challenge of the project is to re-engineer the framework used to make it more scalable, hence finish the 800,000-hour task within a reasonable amount of time.
+The main goal of this project is to produce a cleaned subset of a 1.6 TB dataset for future research purposes. 
+And the main challenge of the project is to re-engineer the framework used to make it more scalable, which allows the project to finish the 800,000-hour task within a reasonable amount of time.
 
 \section{Fish4Knowledge Project (F4K)}
 
@@ -69,7 +70,7 @@ The project collected 5 years of recording, about 524,000 10-minute video clips 
 We call this the F4K Original Data Set (FDS). 
 
 Attempting to reduce the dataset, the F4K project developed and applied a species recognition algorithm. 
-This algorithm extracts all detections as 100x100 RGB images and their description files, reducing the dataset to approximately 839 million detections, having a combined size of 1.6 TB
+This algorithm extracts all detections as 100x100 RGB images and corresponding description files, reducing the dataset to approximately 839 million detections, having a combined size of 1.6 TB
 This dataset is called Reduced FDS (RDS).
 A more detailed composition of these files is described in Chapter \ref{chap:datasource}.
 
@@ -81,8 +82,8 @@ However, due to lack of time and resource, the framework is not implemented and 
 In 2016, Yu\cite{Yu} added voting constraints on the cleaning algorithm, to both increase accuracy and reduce runtime. 
 After evaluation, it's estimated this constraint did reduce the time cost of the algorithm for about 10\%, at cost of 5\% of accuracy.
 
-Even after the reduction by Yu, it's evaluated the cleaning algorithm would still take 25,000 hours on a 40-core machine\cite{Yu}.
-This means simply put the task on parallel would not be sufficient, distributed computing over more machines is needed.
+Even after the reduction by Yu, it is evaluated the cleaning algorithm would still take 25,000 hours on a 40-core machine\cite{Yu}.
+This means simply put the task on parallel would not be sufficient, the project need to distribute the task to more machines.
 For this purpose, the project uses the lab machines provided by the University of Edinburgh for cleaning. 
 Even with about 800 cores available, the algorithm would still take more than 1,000 hours to finish, this the code should be also optimized for the project to be more scalable.
 
@@ -103,8 +104,8 @@ Non Fish & 57.980\% & 42.020\% \\
 \end{center}
 
 However, this does not meet the expectation from Pugh's thesis, whereas 90\% of the False Positive is removed. 
-This is caused by an extraction mistake in preprocessing stage, which causes the CNN trained becoming useless. 
-Re-training the CNN could increase the accuracy, but it is not used due to the limit of time and resource.
+This fault is caused by an extraction mistake in preprocessing stage, which causes the Convolutional Neural Network (CNN) over-fits on the training dataset. 
+Re-training the CNN is not used due to the limit of time and resource.
 
 \section{Contribution}
 
@@ -120,7 +121,7 @@ F4K project's feature extraction MATLAB code developed by Huang\cite{Huang} is n
 
 For validation of Pugh's classifier performance, a separate set of videos were ground-truthed. After testing the classifiers on this dataset, it's discovered that Pugh's classifiers over-fits on the training dataset. Also by inspecting the training code, it is found that the training set was heavily biased. A new complementary ground truth dataset was created for training new classifiers. 
 
-The classification step was originally going to use Pugh's trained SVM and CNN. Due to the problem above, the SVM parameters used are re-calibrated for higher accuracy on the unseen dataset. 
+The classification step was originally going to use Pugh's trained Support Vector Machines (SVM) and Convolutional Neural Network (CNN). Due to the problem above, the SVM parameters used are re-calibrated for higher accuracy on the unseen dataset. 
 The Python's {\tt sklearn.svm.SVC} was used to achieve the same result instead of translation. The CNN implemented with Lua torch are rewritten and called with Lutorpy library.
 A fatal mistake was found in the CNN design, after evaluating the result with voting strategy, it is discovered the CNN trained were almost useless. Details about the fault and the re-training attempts were included in Section \ref{sec:cnn}.
 
@@ -289,18 +290,29 @@ The species recognition in F4K project extracted every detection with {\tt w} an
 This process is illustrated in Figure \ref{fig:extraction}, where a 100x100 area is selected with top left corner coordinates {\tt (w-10)} and {\tt (h-10)} and cropped from the image.
 If the some of the selected areas is out of the frame, it will be filled with black pixels.
 
-During this process, the contour and the bounding box of the fish were also calculated.
-The bounding box consists of 4 values {\tt x,y,w,h}, where {\tt x} and {\tt y} are the coordinate of the top left corner, {\tt w} and {\tt h} are the width and height of the bounding box. 
-Those cropped images are then stored in file {\tt summary\_(video\_id).avi}, with detection id and {\tt w} and {\tt h} stored in corresponding {\tt frame\_info\_(video\_id).txt}.
-
-There are a total of 396,901 of such videos, consist of 839,465,846 frames, with a total size of 1.14 TB.
-
-\begin{figure}
+\begin{figure}[ht]
     \centering
     \includegraphics[scale=0.3]{graph/extraction.png}
     \caption{Process of Extracting Image}
     \label{fig:extraction}
 \end{figure}
+
+During this process, the contour and the bounding box of the fish were also calculated.
+The bounding box consists of 4 values {\tt x,y,w,h}, where {\tt x} and {\tt y} are the coordinate of the top left corner, {\tt w} and {\tt h} are the width and height of the bounding box. 
+Those cropped images are then stored in file {\tt summary\_(video\_id).avi}, with detection id and {\tt w} and {\tt h} stored in corresponding {\tt frame\_info\_(video\_id).txt}.
+
+There are a total of 396,901 of such videos, consist of 839,465,846 frames, with a total size of 1.14 TB. 
+Figure \ref{fig:summryfile} shows a example of these videos. 
+Note that the corresponding frame is in ``{\tt detection\_id, width, height, x\&y}'' format, the ``{\tt x\&y}'' field always have a value of 10 for all extracted detections.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.35]{graph/summaryfile.png}
+    \caption{First 10 frame of a ``{\tt .avi}'' file, with corresponding entry in ``{\tt .txt}'' file.}
+    \label{fig:summryfile}
+\end{figure}
+
+Since the summary text file does not contain information about the bounding box of the detection, relevant data extraction from the {\tt .sql} dump file is needed.
 
 \section{SQL dump file}
 \label{sec:sqld}
@@ -318,17 +330,16 @@ For example, below is the schema of the ``Fish Detection'' table.
 }
 \lstset{basicstyle=\tiny\ttfamily,breaklines=true,style=sql}
 \begin{lstlisting}[frame=single]
-CREATE TABLE IF NOT EXISTS ‘f4k_db‘.‘fish_detection‘ (
-‘detection_id‘ INT(11) NOT NULL AUTO_INCREMENT,
-‘fish_id‘ INT(11) NOT NULL,
-‘video_id‘ CHAR(45) CHARACTER SET ’utf8’ NOT NULL DEFAULT ’’,
-‘frame_id‘ MEDIUMINT(9) NOT NULL DEFAULT ’0’,
-‘timestamp‘ TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-‘bb_cc‘ BLOB NOT NULL,
-‘detection_certainty‘ FLOAT NULL DEFAULT NULL,
-‘tracking_certainty‘ FLOAT NULL DEFAULT NULL,
-‘component_id‘ SMALLINT(6) NOT NULL,
-‘processed_videos_id‘ INT(11) NOT NULL
+CREATE TABLE `fish_detection` (
+`detection_id` int(11) NOT NULL AUTO_INCREMENT,
+`fish_id` int(11) NOT NULL,
+`video_id` char(45) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+`frame_id` mediumint(9) NOT NULL DEFAULT '0',
+`timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+`bb_cc` blob NOT NULL,
+`detection_certainty` float DEFAULT NULL,
+`tracking_certainty` float DEFAULT NULL,
+`component_id` smallint(6) NOT NULL )
 \end{lstlisting}
 
 This {\tt .sql} dump file is stored as plain text files that could be loaded with a SQL server.
@@ -347,12 +358,32 @@ With simple Python functions such as {\tt split()}, the records in the dump file
 \begin{lstlisting}[frame=single]
  INSERT INTO `fish_detection` VALUES (1),(2),(3),(4)...(N)
 \end{lstlisting}
-are parsed into directly usable lists of values, separated by a {\tt newline} character.
+These are parsed into directly usable lists of values, separated by a {\tt newline} character.
+This extraction procedure reduces the time cost for loading the dataset reduced to an almost negligible amount. 
 
-Which reduces the time cost for loading the dataset reduced to an almost negligible amount. 
 The output of this script contains 326 GB of {\tt .csv} files, each one corresponds to the associated {\tt video\_id}.
+Some example lines of parsed {\tt .csv} files is shown in the table below, the {\tt bb\_cc} field is removed as it containing binary data.
 
-%In Qiqi's estimate, the loading and preprocessing would take 800,000 hours (25,000 hours on a 32 core machine) in the original design (double the time if considering her calculation error). After the pre-extraction, it only took about 0.3 seconds on average for a frame to be load and processed on a single computational thread. Which is about 70,000 hours, essentially cutting down the time used to 10\% of the original design.
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline 
+detection\_id & fish\_id & video\_id & frame\_id & timestamp & bb\_cc & det\_cert & trk\_cert & component\_id \\
+\hline 
+1199394804 & 100550034 & '0000e3df18698b393e9b3b8703138d6a\#201011231100' & 870 & '2013-07-10 12:42:59' & {BLOB} & -1 & -1 & 135 \\
+1199394805 & 100550034 & '0000e3df18698b393e9b3b8703138d6a\#201011231100' & 871 & '2013-07-10 12:42:59' & {BLOB} & -1 & -1 & 135 \\
+1199394806 & 100550034 & '0000e3df18698b393e9b3b8703138d6a\#201011231100' & 872 & '2013-07-10 12:42:59' & {BLOB} & -1 & -1 & 135 \\
+1199394807 & 100550034 & '0000e3df18698b393e9b3b8703138d6a\#201011231100' & 873 & '2013-07-10 12:42:59' & {BLOB} & -1 & -1 & 135 \\
+1199394808 & 100550034 & '0000e3df18698b393e9b3b8703138d6a\#201011231100' & 874 & '2013-07-10 12:42:59' & {BLOB} & -1 & -1 & 135 \\
+1199394809 & 100550062 & '0000e3df18698b393e9b3b8703138d6a\#201011231100' & 890 & '2013-07-10 12:42:59' & {BLOB} & -1 & -1 & 135 \\
+1199394810 & 100550062 & '0000e3df18698b393e9b3b8703138d6a\#201011231100' & 891 & '2013-07-10 12:42:59' & {BLOB} & -1 & -1 & 135 \\
+1199394811 & 100550062 & '0000e3df18698b393e9b3b8703138d6a\#201011231100' & 892 & '2013-07-10 12:42:59' & {BLOB} & -1 & -1 & 135 \\
+1199394812 & 100550062 & '0000e3df18698b393e9b3b8703138d6a\#201011231100' & 893 & '2013-07-10 12:42:59' & {BLOB} & -1 & -1 & 135 \\
+1199394813 & 100550129 & '0000e3df18698b393e9b3b8703138d6a\#201011231100' & 1095 & '2013-07-10 12:42:59' & {BLOB} & -1 & -1 & 135 \\
+\hline 
+\end{tabular}}
+\end{center}
+
 
 \subsection{Translation of Binary Data} 
 
@@ -376,15 +407,74 @@ After comparing binary values of {\tt bb\_cc} and the corresponding detection im
 \textbf{All other bits} - Chain Code of the contour, 3 bits each. Pointing towards next contour point from previous one. 
 \end{itemize}
 
+\begin{center}
+\vspace{-10pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline 
+\multicolumn{4}{|c|}{\multirow{2}{*}{Raw Binary Data}} & \multicolumn{3}{|c|}{
+0000000011100000110100000001000100000100010000000110101100000000000000000000000000101000100101001001001001001001
+} \\
+\multicolumn{4}{|c|}{\multirow{2}{*}{}} & \multicolumn{3}{|c|}{
+0011010011011010100100100100100100011100100100100100100110110101110110110110110110110110110111111111111000111000
+} \\
+\hline 
+X & Y & W & H & First X & Padding & Translated Chain Code \\
+\hline 
+7 & 52 & 17 & 17 & 13 & 3 & 0000000012112222222323324444443444444665666666666777707 \\
+\hline 
+\end{tabular}}
+\vspace{5pt}
+\end{center}
+
+Figures \ref{fig:bbcc1}, \ref{fig:bbcc2}, \ref{fig:bbcc3}, and the above table shows the steps of transforming binary blob data into contours of the detection.
+Note that the Y-axis is reversed due to the data format used in the species extraction algorithm. 
+
+The chain-code start at the red point (First-X,Y) in Fig \ref{fig:bbcc1}. 
+After applying the direction instructions provided in Fig \ref{fig:bbcc2}, the path draws the contour on the image as in Fig \ref{fig:bbcc3}.
+
+\vspace{-10pt}
+\hspace{-40pt}
+
+\begin{figure}[!ht]
+	\begin{minipage}[t]{0.3 \linewidth}
+		\centering
+		\includegraphics[scale=0.3]{graph/bbcc.png}
+		\captionsetup{font={small}}
+		\caption{\footnotesize Original Image}
+		\label{fig:bbcc1}
+	\end{minipage}
+	\begin{minipage}[t]{0.35 \linewidth}
+		\centering
+		\includegraphics[scale=0.4]{graph/bbcctrans.png}
+		\captionsetup{font={small}}
+		\caption{ \footnotesize Transform Rules\cite{bbcc}}
+		\label{fig:bbcc2}
+	\end{minipage}
+	\begin{minipage}[t]{0.3 \linewidth}
+		\centering
+		\includegraphics[scale=0.3]{graph/bbccaplied.png}
+		\captionsetup{font={small}}
+		\caption{\footnotesize Contour Point}
+		\label{fig:bbcc3}
+	\end{minipage}
+\end{figure}
+
+\vspace{-20pt}
+
 This process allows a faster extraction of the contour, which accelerates the dataset loading process so it takes significantly less time. 
 By comparing against Yu's\cite{Yu} evaluation, this potentially reduces the runtime for about 50\%, and more importantly, removes the need for a SQL server, hence gives the cleaning process more portability.
+
+
+\vspace{-10pt}
 
 \section{Ground Truth Dataset}
 \label{sec:gt}
 
-To train and evaluate the classifiers, Pugh and Yu manually marked a set of detections with the schema in Section \ref{sec:schema}. 
-They chose a subset of the RDS, which is some of the videos having id start with ``13b''. 
-This subset of the RDS consists of 39 video files and 61,101 detections. 
+\vspace{-10pt}
+
+To train and evaluate the classifiers, Pugh and Yu marked a set of detections with the schema in Section \ref{sec:schema}. 
+They chose a subset of the RDS of videos having id start with ``13b''. This subset consists of 39 video files and 61,101 detections. 
 
 However, the marking was not able to cover all of the detections because of its size. 
 Some set of the detections are marked incorrectly because of the ambiguity of the classification schema. 
@@ -394,6 +484,8 @@ Also, since class 9 (good detection with problems) is very rare, it's sometimes 
 After extracting statistics about this dataset, it is discovered that this dataset is heavily biased. 
 It fails to include normal videos filmed at 2 sites. The distribution of detection on each site is shown in Fig \ref{fig:gtdist}, note that the detections marked at HoBiHu-site are significantly lower than other sites, and they contain almost no good detections.
 
+\vspace{-5pt}
+
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.34]{graph/classdist.png}
@@ -401,8 +493,33 @@ It fails to include normal videos filmed at 2 sites. The distribution of detecti
     \label{fig:gtdist}
 \end{figure}
 
+\subsection{Sample Images at Different Sites}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.4]{graph/samplesite2.png}
+    \caption{Sample Images of Detection in RDS at each site}
+    \label{fig:samplesite}
+\end{figure}
+
+\vspace{-10pt}
+
+\subsection{Additional Ground Truth Dataset}
+\label{sec:additionalgt}
+
 Due to the need for re-calibration and future validation. 
-Two additional subsets of videos, containing a total of 18,000 detections were marked.
+Two additional subsets of videos, containing a total of 18,242 detections were marked.
+This includes:
+
+\begin{itemize}
+\setlength{\parskip}{1pt}
+\item
+\textbf{Complementary Training Dataset}, containing 9,287 detections of detection. 
+\item
+\textbf{Validation Dataset (site)} - 7,955 detections, having about 1,000 per site.
+\item
+\textbf{Validation Dataset (random)} - Randomly picked 1,000 detections across RDS.
+\end{itemize}
 
 \chapter{Preprocessing}
 \label{chap:prepro}
@@ -411,7 +528,7 @@ To achieve the goal of removing False Positives without losing too many True Pos
 
 \begin{itemize}
 \setlength{\parskip}{1pt}
-\item \textbf{Early Video Removal} - Mark all detections recorded during night as Non-Fish.
+\item \textbf{Plankton Removal} - Mark all detections recorded during night as Non-Fish.
 \item \textbf{Frame Edge Indicator Function}, originally developed by Pugh\cite{Pugh} - Marking detections with a percentage of contour points touching the edge as Non-Fish. 
 \end{itemize}
 
@@ -423,24 +540,24 @@ The next part of the pipeline will be the preprocessing stages:
 \item \textbf{Colour space transformation} and \textbf{normalization} for the images CNN used. 
 \end{itemize}
 
-\section{Early Video Removal}
+\section{Plankton Removal (PR)}
 \label{sec:earlyremove}
 
 During the feature extraction tests, it was discovered that loading a 40,000 frame video and extracting features from it would use about 8 GB of memory space. 
 And if such video is processed on a node with RAM less than 8 GB, it will cause thrashing problems, rendering the machine unresponsive. 
-It could still cause serious disruption on machines with higher RAM.
+Even on machines with 16 GB memory, it could still interrupt other student's work.
 
 \begin{figure}[ht]
 \centering
-    \includegraphics[scale=0.40]{graph/frame_distribution.png}
+    \includegraphics[scale=0.45]{graph/frame_distribution.png}
     \caption{Log Scale Histogram of Detection Length}
     \label{fig:vidlength}
 \end{figure}
 
 While risking the chance of thrashing, these videos will take a longer time to process, and most importantly, they are usually filled with Non-Fish detections. 
 As discussed in Chapter \ref{sec:summaries}, if a camera recorded 30,000 detections in 10 minutes, means that in every frame of the original video, an average of 10 detections is extracted. 
-Fig \ref{fig:vidlength} shows the Log Distribution of the videos with different length, note that only a few videos having detections more than 30,000. 
-By looking at these ``outlier'' videos, some patterns were found (Images of these case are in Appendix \ref{append:samplelong}):
+Fig \ref{fig:vidlength} shows the Log Distribution of the videos with different length, note that only a few videos contain more than 30,000 detections. 
+By looking at these ``outlier'' videos, some patterns were found (Images of these cases are in Appendix \ref{append:samplelong}):
 
 \begin{itemize}
 \item
@@ -460,7 +577,7 @@ Videos from NPP-3 site camera 3, at January 2010. These videos are captured at a
 Dynamic background - Videos filled with moving vegetation, or refraction of sunlight. They usually contain lots of good detections.
 \end{itemize}
 
-If we remove all the videos recorded in the night, videos with 40,000 or more frames, and video recorded with above characteristics and 20,000 or more frames. About 8\% of the detections can be rejected without the need to extract them, saving approximately 200 days of computational time.
+If we remove all the videos recorded in the night, videos with 40,000 or more frames, and videos recorded with above characteristics and 20,000 or more frames, then about 4.6\% of the detections can be rejected without the need to extract them.
 %Samples of rejected videos are in Appendix \ref{sec:samplelong}.
 
 \section{Frame Edge Indicator Function (FEIF)}
@@ -473,7 +590,8 @@ However, this function could not achieve the intention in some cases.
 For example, some videos have a darker frame edge, so even if a fish is cut by the boundary, it could still be accepted. 
 Also, a large fish slightly touching the boundary will be rejected because the 25 limit and small fishes may bypass the heuristics because of the size.
 
-The following modification is added to solve the problem, by padding the boundary for a 2 pixels width, then increasing the limit of 25 to 40, and adding a new restriction: reject all the detections with 25\% of the points touching the boundary. %About 15\% of the dataset is rejected by this upgraded FEIF algorithm, saving 400 days of computational time.
+The following modification is added to solve the problem.
+By padding the boundary with a 2 pixels width, then increasing the limit of 25 to 40, and adding a new restriction: reject all the detections with 25\% of the points touching the boundary. %About 15\% of the dataset is rejected by this upgraded FEIF algorithm, saving 400 days of computational time.
 
 \begin{figure}[h]
 \centering
@@ -482,16 +600,20 @@ The following modification is added to solve the problem, by padding the boundar
     \label{fig:feifzone}
 \end{figure}
 
+\vspace{-15pt}
+
 \section{Remove Rate of Reduction Algorithms}
 \label{sec:reduction}
 
-After testing the dataset reduction function on training dataset, the accuracy statistics below were obtained. This manages to remove about 40\% of the bad detections, with about 5-10\% of False Negatives. It is later discovered to be the time-stamp setting problem, where a significant amount of fish gets rejected on videos without the time stamp. More details on the fault is in Section \ref{sec:feiffault}.
 
+After testing the dataset reduction function on training dataset, the accuracy statistics below were obtained. This manages to remove about 40\% of the bad detections, causing about 5-10\% of False Negatives. 
+
+It was later discovered that there was a significant amount of fish are rejected on videos without the time stamp. Cause of the fault are discussed in Section \ref{sec:feiffault}.
 
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline 
-$ $ & EVR and FEIF kept & EVR and FEIF reject \\
+$ $ & PR and FEIF kept & PR and FEIF reject \\
 \hline 
 True Fish & 3060 & 152 \\
 Non Fish & 3303 & 1440 \\
@@ -499,7 +621,7 @@ Non Fish & 3303 & 1440 \\
 \end{tabular}
 \end{center}
 
-\section{Translation from MATLAB to Python}
+\section{MATLAB code translation}
 \label{sec:translate}
 
 Initially, the project aimed to translate the entire pipeline into Python, however when it came to the feature extraction part, translating the code became an unreasonable solution.
@@ -528,7 +650,7 @@ Figure \ref{fig:benchmark} shows the tested performance of various 2D convolutio
 \item
 \textbf{TensorFlow's conv2d}, while faster than all other libraries, it has a significantly higher memory usage due to the use of tensor data type. Translation using this would be difficult due to the library being focused on Neural Networks.
 \item
-\textbf{Scipy.NDImage's convolve}, giving an almost same performance as MATLAB.
+\textbf{Scipy.NDImage's convolve}, giving an similar performance as MATLAB.
 \end{itemize}
 
 After this analysis, it's clear that re-engineering the MATLAB code is likely to spend more time, so a library called PyMatlab will be used to compute the F4K features in a MATLAB session instead, while other unfinished parts of the pipeline will be translated to Python.
@@ -548,7 +670,7 @@ This process takes about 0.3 seconds for each frame, Analysing the computational
 \textbf{Affine Moment Invariants} - these 105 features took 0.05 seconds to compute.
 \item
 \textbf{Gabor Filter} - these 160 features took about 0.04 seconds to compute.
-\item Other features took an almost negligible amount of time to finish.
+\item Other features took a negligible amount of time to finish.
 \end{itemize}
 Unfortunately, after checking the features with PCA, these feature all took a significant part in the first 50 PCA components, removing any one of these time costly feature will have a high impact on the result.
 
@@ -631,13 +753,11 @@ The images are stored in compressed {\tt ``.jpeg''} format, this leads to a dras
 \item
 Another fatal mistake is the images stored with OpenCV are in BGR space, where Lua recognize it as an RGB image.
 \end{itemize}
-This causes the CNN\_N and CNN\_BC almost useless, classifying almost every unseen data into 1 single class. Some re-train attempt were included in Section \ref{sec:cnn}.
+This fault causes the CNN\_N and CNN\_BC to be almost useless, classifying a majority of the unseen data into class 2 and 7. Some re-train attempts were included in Section \ref{sec:cnn}.
 
 Half of the cleaning time cost comes from the image normalization of the CNN in the original pipeline design.
 With optimizations applied at the translation stage, the time cost for the pre-processing is drastically reduced to 3 days. 
 This reduction is done by removing of SQL server and translated MATLAB normalization code in Python.
-
-
 
 \chapter{Classification}
 \label{chap:classify}
@@ -645,7 +765,7 @@ This reduction is done by removing of SQL server and translated MATLAB normaliza
 \section{Ambiguity in Original Classification Schema}
 \label{sec:AmbigCS}
 
-For the Pipeline Classifier, 10 different 1classes of detections were proposed in Section \ref{sec:schema}, but there are many limitations on this schema.
+For the Pipeline Classifier, 10 different classes of detections were proposed in Section \ref{sec:schema}, but there are many limitations on this schema.
 For example, some cases could be appearing simultaneously. Detection could have an erratic boundary, and also touching the boundary of a frame. Pugh's thesis didn't state clearly the different priorities among classes used. 
 
 After looking through the previously marked ground truth data, it is also found that some classes are very similar to others. For example in Fig \ref{fig:class68}, the track has a detection contour that is progressively less erratic. It makes it hard to draw an exact boundary between different classes when classifying manually.
@@ -699,8 +819,8 @@ new optimal \(\sigma = 10^{-3}\), and \(C = 1\).
 The result of the SVM is shown in Fig \ref{fig:svmacc}.
 
 Fig \ref{fig:svmacc} shows the confusion matrix of the result after testing it on the additional validation dataset, using the original top-N algorithm developed by Pugh\cite{Pugh}. 
-At first, the result looks promising, but after normalizing it is shown that a high percentage of the detections is marked as class 7.
-It is suspected that the classifier has learned class 7 as it's ``Base Case'', where every detection it doesn't know about is classified as class 7.
+At first, the result looks promising, but after normalizing it is shown that a high percentage of the detections are marked as class 7.
+It is suspected that the classifier has learned class 7 as its ``Base Case'', where every detection it doesn't know about is classified as class 7.
 
 Without this interference, the SVM could still obtain reasonable results.
 Some attempt at removing this problem can be found in Section \ref{sec:voting}.
@@ -761,7 +881,7 @@ As the classifier does not work as expected as in Pugh's thesis, it is reconside
 One of the methods tested is to add a voting method on the predicted probabilities obtained by different classifiers, to test out different combination of the classifier results.
 
 The voting strategy is described in the pseudo-code below. 
-The input: {\tt predict} is the predicted probability outputs of the classifiers, while the other parameters are the options used for searching the best combination of the classifiers. 
+The input: {\tt predict} is the predicted probability outputs of the classifiers, while the other parameters are the options used for searching for the best combinations of the classifiers. 
 
 \begin{algorithm}
 \caption{Voting Decision}
@@ -778,17 +898,20 @@ The input: {\tt predict} is the predicted probability outputs of the classifiers
 \end{algorithm}
 
 After testing through different settings, a Receiver Operating Characteristic (ROC) curve of the voting performance is plotted.
-The ROC curve plotted is shown in Fig \ref{fig:roccurve}, this shows the True Positive Rate (good fish kept) against False Positive Rate (bad detections kept) at different thresholds ($\gamma$ value in the pseudo-code).
+The ROC curve plotted in Fig \ref{fig:roccurve} shows the True Positive Rate (good fish kept) against False Positive Rate (bad detections kept) at different thresholds ($\gamma$ value in the pseudo-code).
 
 \begin{figure}[ht]
 \centering
     \includegraphics[scale=0.6]{graph/roccurve.png}
     \caption{ROC curve of different settings for voting algorithm}
     \label{fig:roccurve}
+
+\vspace{-10pt}
 \end{figure} 
 
 The project can only afford to lose about 10\% of the good fish.
-With this limit, the best classifier it to use SVM's predicted class 6 probability only, the ROC curve of this classifier is the black curve in Fig \ref{fig:roccurve}. 
+With this limit, the best classifier is to use SVM's predicted class 6 probability only.
+The ROC curve of this classifier is the black curve in Fig \ref{fig:roccurve}. 
 
 The chosen gamma value for the criteria is 0.0108, meaning all detection with SVM's class 6 probability higher than 1.1\% is classified as a fish.
 After the method is tested on various datasets from ground truth, and the following statistics are obtained.
@@ -796,7 +919,7 @@ After the method is tested on various datasets from ground truth, and the follow
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
 \hline 
-$ $ Training Dataset & EVR reject & FEIF reject & SVM reject & Detection Kept\\
+$ $ Training Dataset & PR reject & FEIF reject & SVM reject & Detection Kept\\
 \hline 
 True Fish & 2858 & 1090 & 491 & 26211 \\
 Non Fish & 1955 & 10577 & 7690 & 19511 \\
@@ -807,7 +930,7 @@ Non Fish & 1955 & 10577 & 7690 & 19511 \\
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
 \hline 
-$ $ Validation Dataset 1 & EVR reject & FEIF reject & SVM reject & Detection Kept\\
+$ $ Validation Dataset 1 & PR reject & FEIF reject & SVM reject & Detection Kept\\
 \hline 
 True Fish & 61 & 91 & 88 & 2972 \\
 Non Fish & 266 & 1174  & 553 & 2750 \\
@@ -818,7 +941,7 @@ Non Fish & 266 & 1174  & 553 & 2750 \\
 \begin{center}
 \begin{tabular}{|c|c|c|c|c|}
 \hline 
-$ $ Validation Dataset 2 & EVR reject & FEIF reject & SVM reject & Detection Kept\\
+$ $ Validation Dataset 2 & PR reject & FEIF reject & SVM reject & Detection Kept\\
 \hline 
 True Fish & 1 & 13  & 2 & 373 \\
 Non Fish & 38 & 133 & 101 & 339 \\
@@ -826,10 +949,24 @@ Non Fish & 38 & 133 & 101 & 339 \\
 \end{tabular}
 \end{center}
 
-Note the high True Fish reject rate in training dataset, this is because the planktons are marked as fishes in Pugh's ground-truthing process. 
+Note the high True Fish reject rate in training dataset, this is because planktons are marked as fish in Pugh's ground-truthing process. The final reduction rate are shown below.
 
-For the datasets used: validation dataset 1 consists of evenly sampled 7955 detections from each site/camera, and dataset 2 consists of 1000 random samples across entire RDS.
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+$ $ Complete RDS & PR reject & FEIF reject & SVM reject & Detection Kept\\
+\hline 
+Fish & 38,512,254 & 73,686,561  & 120,124,496 & 607,142,479 \\
+Percentage & 4.6\% & 8.8\% & 14.3\% & 72.3\% \\
+\hline 
+\end{tabular}
+\end{center}
+
 A further attempt at the reduction of False Negatives is discussed in Section \ref{sec:falsenegative}.
+
+%TODO final results and stuff.
+%You need an additional section after this describing the final cleaning process. Summarize the time for each step. Report the number of fish removed by FEIF and the SVM stages, and how many remain. Give percentages as well.
+%Also show 5-10 examples of TP, FP, FN results from the 1000 frame random validation set.
 
 \chapter{Parallel Distribution}
 \label{chap:parallel}
@@ -875,15 +1012,16 @@ For all the ``slave'' nodes, Python's MultiProcessing and MATLAB's ParPool are u
 The project uses the public lab DICE machines provided by The University of Edinburgh. 
 It is important to make sure the cleaning procedure doesn't affect other users.
 
-A Python script using Multi-processing pools, spawning a ``{\tt ssh MachineName w}'' bash process for each machine.
-With the {\tt ssh}'s X11 forwarding enabled, the results printed out at target machine is transferred back to the Python script. 
+To find idle machines, a Python script using Multi-processing pools is used. 
+It spawns a ``{\tt ssh MachineName w}'' bash process for each machine.
+With the {\tt ssh}'s X11 forwarding enabled, the results printed out at the target machine is transferred back to the Python script. 
 Then the script checks the length of output obtained from this standard output stream. 
 If that machine has no users logged in, the returned string will have an exact length of 2 lines (containing the headers of query). 
 This script allows the project to obtain a list of available machines within 15 seconds.
 
 For the CPU usage, SL7 provides a {\tt NICE} command, allowing the program to have a higher {\tt NI} value which gives lower priority on CPU scheduling. Even if another student logged into the running machine, this allows them to work without disruption.
 
-After testing it on the machines, it was reported anonymously by other students that some machines are starting to become unresponsive, and caused work lost after running code on it. It is later discovered to be a memory thrashing problem.
+After testing it on the machines, it was reported anonymously by other students that some machines are starting to become unresponsive, and caused work lost after running code on it. It was later discovered to be a memory thrashing problem.
 Loading a video with 10,000 frames and all the library functions will take about 3 GB space in physical memory. 
 After dereferencing every variable and forcing the garbage collecting mechanism, it still leaves 10\% of the memory in use. This eventually piles up and thrashes the memory. 
 
@@ -909,12 +1047,12 @@ In the case of master crashes and other situations that MPI process is killed, a
 Even with these issues addressed, the following event could still cause faults:
 \begin{itemize}
 \setlength{\parskip}{0pt}
-\item \textbf{Rebooted machines}: Some student tends to restart the lab machines before using them, this causes code to terminated by {\tt SIGTERM} or {\tt SIGKILL}.
+\item \textbf{Rebooted machines}: Some student tend to restart the lab machines before using them, this causes code to terminated by {\tt SIGTERM} or {\tt SIGKILL}.
 \item \textbf{Unplugged machines}: Causes the master node to wait indefinitely for a reply.
 \end{itemize}
 With this limitation, the project could only use the framework during night times.
 
-\section{Time Cost Reduction} 
+\section{Time Cost} 
 
 In Yu's thesis\cite{Yu}, it is estimated the cleaning could take 25,000 hours to complete on a 40-core machine.
 This evaluation is based on the runtime of cleaning a video with 961 detections.
@@ -922,15 +1060,15 @@ Finish processing these videos took approximately 200 seconds, Yu obtain the est
 Within this 200 seconds, half of the time is used for the SVM feature extraction/transformation, and another half was used for the CNN preprocessing. The final classification took negligible time.
 
 However, this estimate wasn't thorough, since there are 839,000,000 detections and the average length of the video is about 2,000 detections.
-The actual runtime would double, having about 1,600,000 hours of runtime on a single core (about 16,000 days on a 4-core machine). 
+The actual runtime would double, having about 1,600,000 hours of runtime on a single core. 
 
 During the project, about 200 student lab DICE machine was used. 
-The number of available DICE machines varies from 50-250 due to heavy experiment period of other students.
+The number of available DICE machines varies from 50-250 due to heavy experiment periods of other students.
 This issue potentially cuts the previous runtime to 1/200, but due to the disruption to/from other students, the project runs the cleaning mostly during night time (12 A.M. to 8 A.M.).
 
 With this reduction, the project finishes the different stages in the following time:
 \begin{itemize}
-\setlength{\parskip}{0pt}
+\setlength{\parskip}{-1pt}
 \item \textbf{SVM preprocessing}: Approximately three weeks, estimated total runtime of about 200 hours. 
 \item \textbf{CNN preprocessing and classification}: Approximately one week, estimated total runtime of 70 hours. 
 \item \textbf{Other operations}: Like training SVM and generating decision vectors, these all took negligible time (less than 1 day). 
@@ -938,9 +1076,9 @@ With this reduction, the project finishes the different stages in the following 
 Note that the SVM took longer due to the high memory requirement for the cleaning mentioned in Section \ref{sec:earlyremove}.
 
 From the result cleaning time, the translation stage of the project manages to cut down the runtime to 1/8 of the original speed.
-This reduction is mostly the benefit of removing the SQL server, which has brought the project most reduction in runtime. 
+This reduction is mostly because of removing the SQL server, which has brought the project most reduction in runtime. 
 It might also be the removal of unnecessary I/O (saving images to disk and loading them again for multiple times) during CNN stage. 
-The project benefit mostly from the idle student lab machines, this is equivalent to having 20 40-core machines used in Yu's estimation.
+The project benefited mostly from the idle student lab machines. This is equivalent to having 20 40-core machines used in Yu's estimation.
 \newpage
 
 \chapter{Conclusion}
@@ -962,12 +1100,21 @@ The by-product of the process may be useful for a future cleaning attempt on the
 \item A 1 GB folder, contains Numpy dump of final binary decision vector.
 \item A 323 GB folder, contains extracted {\tt .sql} records.
 \item A 510 GB folder, contains normalized and PCA transformed first 100 features.
-\item About 20,000 marked frame of ground truth dataset, covering the videos both Pugh and Yu missed during the ground truth process.
+\item About 20,000 marked frames of ground truth dataset, covering the videos both Pugh and Yu missed during the ground truth process.
 \item A Python mpi application to distribute the classification work on DICE machines, and a Python script to obtain unused DICE machines.
 \item Translated utility functions in Python, some are from Pugh's MATLAB code and some of them are implemented in this project. 
 This contains several Jupyter Notebooks and two Python libraries. 
 These allow easier visualisation of the dataset, without the need to go through multiple extractions and SQL connection stage in MATLAB. 
 \end{itemize}
+
+\section{Samples of Images Rejected at each stage}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45]{graph/finalsample.png}
+    \caption{Sample of Removed Images at each stage of cleaning}
+    \label{fig:samplestage}
+\end{figure}
 
 \section{False Negatives in cleaning algorithm}
 \label{sec:falsenegative}
@@ -982,7 +1129,7 @@ Fig \ref{fig:feiffail} shows the sample of False Negatives in the validation dat
 Note that the time-stamp in absent from the area highlighted with red lines.
 By looking into the dataset, it is discovered that all the {\tt 640x480} resolution videos recorded at NPP-3 sites after 2011-Aug-05 are missing the time stamp.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[scale=0.40]{graph/FEIFfail.png}
     \caption{Sample False Negatives (good fish rejected) by FEIF}
@@ -1001,12 +1148,13 @@ The darker-red area indicates the time-stamp area for {\tt 320x240} videos used 
 \end{figure}
 
 The similar problem also happened to the plankton removal criteria in Section \ref{sec:earlyremove}, where a mistake in the time checking code causes some of the videos recorded at 6-7 A.M. to be removed. 
-However, this only affects about 0.2\% of the detection.
+However, this only affects about 0.2\% of the detections.
 
-While the early remove stages fault causes a lot of class 6 False Negative, most of the class 8 False Negative are caused by the SVM used, which is partially considered to be the fault of the classification schema discussed in Section \ref{sec:AmbigCS}.
-Where class 8 stands for good fish with bad contour, this covers detections from slightly erratic contour to completely useless contour.
-Fig \ref{fig:SVMfail} shows the sample of such fault, these contour fault caused by background extraction of previous species recognition of F4K project.
-Fishes with colours similar to the background or stripes usually have broken or segmented contours.
+While the early removal stages fault causes a lot of class 6 False Negatives, most of the class 8 False Negatives are caused by the SVM used, which is partially considered to be the fault of the classification schema discussed in Section \ref{sec:AmbigCS}.
+Where class 8 stands for good fish with bad contour, this covers detections from slightly erratic contours to completely useless contours.
+Fig \ref{fig:SVMfail} shows a sample of such fault. 
+These contour faults are caused by background extraction from previous species recognition of F4K project.
+Fish with colours similar to the background or stripes usually have broken or segmented contours.
 
 \begin{figure}[h]
     \centering
@@ -1020,7 +1168,7 @@ Fishes with colours similar to the background or stripes usually have broken or 
 
 This project successfully applied the cleaning algorithms designed by Pugh\cite{Pugh}. 
 Unfortunately, it did not achieve the same level of accuracy as Pugh's thesis described.
-In order to increase the accuracy of the classifiers, not only we need to fix the aforementioned faults in Section \ref{sec:falsenegative}, other improvements will also be needed.
+In order to increase the accuracy of the classifiers, not only we needed to fix the aforementioned faults in Section \ref{sec:falsenegative}, other improvements will also be needed.
 
 \subsection{More Annotation}
 
@@ -1037,7 +1185,7 @@ A user is shown a detection in a track, and they could use the provided options 
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale=0.38]{graph/query.png}
+    \includegraphics[scale=0.5]{graph/query.png}
     \caption{A prototype online ground truth interface}
     \label{fig:gto}
 \end{figure}
@@ -1051,31 +1199,43 @@ The accuracy obtained by the training dataset on CNN\_WC has shown promising acc
 
 \section{Final Words}
 
-The project manages to finish the algorithm originally designed by Pugh. However, the expected level of accuracy was not achieved.
-In hindsight, the developing process was not careful enough, which is mainly reflected in the FEIF behaviour of the project. 
+The project finished the algorithm originally designed by Pugh. However, the expected level of accuracy was not achieved.
+Nonetheless, cleaning of the full dataset was accomplished, with an estimated removal of 42\% False Positives while removing only an estimated 7.5\% True Positives. This reduced the dataset from 839,465,790 fish to 607,142,479 fish.
+
+In hindsight, the development process was not careful enough, which is mainly reflected in the FEIF behaviour of the project. 
 While setting parameters, only reduction rate is considered. 
-Details like False Negative Rate was ignored and have led to most of the detection lost.
+Details like False Negative Rate was ignored and have led to most of the lost true detections.
 
 Also, the project has trusted the previous result blindly at early stages of the cleaning, which has led to the late discovery of the CNN fault.
 The validation dataset is marked only after the translation of the algorithms.
 
 With the big data nature of this task, many issues only arise when the project started running the cleaning on the distributed scale.
-These issues could be avoided if enough test was created at the start of the project.
+These issues could be avoided if more analysis and debugging of the previous code had been done at the start of the project.
 
 For example, MATLAB's ParPool uses a local lock file to keep track of the parallel tasks. 
-Combined with the shared file system used, lots of MATLAB segmentation fault crashes have been caused because of this. 
-Due to the ambiguity of the error messages, this problem is only addressed months after first discovery.
+Combined with the shared file system used, lots of MATLAB segmentation fault crashes have been caused by this. 
+Due to the ambiguity of the error messages, this problem was only addressed months after first discovery.
 
 Another example would be the {\tt .sql} preprocessing mentioned in Section \ref{sec:sqld}.
-The project misses one of the special characters in the blob syntax used, which has caused 30\% of the contour data appears to be missing after extraction.
-This fault also causes the project to re-run the SVM extraction stage and 2 week's work were lost because of it.
+The project misses one of the special characters in the blob syntax used, which has caused 30\% of the contour data to be missing after extraction.
+This fault also required the project to re-run the SVM extraction stage and two week's work was lost because of it.
 
-Future work on the project is needed to fix the existing fault. 
+Future work on the project is needed to fix these remaining faults:
+\begin{itemize}
+\setlength{\parskip}{0pt}
+\item Adjust the plankton removal and FEIF criteria mentioned in Section \ref{sec:feiffault}.
+\item Create a larger set of Ground Truth dataset.
+\item Re-train Pugh's Convolutional Neural Network.
+\end{itemize}
+ 
 Exploration of other machine learning techniques is also needed in order to achieve higher accuracy on the classification. 
 
-
-
-
+\let\OLDthebibliography\thebibliography
+\renewcommand\thebibliography[1]{
+  \OLDthebibliography{#1}
+  \setlength{\parskip}{0pt}
+  \setlength{\itemsep}{5pt plus 0.3ex}
+}
 
 \bibliographystyle{unsrt}
 \bibliography{dissertation}
@@ -1088,7 +1248,7 @@ Exploration of other machine learning techniques is also needed in order to achi
 
 With this framework design, if we want to process any stage of the pipeline classifier, we only need to overwrite the dummy \underline{\textbf{DoWork}(VideoID)} function of slave code.
 
-If the framework is used in work other than processing the videos, (e.g. finding SVM parameters), the  \underline{\textbf{VideoIDList}} can be changed to adapt the new tasks.
+If the framework is used in work other than processing the videos, (e.g. finding SVM parameters), the  \underline{\textbf{VideoIDList}} can be changed to adapt to the new tasks.
 
 \begin{algorithm}
 \caption{Master Workflow}
@@ -1135,10 +1295,10 @@ If the framework is used in work other than processing the videos, (e.g. finding
 \label{append:samplelong}
 
 In Section \ref{sec:earlyremove}, a classification method based on file-name is proposed.
-If a video has over 30,000 frames and is filmed at a specific time and location, every frame of the video will be marked as non-fish. 
+If a video has over 30,000 detections and is filmed at a specific time and location, every frame of the video will be marked as non-fish. 
 As each video of RDS originates from a 10-minute video, having such amount of detection essentially means there are over 50 fish captured per second of original FDS.
 
-For the most of the cases, such videos are full of compression errors, plankton, or having background extraction fault caused by moving vegetation. These cases are shown in Fig \ref{fig:sample_night}, Fig \ref{fig:sample_corrupt}, and Fig \ref{fig:sample_vegetation}.
+For the most of the cases, such videos are full of compression errors, plankton, or having background extraction faults caused by moving vegetation. These cases are shown in Fig \ref{fig:sample_night}, Fig \ref{fig:sample_corrupt}, and Fig \ref{fig:sample_vegetation}.
 
 By manually looking through the samples from the longest videos, a limit of 30,000 is set due to the need of keeping good detections such as those in Fig \ref{fig:sample_fish}. This ensures the good fish lost will be less than 1\% of the bad detections this method removes.
 

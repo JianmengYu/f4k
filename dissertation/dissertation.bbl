@@ -44,6 +44,11 @@ Lisandro Dalcín, Rodrigo Paz, and Mario Storti.
 \newblock {\em Journal of Parallel and Distributed Computing}, 65(9):1108 --
   1115, 2005.
 
+\bibitem{bbcc}
+Chain code.
+\newblock \url{http://www.crisluengo.net/index.php/archives/324}.
+\newblock Accessed: 2018-03-30.
+
 \bibitem{MPI4PY2}
 Lisandro Dalcín, Rodrigo Paz, Mario Storti, and Jorge D’Elía.
 \newblock Mpi for python: Performance improvements and mpi-2 extensions.
