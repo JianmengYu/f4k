@@ -1,0 +1,448 @@
+
+LCFG: vega.inf.ed.ac.uk
+profile server 3.5.3 	
+Filter: 
+10s Refresh:   Fold:   [Show]   [Hide]   [Help]  
+show MacOS
+hide DICE
+ 	
+show DIY DICE
+ 	
+show Hadoop cluster
+ 	
+show Hadoop test cluster
+ 	
+show Laptops
+ 	
+show Meeting Rooms
+ 	
+show Misc DICE
+ 	
+show Offices
+ 	
+show Preparation Desktops
+ 	
+show Public
+ 	
+show Research And Teaching Servers
+ 	
+show Server Rooms
+ 	
+show Servers
+ 	
+hide Student Labs
+ 	
+hide AT-3.01 Lab
+  	green square green square yellow ! green square magenta *  batabano 	in student lab AT-3.01 	12/01/18 16:43:51 	XML 
+  	green square green square yellow ! green square magenta *  becker 	in student lab AT-3.01 	12/01/18 16:41:00 	XML 
+  	green square green square yellow ! green square magenta *  capriati 	in student lab AT-3.01 	12/01/18 16:41:28 	XML 
+  	green square green square yellow ! green square magenta *  croft 	in student lab AT-3.01 	12/01/18 16:41:25 	XML 
+  	green square green square yellow ! green square magenta *  cutlers 	in student lab AT-3.01 	12/01/18 16:40:32 	XML 
+  	green square green square green square green square green square  edberg 	in student lab AT-3.01 	12/01/18 16:40:44 	XML 
+  	green square green square yellow ! green square magenta *  graf 	in student lab AT-3.01 	12/01/18 16:42:26 	XML 
+  	green square green square yellow ! green square magenta *  ivanisevic 	in student lab AT-3.01 	12/01/18 16:38:54 	XML 
+  	green square green square yellow ! green square magenta *  jingxi 	in student lab AT-3.01 	12/01/18 16:42:13 	XML 
+  	green square green square green square green square green square  lloyd 	in student lab AT-3.01 	12/01/18 16:42:54 	XML 
+  	green square green square yellow ! green square magenta *  martinmillers 	in student lab AT-3.01 	12/01/18 16:37:58 	XML 
+  	green square green square yellow ! green square magenta *  mcnamara 	in student lab AT-3.01 	12/01/18 16:36:01 	XML 
+  	green square green square yellow ! green square magenta *  monfils 	in student lab AT-3.01 	12/01/18 16:42:17 	XML 
+  	green square green square yellow ! green square magenta *  navratilova 	in student lab AT-3.01 	12/01/18 16:44:25 	XML 
+  	green square green square yellow ! green square magenta *  novotna 	in student lab AT-3.01 	12/01/18 16:43:59 	XML 
+  	green square green square yellow ! green square magenta *  stove 	in student lab AT-3.01 	12/01/18 16:36:36 	XML 
+  	green square green square yellow ! green square magenta *  tanner 	in student lab AT-3.01 	12/01/18 16:41:47 	XML 
+  	green square green square yellow ! green square magenta *  wade 	in student lab AT-3.01 	12/01/18 16:41:18 	XML 
+  	green square green square yellow ! green square magenta *  wawrinka 	in student lab AT-3.01 	12/01/18 16:39:02 	XML 
+  	green square green square yellow ! green square magenta *  wilander 	in student lab AT-3.01 	12/01/18 16:42:41 	XML 
+ 	
+hide AT-3.05 Lab
+  	green square blue square yellow ! green square magenta *  agrigento 	in student lab AT-3.05 	12/01/18 16:02:45 	XML 
+  	green square green square yellow ! green square magenta *  concordia 	in student lab AT-3.05 	12/01/18 16:45:44 	XML 
+  	green square green square yellow ! green square magenta *  fiesole 	in student lab AT-3.05 	12/01/18 16:41:44 	XML 
+  	green square blue ! yellow ! green square green square  firenze 	in student lab AT-3.05 	20/10/17 01:44:43 	XML 
+  	green square blue square yellow ! green square magenta *  messina 	in student lab AT-3.05 	12/01/18 16:25:44 	XML 
+  	green square green square yellow ! green square magenta *  pavia 	in student lab AT-3.05 	12/01/18 16:37:45 	XML 
+  	green square green square yellow ! green square magenta *  savona 	in student lab AT-3.05 	12/01/18 16:39:44 	XML 
+  	green square green square yellow ! green square magenta *  wigton 	in student lab AT-3.05 	12/01/18 16:44:46 	XML 
+ 	
+hide AT-3.08 Lab
+  	green square green square yellow ! green square magenta *  hawkins 	in student lab AT-3.08 	12/01/18 16:43:43 	XML 
+ 	
+hide AT-3.09 Lab
+  	green square green square yellow ! green square magenta *  ashe 	in student lab AT-3.09 	12/01/18 16:42:34 	XML 
+  	green square green square yellow ! green square magenta *  bartek 	in student lab AT-3.09 	12/01/18 16:44:49 	XML 
+  	green square green square yellow ! green square magenta *  calluna 	in student lab AT-3.09 	12/01/18 16:39:41 	XML 
+  	green square green square yellow ! green square magenta *  casals 	in student lab AT-3.09 	12/01/18 16:36:50 	XML 
+  	green square green square yellow ! green square magenta *  cilic 	in student lab AT-3.09 	12/01/18 16:39:30 	XML 
+  	green square green square yellow ! green square magenta *  courier 	in student lab AT-3.09 	12/01/18 16:45:09 	XML 
+  	green square green square yellow ! green square magenta *  davenport 	in student lab AT-3.09 	12/01/18 16:45:04 	XML 
+  	green square green square yellow ! green square magenta *  durie 	in student lab AT-3.09 	12/01/18 16:39:29 	XML 
+  	green square green square yellow ! green square magenta *  evenson 	in student lab AT-3.09 	12/01/18 16:38:39 	XML 
+  	green square green square yellow ! green square magenta *  evert 	in student lab AT-3.09 	12/01/18 16:39:56 	XML 
+  	green square green square yellow ! green square magenta *  ferrer 	in student lab AT-3.09 	12/01/18 16:38:27 	XML 
+  	green square green square yellow ! green square magenta *  goolagong 	in student lab AT-3.09 	12/01/18 16:36:44 	XML 
+  	green square green square yellow ! green square magenta *  hewitt 	in student lab AT-3.09 	12/01/18 16:40:59 	XML 
+  	green square green square yellow ! green square magenta *  jacobsen 	in student lab AT-3.09 	12/01/18 16:44:29 	XML 
+  	green square green square yellow ! green square magenta *  janda 	in student lab AT-3.09 	12/01/18 16:39:44 	XML 
+  	green square green square yellow ! green square magenta *  koch 	in student lab AT-3.09 	12/01/18 16:43:01 	XML 
+  	green square green square yellow ! green square magenta *  kournikova 	in student lab AT-3.09 	12/01/18 16:45:33 	XML 
+  	green square green square red ! green square magenta *  kuttel 	in student lab AT-3.09 	12/01/18 16:44:58 	XML 
+  	green square green square yellow ! green square magenta *  leconte 	in student lab AT-3.09 	12/01/18 16:43:13 	XML 
+  	green square green square yellow ! green square magenta *  lendl 	in student lab AT-3.09 	12/01/18 16:43:28 	XML 
+  	green square green square yellow ! green square magenta *  mauresmo 	in student lab AT-3.09 	12/01/18 16:44:29 	XML 
+  	green square green square yellow ! green square magenta *  mcenroe 	in student lab AT-3.09 	12/01/18 16:38:55 	XML 
+  	green square green square yellow ! green square magenta *  mottram 	in student lab AT-3.09 	12/01/18 16:42:07 	XML 
+  	green square green square yellow ! green square magenta *  nastase 	in student lab AT-3.09 	12/01/18 16:40:05 	XML 
+  	green square green square yellow ! green square magenta *  neumayer 	in student lab AT-3.09 	12/01/18 16:40:27 	XML 
+  	green square green square yellow ! green square magenta *  newcombe 	in student lab AT-3.09 	12/01/18 16:44:10 	XML 
+  	green square green square yellow ! green square magenta *  petterson 	in student lab AT-3.09 	12/01/18 16:37:27 	XML 
+  	green square green square yellow ! green square magenta *  pierce 	in student lab AT-3.09 	12/01/18 16:44:20 	XML 
+  	green square green square yellow ! green square magenta *  raonic 	in student lab AT-3.09 	12/01/18 16:36:30 	XML 
+  	green square green square yellow ! green square magenta *  roddick 	in student lab AT-3.09 	12/01/18 16:45:03 	XML 
+  	green square green square yellow ! green square magenta *  romoren 	in student lab AT-3.09 	12/01/18 16:36:51 	XML 
+  	green square green square yellow ! green square magenta *  rudedski 	in student lab AT-3.09 	12/01/18 16:38:57 	XML 
+  	green square green square yellow ! green square magenta *  sampras 	in student lab AT-3.09 	12/01/18 16:40:51 	XML 
+  	green square green square yellow ! green square magenta *  schmitt 	in student lab AT-3.09 	12/01/18 16:36:33 	XML 
+  	green square green square yellow ! green square magenta *  seles 	in student lab AT-3.09 	12/01/18 16:42:01 	XML 
+  	green square green square yellow ! green square magenta *  sharapova 	in student lab AT-3.09 	12/01/18 16:38:12 	XML 
+  	green square green square yellow ! green square magenta *  shriver 	in student lab AT-3.09 	12/01/18 16:38:50 	XML 
+  	green square green square yellow ! green square magenta *  stepanek 	in student lab AT-3.09 	12/01/18 16:41:39 	XML 
+  	green square green square yellow ! green square magenta *  uhrmann 	in student lab AT-3.09 	12/01/18 16:40:42 	XML 
+  	green square green square yellow ! green square magenta *  utrecht 	in student lab AT-3.09 	12/01/18 16:42:21 	XML 
+ 	
+hide AT-3.11 Lab
+  	green square blue square yellow ! green square magenta *  danson 	in student lab AT-3.11 	12/01/18 16:30:43 	XML 
+  	green square blue square yellow ! green square magenta *  hester 	in student lab AT-3.11 	12/01/18 16:06:43 	XML 
+  	green square blue square yellow ! green square magenta *  richardson 	in student lab AT-3.11 	12/01/18 16:00:44 	XML 
+  	green square blue square yellow ! green square magenta *  twigg 	in student lab AT-3.11 	12/01/18 12:54:44 	XML 
+ 	
+hide AT-4.05 Lab
+  	green square blue square yellow ! green square magenta *  abbas 	in student lab AT-4.05 	12/01/18 16:01:43 	XML 
+  	green square blue ! yellow ! green square green square  chand 	in student lab AT-4.05 	09/01/18 14:35:13 	XML 
+  	green square blue ! yellow ! green square green square  charlesworth 	in student lab AT-4.05 	30/09/17 08:11:20 	XML 
+  	green square green square yellow ! green square magenta *  henman 	in student lab AT-4.05 	12/01/18 16:39:33 	XML 
+  	green square green square yellow ! green square magenta *  kruize 	in student lab AT-4.05 	12/01/18 16:43:44 	XML 
+  	green square green square yellow ! green square magenta *  lowick 	in student lab AT-4.05 	12/01/18 16:37:46 	XML 
+  	green square blue square yellow ! green square magenta *  parrot 	in student lab AT-4.05 	12/01/18 12:55:44 	XML 
+  	green square blue square yellow ! green square magenta *  raven 	in student lab AT-4.05 	12/01/18 16:09:46 	XML 
+ 	
+hide AT-4.07 Lab
+  	green square green square yellow ! green square magenta *  dwyer 	in student lab AT-4.07 	12/01/18 16:42:43 	XML 
+  	green square green square yellow ! green square magenta *  kavanagh 	in student lab AT-4.07 	12/01/18 16:35:54 	XML 
+  	green square blue square yellow ! green square magenta *  lodi 	in student lab AT-4.07 	12/01/18 16:34:14 	XML 
+  	green square green square yellow ! green square magenta *  palermo 	in student lab AT-4.07 	12/01/18 16:39:51 	XML 
+  	green square green square yellow ! green square magenta *  palestrina 	in student lab AT-4.07 	12/01/18 16:36:52 	XML 
+  	green square blue square yellow ! green square magenta *  ravenna 	in student lab AT-4.07 	12/01/18 12:53:43 	XML 
+  	green square green square yellow ! green square magenta *  sardar 	in student lab AT-4.07 	12/01/18 16:45:43 	XML 
+  	green square green square yellow ! green square magenta *  volterra 	in student lab AT-4.07 	12/01/18 16:37:44 	XML 
+ 	
+hide AT-4.09 Lab
+  	green square green square yellow ! green square magenta *  brindisi 	in student lab AT-4.09 	12/01/18 16:44:44 	XML 
+  	green square green square red ! green square magenta *  connors 	in student lab AT-4.09 	12/01/18 16:42:53 	XML 
+  	green square blue square yellow ! green square magenta *  hexham 	in student lab AT-4.09 	12/01/18 12:54:46 	XML 
+  	green square green square yellow ! green square magenta *  mitford 	in student lab AT-4.09 	12/01/18 16:42:28 	XML 
+  	green square blue square yellow ! green square magenta *  murano 	in student lab AT-4.09 	12/01/18 16:16:43 	XML 
+  	green square green square yellow ! green square magenta *  penguin 	in student lab AT-4.09 	12/01/18 16:43:46 	XML 
+  	green square blue square yellow ! green square magenta *  smear 	in student lab AT-4.09 	12/01/18 16:16:44 	XML 
+  	green square green square yellow ! green square magenta *  stork 	in student lab AT-4.09 	12/01/18 16:44:28 	XML 
+ 	
+hide AT-4.11 Lab
+  	green square green square yellow ! green square magenta *  djokovic 	in student lab AT-4.11 	12/01/18 16:37:14 	XML 
+  	green square blue square yellow ! green square magenta *  matamata 	in student lab AT-4.11 	12/01/18 16:29:16 	XML 
+  	green square blue square red ! green square magenta *  pipit 	in student lab AT-4.11 	12/01/18 16:10:43 	XML 
+ 	
+hide AT-4.12 Lab
+  	green square green square yellow ! green square magenta *  barrow 	in student lab AT-4.12 	12/01/18 16:37:02 	XML 
+  	green square green square yellow ! green square magenta *  bloom 	in student lab AT-4.12 	12/01/18 16:37:11 	XML 
+  	green square blue square yellow ! green square magenta *  cagliari 	in student lab AT-4.12 	12/01/18 16:14:42 	XML 
+  	green square blue square yellow ! green square magenta *  caldbeck 	in student lab AT-4.12 	12/01/18 16:33:46 	XML 
+  	green square green square yellow ! green square magenta *  camperdown 	in student lab AT-4.12 	12/01/18 16:40:18 	XML 
+  	green square green square yellow ! green square magenta *  caorunn 	in student lab AT-4.12 	12/01/18 16:38:18 	XML 
+  	green square green square yellow ! green square magenta *  catania 	in student lab AT-4.12 	12/01/18 16:36:44 	XML 
+  	green square green square yellow ! green square magenta *  cesena 	in student lab AT-4.12 	12/01/18 16:37:04 	XML 
+  	green square green square yellow ! green square magenta *  chieri 	in student lab AT-4.12 	12/01/18 16:35:44 	XML 
+  	green square blue square yellow ! green square magenta *  como 	in student lab AT-4.12 	12/01/18 16:22:44 	XML 
+  	green square blue square yellow ! green square magenta *  cremona 	in student lab AT-4.12 	12/01/18 16:33:52 	XML 
+  	green square blue square yellow ! green square magenta *  duddo 	in student lab AT-4.12 	12/01/18 16:01:15 	XML 
+  	green square green square yellow ! green square magenta *  haymans 	in student lab AT-4.12 	12/01/18 16:39:09 	XML 
+  	green square green square yellow ! green square magenta *  hazlerigg 	in student lab AT-4.12 	12/01/18 16:43:06 	XML 
+  	green square green square yellow ! green square magenta *  hendricks 	in student lab AT-4.12 	12/01/18 16:35:45 	XML 
+  	green square green square red ! green square magenta *  herbie 	in student lab AT-4.12 	12/01/18 16:45:11 	XML 
+  	green square green square yellow ! green square magenta *  ingleton 	in student lab AT-4.12 	12/01/18 16:42:46 	XML 
+  	green square blue square yellow ! green square magenta *  leyburn 	in student lab AT-4.12 	12/01/18 16:15:46 	XML 
+  	green square blue square yellow ! green square magenta *  lindale 	in student lab AT-4.12 	12/01/18 15:59:24 	XML 
+  	green square blue square yellow ! green square magenta *  maryport 	in student lab AT-4.12 	12/01/18 16:11:46 	XML 
+  	green square green square yellow ! green square magenta *  opihr 	in student lab AT-4.12 	12/01/18 16:43:15 	XML 
+  	green square green square yellow ! green square magenta *  parlour 	in student lab AT-4.12 	12/01/18 16:45:40 	XML 
+  	green square blue square yellow ! green square magenta *  powburn 	in student lab AT-4.12 	12/01/18 16:01:28 	XML 
+  	green square green square yellow ! green square magenta *  rothbury 	in student lab AT-4.12 	12/01/18 16:36:46 	XML 
+  	green square blue square yellow ! green square magenta *  salterbeck 	in student lab AT-4.12 	12/01/18 16:34:46 	XML 
+  	green square green square yellow ! green square magenta *  scafell 	in student lab AT-4.12 	12/01/18 16:44:45 	XML 
+  	green square blue square yellow ! green square magenta *  seaton 	in student lab AT-4.12 	12/01/18 13:02:19 	XML 
+  	green square green square yellow ! green square magenta *  sipsmith 	in student lab AT-4.12 	12/01/18 16:40:27 	XML 
+  	green square green square yellow ! green square magenta *  tanqueray 	in student lab AT-4.12 	12/01/18 16:41:45 	XML 
+  	green square blue square yellow ! green square magenta *  tatko 	in student lab AT-4.12 	12/01/18 16:01:37 	XML 
+  	green square blue square yellow ! green square magenta *  teramo 	in student lab AT-4.12 	12/01/18 16:01:00 	XML 
+  	green square green square yellow ! green square magenta *  thropton 	in student lab AT-4.12 	12/01/18 16:40:46 	XML 
+  	green square blue square yellow ! green square magenta *  tortona 	in student lab AT-4.12 	12/01/18 16:33:44 	XML 
+  	green square blue square yellow ! green square magenta *  ulverston 	in student lab AT-4.12 	12/01/18 16:22:46 	XML 
+  	green square blue square yellow ! green square magenta *  vuicho 	in student lab AT-4.12 	12/01/18 16:00:46 	XML 
+  	green square blue square yellow ! green square magenta *  whinlatter 	in student lab AT-4.12 	12/01/18 15:58:45 	XML 
+ 	
+hide AT-4.14 Lab
+  	green square blue square yellow ! green square magenta *  baycliff 	in student lab AT-4.14 	12/01/18 12:54:46 	XML 
+  	green square blue square yellow ! green square magenta *  cockermouth 	in student lab AT-4.14 	12/01/18 16:17:46 	XML 
+  	green square blue square yellow ! green square magenta *  colton 	in student lab AT-4.14 	12/01/18 12:58:45 	XML 
+  	green square blue square yellow ! green square magenta *  hawkes 	in student lab AT-4.14 	12/01/18 13:44:34 	XML 
+  	green square blue square yellow ! green square magenta *  luni 	in student lab AT-4.14 	12/01/18 16:12:43 	XML 
+  	green square green square yellow ! green square magenta *  mcnamee 	in student lab AT-4.14 	12/01/18 16:42:46 	XML 
+  	green square blue square yellow ! green square magenta *  velletri 	in student lab AT-4.14 	12/01/18 15:59:44 	XML 
+  	green square blue square yellow ! green square magenta *  vicenza 	in student lab AT-4.14 	12/01/18 16:12:44 	XML 
+ 	
+hide AT-4.14a Lab
+  	green square blue square yellow ! green square magenta *  avellino 	in student lab AT-4.14a 	12/01/18 16:20:17 	XML 
+  	green square blue square yellow ! green square magenta *  donners 	in student lab AT-4.14a 	12/01/18 12:54:44 	XML 
+  	green square blue square yellow ! green square magenta *  hinch 	in student lab AT-4.14a 	12/01/18 12:55:43 	XML 
+  	green square blue square yellow ! green square magenta *  mantua 	in student lab AT-4.14a 	12/01/18 16:26:44 	XML 
+  	green square green square yellow ! green square magenta *  napoli 	in student lab AT-4.14a 	12/01/18 16:40:43 	XML 
+  	green square blue square yellow ! green square magenta *  nooijer 	in student lab AT-4.14a 	12/01/18 16:15:44 	XML 
+  	green square blue square yellow ! green square magenta *  ostiglia 	in student lab AT-4.14a 	12/01/18 12:48:44 	XML 
+  	green square blue square yellow ! green square magenta *  pillay 	in student lab AT-4.14a 	12/01/18 16:30:43 	XML 
+ 	
+hide AT-5-04 Lab
+  	green square green square yellow ! green square magenta *  kingbird 	in student lab AT-5-04 	12/01/18 16:42:55 	XML 
+  	green square green square yellow ! green square magenta *  mariner 	in student lab AT-5-04 	12/01/18 16:37:42 	XML 
+  	green square green square green square green square green square  marlin 	in student lab AT-5-04 	12/01/18 16:44:24 	XML 
+  	green square green square red ! green square magenta *  mercator 	in student lab AT-5-04 	12/01/18 16:41:29 	XML 
+  	green square green square yellow ! green square magenta *  norseman 	in student lab AT-5-04 	12/01/18 16:43:07 	XML 
+  	green square green square yellow ! green square magenta *  privateer 	in student lab AT-5-04 	12/01/18 16:38:52 	XML 
+  	green square green square yellow ! green square magenta *  prowler 	in student lab AT-5-04 	12/01/18 16:36:00 	XML 
+  	green square green square yellow ! green square magenta *  samaritan 	in student lab AT-5-04 	12/01/18 16:36:46 	XML 
+  	green square green square yellow ! green square magenta *  saracen 	in student lab AT-5-04 	12/01/18 16:40:28 	XML 
+  	green square green square yellow ! green square magenta *  seadart 	in student lab AT-5-04 	12/01/18 16:35:55 	XML 
+  	green square green square yellow ! green square magenta *  seamaster 	in student lab AT-5-04 	12/01/18 16:45:29 	XML 
+  	green square green square yellow ! green square magenta *  skyhawk 	in student lab AT-5-04 	12/01/18 16:40:33 	XML 
+  	green square green square yellow ! green square magenta *  skyknight 	in student lab AT-5-04 	12/01/18 16:40:18 	XML 
+  	green square green square yellow ! green square magenta *  skyraider 	in student lab AT-5-04 	12/01/18 16:39:15 	XML 
+  	green square green square yellow ! green square magenta *  skyray 	in student lab AT-5-04 	12/01/18 16:41:55 	XML 
+  	green square green square yellow ! green square magenta *  skywarrior 	in student lab AT-5-04 	12/01/18 16:42:21 	XML 
+  	green square green square yellow ! green square magenta *  sparrowhawk 	in student lab AT-5-04 	12/01/18 16:36:46 	XML 
+  	green square green square yellow ! green square magenta *  stearman 	in student lab AT-5-04 	12/01/18 16:43:14 	XML 
+  	green square green square yellow ! green square magenta *  stinson 	in student lab AT-5-04 	12/01/18 16:43:49 	XML 
+  	green square green square yellow ! green square magenta *  tarpon 	in student lab AT-5-04 	12/01/18 16:44:45 	XML 
+  	green square green square yellow ! green square magenta *  texan 	in student lab AT-5-04 	12/01/18 16:44:04 	XML 
+  	green square green square yellow ! green square magenta *  tigercat 	in student lab AT-5-04 	12/01/18 16:43:00 	XML 
+  	green square green square yellow ! green square magenta *  tomcat 	in student lab AT-5-04 	12/01/18 16:37:38 	XML 
+  	green square green square yellow ! green square magenta *  tracer 	in student lab AT-5-04 	12/01/18 16:40:10 	XML 
+  	green square green square yellow ! green square magenta *  trader 	in student lab AT-5-04 	12/01/18 16:36:28 	XML 
+  	green square green square red ! green square magenta *  tradewind 	in student lab AT-5-04 	12/01/18 16:36:24 	XML 
+  	green square green square yellow ! green square magenta *  vigilante 	in student lab AT-5-04 	12/01/18 16:37:29 	XML 
+  	green square green square yellow ! green square magenta *  vindicator 	in student lab AT-5-04 	12/01/18 16:39:39 	XML 
+ 	
+hide AT-5-05 Lab
+  	green square green square red ! green square magenta *  ahonen 	in student lab AT-5-05 	12/01/18 16:44:00 	XML 
+  	green square blue square yellow ! green square magenta *  altino 	in student lab AT-5-05 	12/01/18 16:10:19 	XML 
+  	green square green square yellow ! green square magenta *  amelia 	in student lab AT-5-05 	12/01/18 16:38:30 	XML 
+  	green square green square red ! green square magenta *  ammann 	in student lab AT-5-05 	12/01/18 16:41:21 	XML 
+  	green square blue square yellow ! green square magenta *  assisi 	in student lab AT-5-05 	12/01/18 16:31:14 	XML 
+  	green square green square red ! green square magenta *  bardal 	in student lab AT-5-05 	12/01/18 16:40:18 	XML 
+  	green square green square yellow ! green square magenta *  belluno 	in student lab AT-5-05 	12/01/18 16:44:54 	XML 
+  	green square blue square yellow ! green square magenta *  bolzano 	in student lab AT-5-05 	12/01/18 16:25:43 	XML 
+  	green square green square yellow ! green square magenta *  colloredo 	in student lab AT-5-05 	12/01/18 16:41:06 	XML 
+  	green square green square yellow ! green square magenta *  cuche 	in student lab AT-5-05 	12/01/18 16:43:52 	XML 
+  	green square green square yellow ! green square magenta *  defago 	in student lab AT-5-05 	12/01/18 16:44:00 	XML 
+  	green square green square yellow ! green square magenta *  dorfmeister 	in student lab AT-5-05 	12/01/18 16:40:38 	XML 
+  	green square green square yellow ! green square magenta *  enna 	in student lab AT-5-05 	12/01/18 16:38:44 	XML 
+  	green square blue square yellow ! green square magenta *  fermo 	in student lab AT-5-05 	12/01/18 16:34:43 	XML 
+  	green square green square yellow ! green square magenta *  fettner 	in student lab AT-5-05 	12/01/18 16:40:13 	XML 
+  	green square green square yellow ! green square magenta *  freund 	in student lab AT-5-05 	12/01/18 16:42:57 	XML 
+  	green square green square yellow ! green square magenta *  goldberger 	in student lab AT-5-05 	12/01/18 16:41:27 	XML 
+  	green square green square red ! green square magenta *  grohl 	in student lab AT-5-05 	12/01/18 16:44:44 	XML 
+  	green square green square red ! green square magenta *  hautamaki 	in student lab AT-5-05 	12/01/18 16:36:13 	XML 
+  	green square green square red ! green square green square  hilde 	in student lab AT-5-05 	12/01/18 16:44:16 	XML 
+  	green square green square yellow ! green square magenta *  hirsher 	in student lab AT-5-05 	12/01/18 16:39:38 	XML 
+  	green square green square yellow ! green square magenta *  hlava 	in student lab AT-5-05 	12/01/18 16:41:22 	XML 
+  	green square green square yellow ! green square magenta *  hula 	in student lab AT-5-05 	12/01/18 16:36:00 	XML 
+  	green square green square red ! green square magenta *  kasai 	in student lab AT-5-05 	12/01/18 16:41:22 	XML 
+  	green square green square yellow ! green square magenta *  kjus 	in student lab AT-5-05 	12/01/18 16:40:44 	XML 
+  	green square green square yellow ! green square magenta *  klammer 	in student lab AT-5-05 	12/01/18 16:36:54 	XML 
+  	green square green square red ! green square magenta *  kofler 	in student lab AT-5-05 	12/01/18 16:45:04 	XML 
+  	green square green square yellow ! green square magenta *  kornilov 	in student lab AT-5-05 	12/01/18 16:40:05 	XML 
+  	green square green square yellow ! green square magenta *  kostelic 	in student lab AT-5-05 	12/01/18 16:42:40 	XML 
+  	green square green square yellow ! green square magenta *  koudelka 	in student lab AT-5-05 	12/01/18 16:45:38 	XML 
+  	green square green square red ! green square magenta *  kranjec 	in student lab AT-5-05 	12/01/18 16:41:47 	XML 
+  	green square blue square yellow ! green square magenta *  lavello 	in student lab AT-5-05 	12/01/18 16:01:44 	XML 
+  	green square green square yellow ! green square magenta *  ligety 	in student lab AT-5-05 	12/01/18 16:37:15 	XML 
+  	green square green square yellow ! green square magenta *  lindstrom 	in student lab AT-5-05 	12/01/18 16:44:04 	XML 
+  	green square green square red ! green square magenta *  loitzl 	in student lab AT-5-05 	12/01/18 16:37:03 	XML 
+  	green square green square yellow ! green square magenta *  malysz 	in student lab AT-5-05 	12/01/18 16:44:31 	XML 
+  	green square green square yellow ! green square magenta *  mattel 	in student lab AT-5-05 	12/01/18 16:41:06 	XML 
+  	green square green square yellow ! green square magenta *  matura 	in student lab AT-5-05 	12/01/18 16:40:21 	XML 
+  	green square green square red ! green square magenta *  morgenstern 	in student lab AT-5-05 	12/01/18 16:40:24 	XML 
+  	green square green square red ! green square magenta *  okabe 	in student lab AT-5-05 	12/01/18 16:41:51 	XML 
+  	green square green square yellow ! green square magenta *  olli 	in student lab AT-5-05 	12/01/18 16:44:18 	XML 
+  	green square green square red ! green square magenta *  peterka 	in student lab AT-5-05 	12/01/18 16:44:32 	XML 
+  	green square green square yellow ! green square magenta *  pollenzo 	in student lab AT-5-05 	12/01/18 16:35:44 	XML 
+  	green square green square red ! green square magenta *  prevc 	in student lab AT-5-05 	12/01/18 16:44:53 	XML 
+  	green square green square yellow ! green square magenta *  ryding 	in student lab AT-5-05 	12/01/18 16:45:34 	XML 
+  	green square green square yellow ! green square magenta *  stoch 	in student lab AT-5-05 	12/01/18 16:37:38 	XML 
+  	green square green square yellow ! green square magenta *  stolz 	in student lab AT-5-05 	12/01/18 16:41:17 	XML 
+  	green square green square yellow ! green square magenta *  tolo 	in student lab AT-5-05 	12/01/18 16:45:36 	XML 
+  	green square green square yellow ! green square magenta *  vassiliev 	in student lab AT-5-05 	12/01/18 16:42:16 	XML 
+  	green square green square yellow ! green square magenta *  vogt 	in student lab AT-5-05 	12/01/18 16:41:34 	XML 
+  	green square green square yellow ! green square magenta *  vonn 	in student lab AT-5-05 	12/01/18 16:36:00 	XML 
+  	green square green square yellow ! green square magenta *  watase 	in student lab AT-5-05 	12/01/18 16:42:19 	XML 
+ 	
+hide AT-5.02 Lab
+  	green square blue square yellow ! green square magenta *  aspatria 	in student lab AT-5.02 	12/01/18 16:01:45 	XML 
+  	green square blue square green square green square green square  backbarrow 	in student lab AT-5.02 	12/01/18 16:34:45 	XML 
+  	green square blue square red ! green square magenta *  bowness 	in student lab AT-5.02 	11/01/18 16:06:01 	XML 
+  	green square blue square red ! green square green square  brigham 	in student lab AT-5.02 	12/01/18 11:23:19 	XML 
+  	green square green square yellow ! green square magenta *  coniston 	in student lab AT-5.02 	12/01/18 16:43:22 	XML 
+  	green square blue square yellow ! green square magenta *  hawk 	in student lab AT-5.02 	12/01/18 16:00:46 	XML 
+  	green square blue square yellow ! green square magenta *  hawkshead 	in student lab AT-5.02 	12/01/18 16:10:46 	XML 
+  	green square blue square yellow ! green square magenta *  lesbury 	in student lab AT-5.02 	12/01/18 16:30:46 	XML 
+ 	
+hide AT-5.03 Lab
+  	green square blue square yellow ! green square magenta *  allanton 	in student lab AT-5.03 	12/01/18 16:32:48 	XML 
+  	green square blue square yellow ! green square magenta *  capri 	in student lab AT-5.03 	12/01/18 16:20:44 	XML 
+  	green square blue square yellow ! green square magenta *  cleopatra 	in student lab AT-5.03 	12/01/18 16:32:20 	XML 
+  	green square blue square yellow ! green square magenta *  norham 	in student lab AT-5.03 	12/01/18 16:34:47 	XML 
+  	green square blue square yellow ! green square magenta *  parma 	in student lab AT-5.03 	12/01/18 16:12:43 	XML 
+  	green square blue square yellow ! green square magenta *  pescara 	in student lab AT-5.03 	12/01/18 12:56:53 	XML 
+  	green square blue square yellow ! green square magenta *  shiflett 	in student lab AT-5.03 	12/01/18 16:07:44 	XML 
+  	green square blue square yellow ! green square magenta *  windermere 	in student lab AT-5.03 	12/01/18 16:34:47 	XML 
+ 	
+hide AT-5.07 Lab
+  	green square green square yellow ! green square magenta *  ambleside 	in student lab AT-5.07 	12/01/18 16:35:45 	XML 
+  	green square green square yellow ! green square magenta *  beefeater 	in student lab AT-5.07 	12/01/18 16:36:56 	XML 
+  	green square blue square yellow ! green square magenta *  brescia 	in student lab AT-5.07 	12/01/18 16:19:07 	XML 
+  	green square green square yellow ! green square magenta *  dinnington 	in student lab AT-5.07 	12/01/18 16:44:45 	XML 
+  	green square blue square yellow ! green square magenta *  genoa 	in student lab AT-5.07 	12/01/18 16:26:59 	XML 
+  	green square green square yellow ! green square magenta *  schiedam 	in student lab AT-5.07 	12/01/18 16:37:46 	XML 
+  	green square blue square yellow ! green square magenta *  sedbergh 	in student lab AT-5.07 	12/01/18 13:08:18 	XML 
+  	green square blue square yellow ! green square magenta *  shibottle 	in student lab AT-5.07 	12/01/18 16:24:45 	XML 
+ 	
+hide AT-5.08 Lab
+  	green square green square red ! green square magenta *  airabonita 	in student lab AT-5.08 	12/01/18 16:41:55 	XML 
+  	green square green square green square green square green square  banshee 	in student lab AT-5.08 	12/01/18 16:37:06 	XML 
+  	green square green square red ! green square magenta *  bearcat 	in student lab AT-5.08 	12/01/18 16:44:30 	XML 
+  	green square green square red ! green square magenta *  bellanca 	in student lab AT-5.08 	12/01/18 16:41:11 	XML 
+  	green square green square yellow ! green square magenta *  brewster 	in student lab AT-5.08 	12/01/18 16:39:12 	XML 
+  	green square green square red ! green square magenta *  buckeye 	in student lab AT-5.08 	12/01/18 16:37:36 	XML 
+  	green square green square yellow ! green square magenta *  canso 	in student lab AT-5.08 	12/01/18 16:37:47 	XML 
+  	green square green square yellow ! green square magenta *  cougar 	in student lab AT-5.08 	12/01/18 16:41:56 	XML 
+  	green square green square yellow ! green square magenta *  crusader 	in student lab AT-5.08 	12/01/18 16:43:37 	XML 
+  	green square green square yellow ! green square magenta *  cutlass 	in student lab AT-5.08 	12/01/18 16:40:56 	XML 
+  	green square green square yellow ! green square magenta *  darkshark 	in student lab AT-5.08 	12/01/18 16:45:11 	XML 
+  	green square green square red ! green square magenta *  duck 	in student lab AT-5.08 	12/01/18 16:45:01 	XML 
+  	green square green square yellow ! green square magenta *  greyhound 	in student lab AT-5.08 	12/01/18 16:42:27 	XML 
+  	green square green square yellow ! green square magenta *  guardian 	in student lab AT-5.08 	12/01/18 16:42:33 	XML 
+  	green square green square yellow ! green square magenta *  harpoon 	in student lab AT-5.08 	12/01/18 16:36:03 	XML 
+  	green square green square red ! green square magenta *  hawkeye 	in student lab AT-5.08 	12/01/18 16:37:11 	XML 
+  	green square green square yellow ! green square magenta *  hellcat 	in student lab AT-5.08 	12/01/18 16:45:33 	XML 
+  	green square green square red ! green square magenta *  helldiver 	in student lab AT-5.08 	12/01/18 16:38:44 	XML 
+  	green square green square yellow ! green square magenta *  intruder 	in student lab AT-5.08 	12/01/18 16:35:42 	XML 
+  	green square green square yellow ! green square magenta *  kaydet 	in student lab AT-5.08 	12/01/18 16:45:07 	XML 
+ 	
+hide AT-6.06 Lab
+  	green square green square yellow ! green square magenta *  adorni 	in student lab AT-6.06 	12/01/18 16:44:21 	XML 
+  	green square green square yellow ! green square magenta *  aimar 	in student lab AT-6.06 	12/01/18 16:44:13 	XML 
+  	green square green square yellow ! green square magenta *  altig 	in student lab AT-6.06 	12/01/18 16:39:07 	XML 
+  	green square green square yellow ! green square magenta *  amritraj 	in student lab AT-6.06 	12/01/18 16:39:39 	XML 
+  	green square green square yellow ! green square magenta *  anquetil 	in student lab AT-6.06 	12/01/18 16:40:19 	XML 
+  	green square green square green square green square magenta *  armstrong 	in student lab AT-6.06 	12/01/18 16:43:19 	XML 
+  	green square green square green square green square green square  bahamontes 	in student lab AT-6.06 	12/01/18 16:42:03 	XML 
+  	green square green square green square green square green square  baldini 	in student lab AT-6.06 	12/01/18 16:43:20 	XML 
+  	green square green square yellow ! green square magenta *  balmamion 	in student lab AT-6.06 	12/01/18 16:41:38 	XML 
+  	green square green square red ! green square magenta *  bartali 	in student lab AT-6.06 	12/01/18 16:41:12 	XML 
+  	green square green square yellow ! green square magenta *  basso 	in student lab AT-6.06 	12/01/18 16:41:51 	XML 
+  	green square green square yellow ! green square magenta *  battaglin 	in student lab AT-6.06 	12/01/18 16:41:58 	XML 
+  	green square green square yellow ! green square magenta *  belloni 	in student lab AT-6.06 	12/01/18 16:36:04 	XML 
+  	green square green square yellow ! green square magenta *  bergamaschi 	in student lab AT-6.06 	12/01/18 16:37:29 	XML 
+  	green square green square yellow ! green square magenta *  berrendero 	in student lab AT-6.06 	12/01/18 16:36:59 	XML 
+  	green square green square yellow ! green square magenta *  bertoglio 	in student lab AT-6.06 	12/01/18 16:45:18 	XML 
+  	green square green square yellow ! green square magenta *  berzin 	in student lab AT-6.06 	12/01/18 16:35:54 	XML 
+  	green square green square yellow ! green square magenta *  binda 	in student lab AT-6.06 	12/01/18 16:39:16 	XML 
+  	green square green square yellow ! green square magenta *  bobet 	in student lab AT-6.06 	12/01/18 16:45:23 	XML 
+  	green square green square yellow ! green square magenta *  bondarenko 	in student lab AT-6.06 	12/01/18 16:42:59 	XML 
+  	green square green square yellow ! green square magenta *  bottechia 	in student lab AT-6.06 	12/01/18 16:42:21 	XML 
+  	green square green square yellow ! green square magenta *  bracke 	in student lab AT-6.06 	12/01/18 16:36:16 	XML 
+  	green square green square yellow ! green square magenta *  brunero 	in student lab AT-6.06 	12/01/18 16:38:12 	XML 
+  	green square green square yellow ! green square magenta *  bugno 	in student lab AT-6.06 	12/01/18 16:43:46 	XML 
+  	green square green square yellow ! green square magenta *  buysse 	in student lab AT-6.06 	12/01/18 16:44:01 	XML 
+  	green square green square yellow ! green square magenta *  calzolari 	in student lab AT-6.06 	12/01/18 16:37:18 	XML 
+  	green square green square yellow ! green square magenta *  camusso 	in student lab AT-6.06 	12/01/18 16:45:08 	XML 
+  	green square green square green square green square green square  caritoux 	in student lab AT-6.06 	12/01/18 16:44:35 	XML 
+  	green square green square yellow ! green square magenta *  casero 	in student lab AT-6.06 	12/01/18 16:40:06 	XML 
+  	green square green square yellow ! green square magenta *  chioccioli 	in student lab AT-6.06 	12/01/18 16:42:59 	XML 
+  	green square green square green square green square green square  clerici 	in student lab AT-6.06 	12/01/18 16:38:20 	XML 
+  	green square green square yellow ! green square magenta *  cobi 	in student lab AT-6.06 	12/01/18 16:43:10 	XML 
+  	green square green square yellow ! green square magenta *  contador 	in student lab AT-6.06 	12/01/18 16:39:53 	XML 
+  	green square green square red ! green square magenta *  coppi 	in student lab AT-6.06 	12/01/18 16:44:39 	XML 
+  	green square green square yellow ! green square magenta *  cornet 	in student lab AT-6.06 	12/01/18 16:37:22 	XML 
+  	green square green square yellow ! green square magenta *  cunego 	in student lab AT-6.06 	12/01/18 16:40:24 	XML 
+  	green square green square yellow ! green square magenta *  defraye 	in student lab AT-6.06 	12/01/18 16:44:08 	XML 
+  	green square green square yellow ! green square magenta *  deloor 	in student lab AT-6.06 	12/01/18 16:36:27 	XML 
+  	green square green square yellow ! green square magenta *  delpotro 	in student lab AT-6.06 	12/01/18 16:45:28 	XML 
+  	green square green square yellow ! green square magenta *  demulder 	in student lab AT-6.06 	12/01/18 16:39:33 	XML 
+  	green square green square yellow ! green square magenta *  demuynck 	in student lab AT-6.06 	12/01/18 16:44:32 	XML 
+  	green square green square yellow ! green square magenta *  dewaele 	in student lab AT-6.06 	12/01/18 16:45:05 	XML 
+  	green square green square yellow ! green square magenta *  diluca 	in student lab AT-6.06 	12/01/18 16:43:29 	XML 
+  	green square green square yellow ! green square magenta *  dotto 	in student lab AT-6.06 	12/01/18 16:37:55 	XML 
+  	green square green square yellow ! green square magenta *  dumoulin 	in student lab AT-6.06 	12/01/18 16:36:38 	XML 
+  	green square green square yellow ! green square magenta *  enrici 	in student lab AT-6.06 	12/01/18 16:38:24 	XML 
+  	green square green square yellow ! green square magenta *  evans 	in student lab AT-6.06 	12/01/18 16:42:01 	XML 
+  	green square green square yellow ! green square magenta *  faber 	in student lab AT-6.06 	12/01/18 16:39:17 	XML 
+  	green square green square yellow ! green square magenta *  fignon 	in student lab AT-6.06 	12/01/18 16:41:49 	XML 
+  	green square green square yellow ! green square magenta *  frantz 	in student lab AT-6.06 	12/01/18 16:43:26 	XML 
+  	green square green square yellow ! green square magenta *  froome 	in student lab AT-6.06 	12/01/18 16:41:16 	XML 
+  	green square green square yellow ! green square magenta *  fuente 	in student lab AT-6.06 	12/01/18 16:40:39 	XML 
+  	green square green square yellow ! green square magenta *  gabica 	in student lab AT-6.06 	12/01/18 16:41:39 	XML 
+  	green square green square yellow ! green square magenta *  galetti 	in student lab AT-6.06 	12/01/18 16:40:59 	XML 
+  	green square green square yellow ! green square magenta *  ganna 	in student lab AT-6.06 	12/01/18 16:43:24 	XML 
+  	green square green square yellow ! green square magenta *  garin 	in student lab AT-6.06 	12/01/18 16:39:44 	XML 
+  	green square green square yellow ! green square magenta *  garrigou 	in student lab AT-6.06 	12/01/18 16:44:48 	XML 
+  	green square green square yellow ! green square magenta *  garzelli 	in student lab AT-6.06 	12/01/18 16:41:26 	XML 
+  	green square green square yellow ! green square magenta *  gaul 	in student lab AT-6.06 	12/01/18 16:39:56 	XML 
+  	green square green square yellow ! green square magenta *  gimondi 	in student lab AT-6.06 	12/01/18 16:45:09 	XML 
+  	green square green square yellow ! green square magenta *  giovannetti 	in student lab AT-6.06 	12/01/18 16:40:56 	XML 
+  	green square green square yellow ! green square magenta *  girardengo 	in student lab AT-6.06 	12/01/18 16:41:01 	XML 
+  	green square green square yellow ! green square magenta *  gonzalez 	in student lab AT-6.06 	12/01/18 16:45:20 	XML 
+  	green square green square yellow ! green square magenta *  gotti 	in student lab AT-6.06 	12/01/18 16:42:47 	XML 
+  	green square green square green square green square green square  guerra 	in student lab AT-6.06 	12/01/18 16:43:34 	XML 
+  	green square green square yellow ! green square magenta *  hampsten 	in student lab AT-6.06 	12/01/18 16:44:39 	XML 
+  	green square green square yellow ! green square magenta *  heras 	in student lab AT-6.06 	12/01/18 16:39:21 	XML 
+  	green square green square yellow ! green square magenta *  herrera 	in student lab AT-6.06 	12/01/18 16:44:24 	XML 
+  	green square blue square yellow ! green square magenta *  hesjedal 	in student lab AT-6.06 	11/01/18 09:52:26 	XML 
+  	green square green square yellow ! green square magenta *  hinault 	in student lab AT-6.06 	12/01/18 16:38:35 	XML 
+  	green square green square yellow ! green square magenta *  horner 	in student lab AT-6.06 	12/01/18 16:45:47 	XML 
+  	green square green square yellow ! green square magenta *  indurain 	in student lab AT-6.06 	12/01/18 16:39:01 	XML 
+  	green square green square yellow ! green square magenta *  jalabert 	in student lab AT-6.06 	12/01/18 16:36:03 	XML 
+  	green square green square yellow ! green square magenta *  janssen 	in student lab AT-6.06 	12/01/18 16:42:06 	XML 
+  	green square green square yellow ! green square magenta *  lape 	in student lab AT-6.06 	12/01/18 16:36:38 	XML 
+  	green square green square green square green square green square  venskab 	in student lab AT-6.06 	12/01/18 16:35:57 	XML 
+  	green square green square green square green square green square  vilas 	in student lab AT-6.06 	12/01/18 16:37:49 	XML 
+ 	
+hide AT-7.01 Lab
+  	green square blue square yellow ! green square magenta *  breadnel 	in student lab AT-7.01 	12/01/18 16:27:46 	XML 
+  	green square blue square yellow ! green square magenta *  doddington 	in student lab AT-7.01 	12/01/18 16:34:46 	XML 
+  	green square blue ! yellow ! green square magenta *  felton 	in student lab AT-7.01 	21/12/17 00:20:46 	XML 
+  	green square blue square yellow ! green square magenta *  goose 	in student lab AT-7.01 	12/01/18 13:48:45 	XML 
+  	green square blue ! yellow ! green square green square  haltwhistle 	in student lab AT-7.01 	20/12/17 18:10:24 	XML 
+  	green square blue square yellow ! green square magenta *  mendel 	in student lab AT-7.01 	12/01/18 16:20:58 	XML 
+  	green square blue ! yellow ! green square magenta *  warkworth 	in student lab AT-7.01 	19/12/17 18:42:17 	XML 
+  	green square blue ! yellow ! green square magenta *  wooler 	in student lab AT-7.01 	21/12/17 01:00:46 	XML 
+show In Storage
+show Institute Domains
+show MDP MacOS
+show MacOS
+show Placeholder
+show Printers
+show Self-Managed
+show Windows Managed Desktop
+show Windows Managed Laptop
+show inf.ed.ac.uk
+show non-hosts
+
+Showing 3872 of 3872. Last updated: 12/01/18 16:46:13
+

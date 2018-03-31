@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.7.13)  30 MAR 2018 19:08
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.7.13)  31 MAR 2018 17:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1657,7 +1657,14 @@ File: graph/roccurve.png Graphic file (type png)
 <use graph/roccurve.png>
 Package pdftex.def Info: graph/roccurve.png used on input line 905.
 (pdftex.def)             Requested size: 374.60239pt x 233.07254pt.
- [27] [28 <./graph/roccurve.png>]
+ [27]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 921.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 921.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 921.
+ [28 <./graph/roccurve.png>]
 Chapter 6.
 [29
 
@@ -1757,11 +1764,11 @@ Package pdftex.def Info: graph/sample_fish.png used on input line 1327.
 egetation.png> <./graph/sample_fish.png>]
 (./dissertation.aux) ) 
 Here is how much of TeX's memory you used:
- 14701 strings out of 492995
- 255967 string characters out of 6101534
+ 14722 strings out of 492995
+ 256294 string characters out of 6101534
  370999 words of memory out of 5000000
- 18047 multiletter control sequences out of 15000+600000
- 46438 words of font info for 92 fonts, out of 8000000 for 9000
+ 18068 multiletter control sequences out of 15000+600000
+ 54460 words of font info for 110 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,9n,47p,10409b,1181s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/opt/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc
@@ -1777,7 +1784,7 @@ pt/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb></opt/texlive/2
 nts/type1/urw/times/utmb8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1/urw/ti
 mes/utmr8a.pfb></opt/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
 
-Output written on dissertation.pdf (52 pages, 4365598 bytes).
+Output written on dissertation.pdf (52 pages, 4365740 bytes).
 PDF statistics:
  287 PDF objects out of 1000 (max. 8388607)
  160 compressed objects within 2 object streams

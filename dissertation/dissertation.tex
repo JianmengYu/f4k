@@ -104,7 +104,7 @@ Non Fish & 57.980\% & 42.020\% \\
 \end{center}
 
 However, this does not meet the expectation from Pugh's thesis, whereas 90\% of the False Positive is removed. 
-This fault is caused by an extraction mistake in preprocessing stage, which causes the Convolutional Neural Network (CNN) over-fits on the training dataset. 
+This fault is caused by a previous extraction mistake in preprocessing stage, which causes the Convolutional Neural Network (CNN) to over-fit on the training dataset. 
 Re-training the CNN is not used due to the limit of time and resource.
 
 \section{Contribution}
@@ -303,12 +303,12 @@ Those cropped images are then stored in file {\tt summary\_(video\_id).avi}, wit
 
 There are a total of 396,901 of such videos, consist of 839,465,846 frames, with a total size of 1.14 TB. 
 Figure \ref{fig:summryfile} shows a example of these videos. 
-Note that the corresponding frame is in ``{\tt detection\_id, width, height, x\&y}'' format, the ``{\tt x\&y}'' field always have a value of 10 for all extracted detections.
+Note that the corresponding frame is in ``{\tt detection\_id, width, height, x\&y}'' format, the ``{\tt x\&y}'' field always has a value of 10 for all extracted detections.
 
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.35]{graph/summaryfile.png}
-    \caption{First 10 frame of a ``{\tt .avi}'' file, with corresponding entry in ``{\tt .txt}'' file.}
+    \caption{First 10 frames of an ``{\tt .avi}'' file, with corresponding entry in ``{\tt .txt}'' file.}
     \label{fig:summryfile}
 \end{figure}
 
@@ -362,7 +362,7 @@ These are parsed into directly usable lists of values, separated by a {\tt newli
 This extraction procedure reduces the time cost for loading the dataset reduced to an almost negligible amount. 
 
 The output of this script contains 326 GB of {\tt .csv} files, each one corresponds to the associated {\tt video\_id}.
-Some example lines of parsed {\tt .csv} files is shown in the table below, the {\tt bb\_cc} field is removed as it containing binary data.
+Some example lines of parsed {\tt .csv} files are shown in the table below, the {\tt bb\_cc} field is removed as it containing binary data.
 
 \begin{center}
 \resizebox{\textwidth}{!}{%
@@ -463,7 +463,7 @@ After applying the direction instructions provided in Fig \ref{fig:bbcc2}, the p
 \vspace{-20pt}
 
 This process allows a faster extraction of the contour, which accelerates the dataset loading process so it takes significantly less time. 
-By comparing against Yu's\cite{Yu} evaluation, this potentially reduces the runtime for about 50\%, and more importantly, removes the need for a SQL server, hence gives the cleaning process more portability.
+By comparing against Yu's\cite{Yu} evaluation, this potentially reduces the runtime by about 50\%, and more importantly, removes the need for an SQL server, hence gives the cleaning process more portability.
 
 
 \vspace{-10pt}
@@ -493,7 +493,7 @@ It fails to include normal videos filmed at 2 sites. The distribution of detecti
     \label{fig:gtdist}
 \end{figure}
 
-\subsection{Sample Images at Different Sites}
+\subsection{Sample Detections at Different Sites}
 
 \begin{figure}[h]
     \centering
@@ -514,7 +514,7 @@ This includes:
 \begin{itemize}
 \setlength{\parskip}{1pt}
 \item
-\textbf{Complementary Training Dataset}, containing 9,287 detections of detection. 
+\textbf{Complementary Training Dataset}, containing 9,287 detections. 
 \item
 \textbf{Validation Dataset (site)} - 7,955 detections, having about 1,000 per site.
 \item
@@ -905,8 +905,6 @@ The ROC curve plotted in Fig \ref{fig:roccurve} shows the True Positive Rate (go
     \includegraphics[scale=0.6]{graph/roccurve.png}
     \caption{ROC curve of different settings for voting algorithm}
     \label{fig:roccurve}
-
-\vspace{-10pt}
 \end{figure} 
 
 The project can only afford to lose about 10\% of the good fish.
@@ -914,12 +912,15 @@ With this limit, the best classifier is to use SVM's predicted class 6 probabili
 The ROC curve of this classifier is the black curve in Fig \ref{fig:roccurve}. 
 
 The chosen gamma value for the criteria is 0.0108, meaning all detection with SVM's class 6 probability higher than 1.1\% is classified as a fish.
-After the method is tested on various datasets from ground truth, and the following statistics are obtained.
+After the method is tested on various datasets from ground truth, and the following statistics are obtained. 
+Below, PR is plankton removal, FEIF is frame edge removal, and SVM is classification as a non-fish.
+The details of the two validation datasets used are described in Section \ref{sec:additionalgt}.
 
 \begin{center}
+\footnotesize
 \begin{tabular}{|c|c|c|c|c|}
 \hline 
-$ $ Training Dataset & PR reject & FEIF reject & SVM reject & Detection Kept\\
+$ $ Training Dataset & PR reject & FEIF reject & SVM reject & Detections Kept\\
 \hline 
 True Fish & 2858 & 1090 & 491 & 26211 \\
 Non Fish & 1955 & 10577 & 7690 & 19511 \\
@@ -928,9 +929,10 @@ Non Fish & 1955 & 10577 & 7690 & 19511 \\
 \end{center}
 
 \begin{center}
+\footnotesize
 \begin{tabular}{|c|c|c|c|c|}
 \hline 
-$ $ Validation Dataset 1 & PR reject & FEIF reject & SVM reject & Detection Kept\\
+$ $ Validation Dataset 1 & PR reject & FEIF reject & SVM reject & Detections Kept\\
 \hline 
 True Fish & 61 & 91 & 88 & 2972 \\
 Non Fish & 266 & 1174  & 553 & 2750 \\
@@ -939,9 +941,10 @@ Non Fish & 266 & 1174  & 553 & 2750 \\
 \end{center}
 
 \begin{center}
+\footnotesize
 \begin{tabular}{|c|c|c|c|c|}
 \hline 
-$ $ Validation Dataset 2 & PR reject & FEIF reject & SVM reject & Detection Kept\\
+$ $ Validation Dataset 2 & PR reject & FEIF reject & SVM reject & Detections Kept\\
 \hline 
 True Fish & 1 & 13  & 2 & 373 \\
 Non Fish & 38 & 133 & 101 & 339 \\
@@ -949,9 +952,10 @@ Non Fish & 38 & 133 & 101 & 339 \\
 \end{tabular}
 \end{center}
 
-Note the high True Fish reject rate in training dataset, this is because planktons are marked as fish in Pugh's ground-truthing process. The final reduction rate are shown below.
+Note the high True Fish reject rate in training dataset, this is because planktons are marked as fish in Pugh's ground-truthing process. The final reduction rate is shown below.
 
 \begin{center}
+\footnotesize
 \begin{tabular}{|c|c|c|c|c|}
 \hline 
 $ $ Complete RDS & PR reject & FEIF reject & SVM reject & Detection Kept\\
@@ -963,10 +967,6 @@ Percentage & 4.6\% & 8.8\% & 14.3\% & 72.3\% \\
 \end{center}
 
 A further attempt at the reduction of False Negatives is discussed in Section \ref{sec:falsenegative}.
-
-%TODO final results and stuff.
-%You need an additional section after this describing the final cleaning process. Summarize the time for each step. Report the number of fish removed by FEIF and the SVM stages, and how many remain. Give percentages as well.
-%Also show 5-10 examples of TP, FP, FN results from the 1000 frame random validation set.
 
 \chapter{Parallel Distribution}
 \label{chap:parallel}

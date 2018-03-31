@@ -15,7 +15,7 @@
 \contentsline {subsection}{\numberline {3.2.1}Standard Stream Based Extraction Script}{11}
 \contentsline {subsection}{\numberline {3.2.2}Translation of Binary Data}{12}
 \contentsline {section}{\numberline {3.3}Ground Truth Dataset}{13}
-\contentsline {subsection}{\numberline {3.3.1}Sample Images at Different Sites}{14}
+\contentsline {subsection}{\numberline {3.3.1}Sample Detections at Different Sites}{14}
 \contentsline {subsection}{\numberline {3.3.2}Additional Ground Truth Dataset}{14}
 \contentsline {chapter}{\numberline {4}Preprocessing}{15}
 \contentsline {section}{\numberline {4.1}Plankton Removal (PR)}{15}

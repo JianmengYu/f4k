@@ -1,0 +1,6 @@
+Setting hosts...
+Finished Setting hosts, echo $HOSTS
+berrendero,delpotro,adorni,altig,anquetil,armstrong,bahamontes,baldini,balmamion,bartali,fuente,bergamaschi,bertoglio,berzin,binda,bracke,brunero,bugno,buysse,calzolari,camusso,casero,chioccioli,clerici,cobi,coppi,cornet,cunego,defraye,deloor,demuynck,dewaele,diluca,dumoulin,enrici,faber,fignon,froome,venskab,gabica,garin,garrigou,garzelli,giovannetti,gonzalez,gotti,heras,herrera,hesjedal,jalabert,janssen,janssen
+Setting hosts' processor count...
+Finished Setting hosts' processor count, echo $HOSTSNUM
+208
