@@ -1,0 +1,9 @@
+ccollections
+defaultdict
+p0
+(c__builtin__
+dict
+p1
+tp2
+Rp3
+.
