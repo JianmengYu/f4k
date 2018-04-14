@@ -1,7 +1,17 @@
-\beamer@sectionintoc {1}{Introduction and Motivation}{3}{0}{1}
-\beamer@sectionintoc {2}{Current Progress}{4}{0}{2}
-\beamer@subsectionintoc {2}{1}{Code Translation}{4}{0}{2}
-\beamer@subsectionintoc {2}{2}{Cleaning Progress}{5}{0}{2}
-\beamer@sectionintoc {3}{Future Work}{6}{0}{3}
-\beamer@subsectionintoc {3}{1}{Finish the Cleaning Algorithm}{6}{0}{3}
-\beamer@subsectionintoc {3}{2}{Schedule}{7}{0}{3}
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Motivation}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Background}{4}{0}{1}
+\beamer@subsectionintoc {1}{3}{Outcomes}{6}{0}{1}
+\beamer@sectionintoc {2}{Details of Problems and Solution}{7}{0}{2}
+\beamer@subsectionintoc {2}{1}{Parallel Distribution}{7}{0}{2}
+\beamer@subsectionintoc {2}{2}{Data Extraction from SQL dump file}{8}{0}{2}
+\beamer@subsectionintoc {2}{3}{Code Translation}{9}{0}{2}
+\beamer@subsectionintoc {2}{4}{Ground Truthing Dataset}{10}{0}{2}
+\beamer@subsectionintoc {2}{5}{Classifiers}{11}{0}{2}
+\beamer@subsectionintoc {2}{6}{Voting Strategy}{12}{0}{2}
+\beamer@sectionintoc {3}{Results}{13}{0}{3}
+\beamer@subsectionintoc {3}{1}{Project Result}{13}{0}{3}
+\beamer@subsectionintoc {3}{2}{Project Result}{14}{0}{3}
+\beamer@sectionintoc {4}{Conclusion}{15}{0}{4}
+\beamer@subsectionintoc {4}{1}{Lessons Learned}{15}{0}{4}
+\beamer@subsectionintoc {4}{2}{Future Work}{16}{0}{4}

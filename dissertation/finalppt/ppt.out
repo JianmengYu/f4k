@@ -1,7 +1,17 @@
-\BOOKMARK [2][]{Outline0.1}{Introduction and Motivation}{}% 1
-\BOOKMARK [2][]{Outline0.2}{Current Progress}{}% 2
-\BOOKMARK [3][]{Outline0.2.1.4}{Code Translation}{Outline0.2}% 3
-\BOOKMARK [3][]{Outline0.2.2.5}{Cleaning Progress}{Outline0.2}% 4
-\BOOKMARK [2][]{Outline0.3}{Future Work}{}% 5
-\BOOKMARK [3][]{Outline0.3.1.6}{Finish the Cleaning Algorithm}{Outline0.3}% 6
-\BOOKMARK [3][]{Outline0.3.2.7}{Schedule}{Outline0.3}% 7
+\BOOKMARK [2][]{Outline0.1}{Introduction}{}% 1
+\BOOKMARK [3][]{Outline0.1.1.3}{Motivation}{Outline0.1}% 2
+\BOOKMARK [3][]{Outline0.1.2.4}{Background}{Outline0.1}% 3
+\BOOKMARK [3][]{Outline0.1.3.6}{Outcomes}{Outline0.1}% 4
+\BOOKMARK [2][]{Outline0.2}{Details of Problems and Solution}{}% 5
+\BOOKMARK [3][]{Outline0.2.1.7}{Parallel Distribution}{Outline0.2}% 6
+\BOOKMARK [3][]{Outline0.2.2.8}{Data Extraction from SQL dump file}{Outline0.2}% 7
+\BOOKMARK [3][]{Outline0.2.3.9}{Code Translation}{Outline0.2}% 8
+\BOOKMARK [3][]{Outline0.2.4.10}{Ground Truthing Dataset}{Outline0.2}% 9
+\BOOKMARK [3][]{Outline0.2.5.11}{Classifiers}{Outline0.2}% 10
+\BOOKMARK [3][]{Outline0.2.6.12}{Voting Strategy}{Outline0.2}% 11
+\BOOKMARK [2][]{Outline0.3}{Results}{}% 12
+\BOOKMARK [3][]{Outline0.3.1.13}{Project Result}{Outline0.3}% 13
+\BOOKMARK [3][]{Outline0.3.2.14}{Project Result}{Outline0.3}% 14
+\BOOKMARK [2][]{Outline0.4}{Conclusion}{}% 15
+\BOOKMARK [3][]{Outline0.4.1.15}{Lessons Learned}{Outline0.4}% 16
+\BOOKMARK [3][]{Outline0.4.2.16}{Future Work}{Outline0.4}% 17
