@@ -33,13 +33,22 @@
 \begin{itemize}
 \item What is Motivation of the Project?
 \begin{itemize}
-\item In 2015, Pugh\cite{Pugh} developed a cleaning algorithm to remove False Positives from a 1.6 TB dataset.
-\item However, the cleaning was not applied due to the time cost (25,000 hours on a 40-core machine)\cite{Yu}.
+\item 
+1.6 TB dataset, 839 million detections. 
+\item
+About 60\% are False Positives.
+\item
+Pugh\cite{Pugh}'s prototype cleaning algorithm.
+\item Not applied due to cost (800,000 hours)\cite{Yu}.
 \end{itemize}
 \item The Goal of this project?
 \begin{itemize}
-\item The Goal is to apply this cleaning algorithm on the 1.6 TB dataset, reducing the false detections, hence it's size.
-\item Sub-Goals including translating the algorithm into Python, developing parallel frameworks, and evaluating the cleanliness.
+\item
+Apply the cleaning algorithm.
+\item 
+Need a parallel framework to reduce time.
+\item 
+Need to translate the code.
 \end{itemize}
 \end{itemize}
 
@@ -54,16 +63,16 @@
 
 \begin{itemize}
 \item
-The Fish4Knowledge (F4K) project\cite{F4K} collected 5 years of recording at underwater coral reef areas in Taiwan.
+Fish4Knowledge (F4K)\cite{F4K} collected 5 years of fish video.
 \item
-A species recognition algorithm were used, and the dataset is reduced to a size of 1.6 TB, containing 839 million detections.
+They reduce the recording to 1.6 TB size.
 \item
-However, 60\% of the reduced dataset are False Positives (Non-Fish detections recognized as Fish).
+500 GB {\tt .sql} dump, 1.1 TB video and summary csv files.
 \end{itemize}
 
 \begin{figure}
 \includegraphics[scale=0.4]{image/sample.png}
-\caption{Sample frames of the dataset}
+\caption{Sample frames of the videos}
 \end{figure}
 
 \end{frame}
@@ -77,12 +86,17 @@ However, 60\% of the reduced dataset are False Positives (Non-Fish detections re
 \column{0.59\textwidth}
 \begin{itemize}
 \item
-The project uses the cleaning algorithm, the Pipeline Classifier developed by Matthew Pugh\cite{Pugh}. 
+Developed by Matthew Pugh\cite{Pugh}. 
 \item
-The majority of the project's challenge came from the translation and optimization of the pipeline, as this classifier is still at experimental stage.
+Use Python script to extract info from video/summary.
 \item
-For example, the SQL server is not used due to the limit of resources.
-And the CNN part is abandoned due to mistakes during previous training stages.
+FEIF to remove some partial-fish before classify.
+\item
+Feature extraction, transformation for SVM.
+\item 
+Transformation and normalize image for CNN.
+\item
+Use Top-N algorithm to obtain decision vector.
 \end{itemize}
 
 \column{0.41\textwidth}
@@ -96,24 +110,30 @@ And the CNN part is abandoned due to mistakes during previous training stages.
 
 
 
-\subsection{Outcomes}
+\subsection{Main Problems}
 
 \begin{frame}
-\frametitle{Project Outcomes}
+\frametitle{Project Problems}
 
-The project has made following contribution on cleaning the dataset:
+The project has encountered several problems on the algorithm:
 \begin{itemize}
 \item
-Using standard I/O stream script to extract data from SQL dump file, removes the cost of maintain a server.
+The pipeline is only tested without parallelization.
 \item
-Translated most part of the Pipeline Classifier into Python.
+Dump file top large for school PostgreSQL service.
 \item
-A MPI application distributing tasks over 200 DICE machines.
+Ambiguous classification schema.
 \item
-Attempts on voting strategy to utilize classifier results.
+Training data wasn't representative.
+\item
+Extreme runtime cost - even for 200 DICE machines.
+\item
+Translation needed, for more portability.
+\item
+CNN trained is broken, over-fits on badly transformed dataset. 
+\item
+Prototype stage - The best Top-N strategy is not found.
 \end{itemize}
-\vspace{10pt}
-The final cleaning removes 40\% of the False Positives at the cost of 10\% of True Positive. This reduces the Dataset by 28\%.
 
 \end{frame}
 
@@ -128,14 +148,21 @@ The final cleaning removes 40\% of the False Positives at the cost of 10\% of Tr
 The first challenge is the distribution of the task.
 \begin{itemize}
 \item
-This project uses the student lab DICE machines in Appleton Tower for the cleaning algorithm.
+220 student lab DICE machines.
 \item
-There are 350 DICE machines in total. Due to auto-sleeping setting of some machines, about 220 can be used for cleaning.
+800 cores reduces runtime significantly.
 \item
-A Python script is used to ``scan'' for idle machines so the cleaning won't disrupt other students.
+A Python script is used to ``scan'' for idle machines.
 \item
-With the shared file system - AFS, the more portable MPI is used for the project. This gives fast communication between the cleaning processes, hence achieves the demand of task distribution.
+University provides a shared file system (AFS).
+\item
+MPI is used for the communication between process.
 \end{itemize}
+
+\begin{figure}
+\includegraphics[scale=0.4]{image/mpi.png}
+\caption{Framework Example Run}
+\end{figure}
 
 \end{frame}
 
@@ -149,15 +176,82 @@ With the shared file system - AFS, the more portable MPI is used for the project
 Another problem of the project is the lack of a SQL server.
 \begin{itemize}
 \item
-The F4K project's dataset contains a 500 GB {\tt .sql} dump file.
+500 GB {\tt .sql} dump file too large for PostgreSQL service.
 \item
-Computing Support recommends me not to load the dump file using school's PostgreSQL service.
+Independent records, SQL query may not be best choice.
 \item
-Since the records needed are independent, it's possible to partition the data into csv file with a standard I/O pipeline.
+Alternatively, parse relevant information to csv file.
 \item
-After parsing, loading relevant information of a 2000-frame video from AFS took less than 1 seconds now.
+Saves time and cost for maintaining a server.
 \item
-It also gives more portability to the project.
+Reduces dump file to 2/3 size, also makes loading faster.
+\end{itemize}
+
+\end{frame}
+
+
+
+\subsection{Frame Edge Indicator Function}
+
+\begin{frame}
+\frametitle{Details - Frame Edge Indicator Function}
+
+FEIF removes all of fish touching frame edge.
+
+\begin{columns}
+\column{0.5\textwidth}
+\begin{itemize}
+\item
+Reduces dataset by 10\%.
+\item
+Fast, but reject good fish sometimes.
+\end{itemize}
+
+Another similar method is used to reject planktons.
+
+\begin{itemize}
+\item
+Reject all the videos recorded at night.
+\item
+These videos have over 99\% of False Positive.
+\item
+Reduces dataset by 8\%.
+\end{itemize}
+
+\column{0.41\textwidth}
+\begin{figure}
+\includegraphics[scale=0.5]{image/FEIF.png}
+\caption{Sample Frame Touching Edge}
+\end{figure}
+\end{columns}
+
+\end{frame}
+
+
+
+\subsection{Ground Truthing Dataset}
+
+\begin{frame}
+\frametitle{Details - Ground Truth}
+
+\begin{itemize}
+\item
+Pugh created a 10-class classification schema.
+\item
+He marked 60,000 detections for training.
+\item
+Class 6 and 8 are acceptable fishes.
+\end{itemize}
+
+\begin{figure}
+\includegraphics[scale=0.2]{image/class_sample.png}
+\caption{Sample fish from each class}
+\end{figure}
+
+\vspace{-15pt}
+\begin{itemize}
+\item
+This project marked  another 20,000 detections for validation.
 \end{itemize}
 
 \end{frame}
@@ -169,19 +263,17 @@ It also gives more portability to the project.
 \begin{frame}
 \frametitle{Details - Translating MATLAB code into Python}
 
-Originally, one of the main goal is to translate the Pipeline Classifier into Python.
-
 \begin{columns}
 \column{0.59\textwidth}
 \begin{itemize}
 \item
-The project have translated most of the parts into Python.
+Most of the pipeline parts are translated into Python.
 \item
-Except for the Feature Extraction in MATLAB and the Neural Network in Lua.
+Except Feature Extraction in MATLAB and CNN in Lua.
 \item
-After some benchmarking it is estimated the translation could take more time than running the code directly.
+After benchmarking, a full translation does not seem optimal.
 \item 
-PyMatlab and Lutorpy library is used to call the untranslated functions.
+PyMatlab and Lutorpy are used instead.
 \end{itemize}
 
 \column{0.41\textwidth}
@@ -195,43 +287,20 @@ PyMatlab and Lutorpy library is used to call the untranslated functions.
 
 
 
-\subsection{Ground Truthing Dataset}
-
-\begin{frame}
-\frametitle{Details - Ground Truth}
-
-In order to train the classifiers used in the pipeline, Pugh marked 60,000 detections manually using a 10-class classification schema.
-
-\vspace{5pt}
-In this schema, only class 6 and 8 are accepted fishes, while others will be rejected from the dataset.
-
-\begin{figure}
-\includegraphics[scale=0.2]{image/class_sample.png}
-\caption{Sample fish from each class}
-\end{figure}
-
-\vspace{-15pt}
-Another 20,000 detections are marked in this project for complementing the missing cases, and performance evaluation.
-
-\end{frame}
-
-
-
 \subsection{Classifiers}
 
 \begin{frame}
 \frametitle{Details - Classifiers}
 
-Pugh's pipeline classifier uses Support Vector Machine (SVM) and Convolutional Neural Network (CNN) for the classification of fish detections.
-
 \begin{itemize}
 \item
-The SVM performed the same as Pugh's expectation.
+The SVM performed the as expected.
 \item
-Unfortunately, the CNNs trained does not work as intended.
-This is caused by color space issues in OpenCV. This leads to wrong transformation and normalization of the color spaces.
+CNNs trained does not work as intended.
 \item
-Retraining the CNN would take a long time due to DICE machine's lack of CUDA support.
+This is caused by color space issues in OpenCV. 
+\item
+Retraining the CNN too costly and not used.
 \end{itemize}
 
 \begin{columns}
@@ -258,18 +327,17 @@ Retraining the CNN would take a long time due to DICE machine's lack of CUDA sup
 \begin{frame}
 \frametitle{Details - Voting Strategy}
 
-Even after the CNN failure mentioned above, the CNN might still be useful. As it's giving 80\% accuracy on class 6 (Fish) prediction. 
-
-\vspace{5pt}
-In order to utilizing the result from CNN, an attempt of voting strategy using the classifier outputs were made.
-
-\vspace{8pt}
 \begin{columns}
-\column{0.5\textwidth}
-To show the relationship between True/False Positive Rate, the ROC curve of different strategies are plotted.
+\column{0.6\textwidth}
+\begin{itemize}
+\item
+Uses voting instead of the original Top-N decision.
+\item
+Use ROC curve to pick strategy.
+\item
+For keeping most True Positive, use SVM only is the best strategy.
+\end{itemize}
 
-\vspace{5pt}
-With the need of keeping most of True Positives, the best strategy is using SVM results only.
 \column{0.4\textwidth}
 \begin{figure}
 \includegraphics[scale=0.2]{image/roccurve.png}
@@ -284,41 +352,105 @@ With the need of keeping most of True Positives, the best strategy is using SVM 
 \begin{frame}
 \frametitle{Result - Outcome}
 
-The project manages to apply the cleaning algorithm developed by Pugh, with following statistics:
+Project Result:
 \begin{itemize}
 \item
 28\% of the 1.6 TB dataset is removed.
 \item
-40\% of the False Positive is marked as Non-Fish.
+40\% of the False Positive rejected.
 \item
 Finished the task in 11 days of computational time.
+\end{itemize}
+
+It does not achieve Pugh's predicted 90\% FP removal.
+This is caused by:
+\begin{itemize}
+\item
+CNN over-fit, accuracy drops 20\% on validation set.
+\item
+Poor coverage on training-set.
+\item
+Over-estimation due to Pugh's 2-Fold Training/Testing split.
 \end{itemize}
 \end{frame}
 
 
 
-\subsection{Project Result}
 \begin{frame}
-\frametitle{Result - Sample True Positive/ False Positive}
+\frametitle{Result - Samples}
 
-\(<\)insert samples here\(>\)
-
-\(<\)Forum power down - need access to project space to add images\(>\)
+\begin{itemize}
+\item
+The SVM appears to learn the shape of detections well.
+\item
+High probability detections are usually good fish.
+\item
+FP are mixed with TP with erratic contour.
+\end{itemize}
+\begin{figure}
+\setlength{\abovecaptionskip}{-2pt}
+\includegraphics[scale=0.25]{image/HP.png}
+\caption{Positives with High Probability}
+\end{figure}
+\vspace{-10pt}
+\begin{figure}
+\setlength{\abovecaptionskip}{-2pt}
+\includegraphics[scale=0.25]{image/LP.png}
+\caption{Positives with Low Probability}
+\end{figure}
 
 \end{frame}
 
 
 
-\section{Conclusion}
-\subsection{Lessons Learned}
+
 \begin{frame}
-\frametitle{Lessons Learned}
+\frametitle{Result - Achievements}
+
+\begin{itemize}
+\item
+Finishes the 800,000 hour task.
+\item
+Took about 10 days of computational day.
+\item
+Estimated 90\% reduction on single-core time cost.
+\item
+Potentially reduces dataset by 500 GB.
+\item 
+Removes 40\% of FP at lost of 10\% TP.
+\item
+Most kept FP have low SVM score.
+\item
+Most reject TP have very erratic boundary.
+\end{itemize}
+
+
 \end{frame}
+
+
 
 \subsection{Future Work}
 \begin{frame}
-\frametitle{Future Work}
+\frametitle{Future Works}
+\begin{itemize}
+\item
+More Ground Truth dataset.
+\item
+Fix the True Negatives caused by FEIF.
+\item
+Re-train the CNN used with correct data.
+\end{itemize}
 \end{frame}
+
+
+\begin{frame}
+\begin{Huge}
+\begin{center}
+Questions?
+\end{center}
+\end{Huge}
+\end{frame}
+
 
 
 
