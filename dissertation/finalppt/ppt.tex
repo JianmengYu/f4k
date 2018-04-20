@@ -18,43 +18,7 @@
 \titlepage
 \end{frame}
 
-
-\begin{frame}
-\tableofcontents
-\end{frame}
-
-
 \section{Introduction}
-
-\subsection{Motivation}
-\begin{frame}
-\frametitle{Project Motivation}
-
-\begin{itemize}
-\item What is Motivation of the Project?
-\begin{itemize}
-\item 
-1.6 TB dataset, 839 million detections. 
-\item
-About 60\% are False Positives.
-\item
-Pugh\cite{Pugh}'s prototype cleaning algorithm.
-\item Not applied due to cost (800,000 hours)\cite{Yu}.
-\end{itemize}
-\item The Goal of this project?
-\begin{itemize}
-\item
-Apply the cleaning algorithm.
-\item 
-Need a parallel framework to reduce time.
-\item 
-Need to translate the code.
-\end{itemize}
-\end{itemize}
-
-\end{frame}
-
-
 
 \subsection{Background}
 
@@ -74,10 +38,50 @@ They reduce the recording to 1.6 TB size.
 \includegraphics[scale=0.4]{image/sample.png}
 \caption{Sample frames of the videos}
 \end{figure}
-
 \end{frame}
 
 
+
+
+\begin{frame}
+\frametitle{Background - Project Motivation}
+
+\begin{itemize}
+\item 
+1.6 TB dataset, 839 million detections. 
+\item
+About 60\% of estimated False Positives.
+\item
+Pugh\cite{Pugh}'s prototype cleaning algorithm.
+\item Not applied due to cost (800,000 hours)\cite{Yu}.
+\end{itemize}
+
+\begin{figure}
+\includegraphics[scale=0.23]{image/FP.png}
+\caption{False Positives in the Dataset}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Background - Project Goals}
+
+
+\begin{itemize}
+\item
+Apply the cleaning algorithm to remove False Positive.
+\item 
+Need a parallel framework to reduce time.
+\item 
+Need to translate the code to Python.
+\end{itemize}
+
+\begin{figure}
+\includegraphics[scale=0.23]{image/TP.png}
+\caption{True Positives in the Dataset}
+\end{figure}
+
+\end{frame}
 
 \begin{frame}
 \frametitle{Background - Cleaning Algorithm}
@@ -108,14 +112,12 @@ Use Top-N algorithm to obtain decision vector.
 
 \end{frame}
 
-
-
 \subsection{Main Problems}
 
 \begin{frame}
 \frametitle{Project Problems}
 
-The project has encountered several problems on the algorithm:
+The project has encountered several problems with this algorithm:
 \begin{itemize}
 \item
 The pipeline is only tested without parallelization.
@@ -132,62 +134,17 @@ Translation needed, for more portability.
 \item
 CNN trained is broken, over-fits on badly transformed dataset. 
 \item
-Prototype stage - The best Top-N strategy is not found.
+Prototype stage - The best Top-N strategy was not found.
 \end{itemize}
 
 \end{frame}
 
 
+\begin{frame}
+\tableofcontents
+\end{frame}
 
 \section{Details of Problems and Solution}
-\subsection{Parallel Distribution}
-
-\begin{frame}
-\frametitle{Details - Parallel Distribution}
-
-The first challenge is the distribution of the task.
-\begin{itemize}
-\item
-220 student lab DICE machines.
-\item
-800 cores reduces runtime significantly.
-\item
-A Python script is used to ``scan'' for idle machines.
-\item
-University provides a shared file system (AFS).
-\item
-MPI is used for the communication between process.
-\end{itemize}
-
-\begin{figure}
-\includegraphics[scale=0.4]{image/mpi.png}
-\caption{Framework Example Run}
-\end{figure}
-
-\end{frame}
-
-
-
-\subsection{Data Extraction from SQL dump file}
-
-\begin{frame}
-\frametitle{Details - Standard I/O Stream Extraction}
-
-Another problem of the project is the lack of a SQL server.
-\begin{itemize}
-\item
-500 GB {\tt .sql} dump file too large for PostgreSQL service.
-\item
-Independent records, SQL query may not be best choice.
-\item
-Alternatively, parse relevant information to csv file.
-\item
-Saves time and cost for maintaining a server.
-\item
-Reduces dump file to 2/3 size, also makes loading faster.
-\end{itemize}
-
-\end{frame}
 
 
 
@@ -258,35 +215,6 @@ This project marked  another 20,000 detections for validation.
 
 
 
-\subsection{Code Translation}
-
-\begin{frame}
-\frametitle{Details - Translating MATLAB code into Python}
-
-\begin{columns}
-\column{0.59\textwidth}
-\begin{itemize}
-\item
-Most of the pipeline parts are translated into Python.
-\item
-Except Feature Extraction in MATLAB and CNN in Lua.
-\item
-After benchmarking, a full translation does not seem optimal.
-\item 
-PyMatlab and Lutorpy are used instead.
-\end{itemize}
-
-\column{0.41\textwidth}
-\begin{figure}
-\includegraphics[scale=0.3]{image/benchmark.png}
-\caption{Performance of different convolution algorithms}
-\end{figure}
-\end{columns}
-
-\end{frame}
-
-
-
 \subsection{Classifiers}
 
 \begin{frame}
@@ -294,9 +222,9 @@ PyMatlab and Lutorpy are used instead.
 
 \begin{itemize}
 \item
-The SVM performed the as expected.
+The SVM performed as expected.
 \item
-CNNs trained does not work as intended.
+CNNs training does not work as intended.
 \item
 This is caused by color space issues in OpenCV. 
 \item
@@ -347,23 +275,126 @@ For keeping most True Positive, use SVM only is the best strategy.
 
 
 
+
+
+\subsection{Code Translation}
+
+\begin{frame}
+\frametitle{Details - Translating MATLAB code into Python}
+
+\begin{columns}
+\column{0.59\textwidth}
+\begin{itemize}
+\item
+Most of the pipeline parts are translated into Python.
+\item
+Except Feature Extraction in MATLAB and CNN in Lua.
+\item
+After benchmarking, a full translation does not seem optimal.
+\item 
+PyMatlab and Lutorpy are used instead.
+\end{itemize}
+
+\column{0.41\textwidth}
+\begin{figure}
+\includegraphics[scale=0.3]{image/benchmark.png}
+\caption{Performance of different convolution algorithms}
+\end{figure}
+\end{columns}
+
+\end{frame}
+
+
+
+
+
+\subsection{Data Extraction from SQL dump file}
+
+\begin{frame}
+\frametitle{Details - Standard I/O Stream Extraction}
+
+Another problem is the lack of a SQL server.
+\begin{itemize}
+\item
+500 GB {\tt .sql} dump file too large for PostgreSQL service.
+\item
+Independent records, SQL query may not be best choice.
+\item
+Alternatively, parse relevant information to 400,000 csv files.
+\item
+Saves time and cost for maintaining a server.
+\item
+Reduces dump file to 2/3 size, also makes loading faster.
+\end{itemize}
+
+\end{frame}
+
+
+
+\subsection{Parallel Distribution}
+
+\begin{frame}
+\frametitle{Details - Parallel Distribution}
+
+\begin{itemize}
+\item
+220 student lab DICE machines is used.
+\item
+880 cores reduces runtime significantly.
+\item
+A Python script is used to ``scan'' for idle machines.
+\item
+University provides a shared file system (AFS).
+\item
+MPI is used for the communication between process.
+\end{itemize}
+
+\begin{figure}
+\includegraphics[scale=0.4]{image/mpi.png}
+\caption{Framework Example Run}
+\end{figure}
+
+\end{frame}
+
+
+
 \section{Results}
 \subsection{Project Result}
+
+\begin{frame}
+\frametitle{Parallel framework's time reduction}
+
+Each detection took about 1 second per core to process:
+\begin{itemize}
+\item
+Reduced from 8 second per core after translation.
+\item
+Dataset have 839,000,000 detections.
+\item
+This would take 2400 days on 4-core machine. 
+\item
+Parallel Distribution reduces this to 12 days.
+\end{itemize}
+
+\end{frame}
+
+
 \begin{frame}
 \frametitle{Result - Outcome}
 
 Project Result:
 \begin{itemize}
 \item
-28\% of the 1.6 TB dataset is removed.
+28\% of the 1.6 TB dataset is deleted.
 \item
 40\% of the False Positive rejected.
 \item
-Finished the task in 11 days of computational time.
+10\% of the True Positive lost in the process.
+\item
+A binary decision array marking keep/reject for each video.
 \end{itemize}
 
-It does not achieve Pugh's predicted 90\% FP removal.
-This is caused by:
+Does not achieve Pugh's predicted 90\% FP removal:
 \begin{itemize}
 \item
 CNN over-fit, accuracy drops 20\% on validation set.
@@ -377,15 +408,13 @@ Over-estimation due to Pugh's 2-Fold Training/Testing split.
 
 
 \begin{frame}
-\frametitle{Result - Samples}
+\frametitle{Result - Successful Samples}
 
 \begin{itemize}
 \item
 The SVM appears to learn the shape of detections well.
 \item
 High probability detections are usually good fish.
-\item
-FP are mixed with TP with erratic contour.
 \end{itemize}
 \begin{figure}
 \setlength{\abovecaptionskip}{-2pt}
@@ -402,6 +431,34 @@ FP are mixed with TP with erratic contour.
 \end{frame}
 
 
+\begin{frame}
+\frametitle{Result - Failure Samples}
+
+\begin{itemize}
+\item
+FP are mixed with TP with erratic contour.
+\item
+Fishes may have very erratic boundaries.
+\item
+Noises may have fish-like boundaries.
+\end{itemize}
+
+\begin{figure}
+\setlength{\abovecaptionskip}{-2pt}
+\includegraphics[scale=0.35]{image/SVMfail.png}
+\caption{Good Fish Rejected due to Erratic Boundary (less than 1\%)}
+\end{figure}
+\vspace{-10pt}
+
+\begin{figure}
+\setlength{\abovecaptionskip}{-2pt}
+\includegraphics[scale=0.25]{image/LLP.png}
+\caption{False Positives kept with Very Low Probability}
+\end{figure}
+
+\end{frame}
+
+
 
 
 \begin{frame}
@@ -409,15 +466,11 @@ FP are mixed with TP with erratic contour.
 
 \begin{itemize}
 \item
-Finishes the 800,000 hour task.
-\item
-Took about 10 days of computational day.
-\item
-Estimated 90\% reduction on single-core time cost.
+Finishes the 800,000 hour task in 100,000 CPU hours.
 \item
 Potentially reduces dataset by 500 GB.
 \item 
-Removes 40\% of FP at lost of 10\% TP.
+Removes 40\% of FP at cost of 10\% TP.
 \item
 Most kept FP have low SVM score.
 \item
@@ -434,11 +487,11 @@ Most reject TP have very erratic boundary.
 \frametitle{Future Works}
 \begin{itemize}
 \item
-More Ground Truth dataset.
+Larger Ground Truth dataset: Better training.
 \item
 Fix the True Negatives caused by FEIF.
 \item
-Re-train the CNN used with correct data.
+Re-train the CNN used with new dataset.
 \end{itemize}
 \end{frame}
 

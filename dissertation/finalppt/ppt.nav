@@ -1,67 +1,72 @@
 \headcommand {\slideentry {0}{0}{1}{1/1}{}{0}}
 \headcommand {\beamer@framepages {1}{1}}
-\headcommand {\slideentry {0}{0}{2}{2/2}{}{0}}
+\headcommand {\sectionentry {1}{Introduction}{2}{Introduction}{0}}
+\headcommand {\beamer@sectionpages {1}{1}}
+\headcommand {\beamer@subsectionpages {1}{1}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{2}{Background}}\headcommand {\beamer@subsectionpages {2}{1}}
+\headcommand {\slideentry {1}{1}{1}{2/2}{Background}{0}}
 \headcommand {\beamer@framepages {2}{2}}
-\headcommand {\sectionentry {1}{Introduction}{3}{Introduction}{0}}
-\headcommand {\beamer@sectionpages {1}{2}}
-\headcommand {\beamer@subsectionpages {1}{2}}
-\headcommand {\beamer@subsectionentry {0}{1}{1}{3}{Motivation}}\headcommand {\beamer@subsectionpages {3}{2}}
-\headcommand {\slideentry {1}{1}{1}{3/3}{Motivation}{0}}
+\headcommand {\slideentry {1}{1}{2}{3/3}{Background}{0}}
 \headcommand {\beamer@framepages {3}{3}}
-\headcommand {\beamer@subsectionentry {0}{1}{2}{4}{Background}}\headcommand {\beamer@subsectionpages {3}{3}}
-\headcommand {\slideentry {1}{2}{1}{4/4}{Background}{0}}
+\headcommand {\slideentry {1}{1}{3}{4/4}{Background}{0}}
 \headcommand {\beamer@framepages {4}{4}}
-\headcommand {\slideentry {1}{2}{2}{5/5}{Background}{0}}
+\headcommand {\slideentry {1}{1}{4}{5/5}{Background}{0}}
 \headcommand {\beamer@framepages {5}{5}}
-\headcommand {\beamer@subsectionentry {0}{1}{3}{6}{Main Problems}}\headcommand {\beamer@subsectionpages {4}{5}}
-\headcommand {\slideentry {1}{3}{1}{6/6}{Main Problems}{0}}
+\headcommand {\beamer@subsectionentry {0}{1}{2}{6}{Main Problems}}\headcommand {\beamer@subsectionpages {2}{5}}
+\headcommand {\slideentry {1}{2}{1}{6/6}{Main Problems}{0}}
 \headcommand {\beamer@framepages {6}{6}}
-\headcommand {\sectionentry {2}{Details of Problems and Solution}{7}{Details of Problems and Solution}{0}}
-\headcommand {\beamer@sectionpages {3}{6}}
-\headcommand {\beamer@subsectionpages {6}{6}}
-\headcommand {\beamer@subsectionentry {0}{2}{1}{7}{Parallel Distribution}}\headcommand {\beamer@subsectionpages {7}{6}}
-\headcommand {\slideentry {2}{1}{1}{7/7}{Parallel Distribution}{0}}
+\headcommand {\slideentry {1}{2}{2}{7/7}{Main Problems}{0}}
 \headcommand {\beamer@framepages {7}{7}}
-\headcommand {\beamer@subsectionentry {0}{2}{2}{8}{Data Extraction from SQL dump file}}\headcommand {\beamer@subsectionpages {7}{7}}
-\headcommand {\slideentry {2}{2}{1}{8/8}{Data Extraction from SQL dump file}{0}}
+\headcommand {\sectionentry {2}{Details of Problems and Solution}{8}{Details of Problems and Solution}{0}}
+\headcommand {\beamer@sectionpages {2}{7}}
+\headcommand {\beamer@subsectionpages {6}{7}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{8}{Frame Edge Indicator Function}}\headcommand {\beamer@subsectionpages {8}{7}}
+\headcommand {\slideentry {2}{1}{1}{8/8}{Frame Edge Indicator Function}{0}}
 \headcommand {\beamer@framepages {8}{8}}
-\headcommand {\beamer@subsectionentry {0}{2}{3}{9}{Frame Edge Indicator Function}}\headcommand {\beamer@subsectionpages {8}{8}}
-\headcommand {\slideentry {2}{3}{1}{9/9}{Frame Edge Indicator Function}{0}}
+\headcommand {\beamer@subsectionentry {0}{2}{2}{9}{Ground Truthing Dataset}}\headcommand {\beamer@subsectionpages {8}{8}}
+\headcommand {\slideentry {2}{2}{1}{9/9}{Ground Truthing Dataset}{0}}
 \headcommand {\beamer@framepages {9}{9}}
-\headcommand {\beamer@subsectionentry {0}{2}{4}{10}{Ground Truthing Dataset}}\headcommand {\beamer@subsectionpages {9}{9}}
-\headcommand {\slideentry {2}{4}{1}{10/10}{Ground Truthing Dataset}{0}}
+\headcommand {\beamer@subsectionentry {0}{2}{3}{10}{Classifiers}}\headcommand {\beamer@subsectionpages {9}{9}}
+\headcommand {\slideentry {2}{3}{1}{10/10}{Classifiers}{0}}
 \headcommand {\beamer@framepages {10}{10}}
-\headcommand {\beamer@subsectionentry {0}{2}{5}{11}{Code Translation}}\headcommand {\beamer@subsectionpages {10}{10}}
-\headcommand {\slideentry {2}{5}{1}{11/11}{Code Translation}{0}}
+\headcommand {\beamer@subsectionentry {0}{2}{4}{11}{Voting Strategy}}\headcommand {\beamer@subsectionpages {10}{10}}
+\headcommand {\slideentry {2}{4}{1}{11/11}{Voting Strategy}{0}}
 \headcommand {\beamer@framepages {11}{11}}
-\headcommand {\beamer@subsectionentry {0}{2}{6}{12}{Classifiers}}\headcommand {\beamer@subsectionpages {11}{11}}
-\headcommand {\slideentry {2}{6}{1}{12/12}{Classifiers}{0}}
+\headcommand {\beamer@subsectionentry {0}{2}{5}{12}{Code Translation}}\headcommand {\beamer@subsectionpages {11}{11}}
+\headcommand {\slideentry {2}{5}{1}{12/12}{Code Translation}{0}}
 \headcommand {\beamer@framepages {12}{12}}
-\headcommand {\beamer@subsectionentry {0}{2}{7}{13}{Voting Strategy}}\headcommand {\beamer@subsectionpages {12}{12}}
-\headcommand {\slideentry {2}{7}{1}{13/13}{Voting Strategy}{0}}
+\headcommand {\beamer@subsectionentry {0}{2}{6}{13}{Data Extraction from SQL dump file}}\headcommand {\beamer@subsectionpages {12}{12}}
+\headcommand {\slideentry {2}{6}{1}{13/13}{Data Extraction from SQL dump file}{0}}
 \headcommand {\beamer@framepages {13}{13}}
-\headcommand {\sectionentry {3}{Results}{14}{Results}{0}}
-\headcommand {\beamer@sectionpages {7}{13}}
-\headcommand {\beamer@subsectionpages {13}{13}}
-\headcommand {\beamer@subsectionentry {0}{3}{1}{14}{Project Result}}\headcommand {\beamer@subsectionpages {14}{13}}
-\headcommand {\slideentry {3}{1}{1}{14/14}{Project Result}{0}}
+\headcommand {\beamer@subsectionentry {0}{2}{7}{14}{Parallel Distribution}}\headcommand {\beamer@subsectionpages {13}{13}}
+\headcommand {\slideentry {2}{7}{1}{14/14}{Parallel Distribution}{0}}
 \headcommand {\beamer@framepages {14}{14}}
-\headcommand {\slideentry {3}{1}{2}{15/15}{Project Result}{0}}
+\headcommand {\sectionentry {3}{Results}{15}{Results}{0}}
+\headcommand {\beamer@sectionpages {8}{14}}
+\headcommand {\beamer@subsectionpages {14}{14}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{15}{Project Result}}\headcommand {\beamer@subsectionpages {15}{14}}
+\headcommand {\slideentry {3}{1}{1}{15/15}{Project Result}{0}}
 \headcommand {\beamer@framepages {15}{15}}
-\headcommand {\slideentry {3}{1}{3}{16/16}{Project Result}{0}}
+\headcommand {\slideentry {3}{1}{2}{16/16}{Project Result}{0}}
 \headcommand {\beamer@framepages {16}{16}}
-\headcommand {\beamer@subsectionentry {0}{3}{2}{17}{Future Work}}\headcommand {\beamer@subsectionpages {14}{16}}
-\headcommand {\slideentry {3}{2}{1}{17/17}{Future Work}{0}}
+\headcommand {\slideentry {3}{1}{3}{17/17}{Project Result}{0}}
 \headcommand {\beamer@framepages {17}{17}}
-\headcommand {\slideentry {3}{2}{2}{18/18}{Future Work}{0}}
+\headcommand {\slideentry {3}{1}{4}{18/18}{Project Result}{0}}
 \headcommand {\beamer@framepages {18}{18}}
-\headcommand {\sectionentry {4}{Bibliography}{19}{Bibliography}{0}}
-\headcommand {\beamer@sectionpages {14}{18}}
-\headcommand {\beamer@subsectionpages {17}{18}}
-\headcommand {\slideentry {4}{0}{1}{19/19}{}{0}}
+\headcommand {\slideentry {3}{1}{5}{19/19}{Project Result}{0}}
 \headcommand {\beamer@framepages {19}{19}}
-\headcommand {\beamer@partpages {1}{19}}
-\headcommand {\beamer@subsectionpages {19}{19}}
-\headcommand {\beamer@sectionpages {19}{19}}
-\headcommand {\beamer@documentpages {19}}
-\headcommand {\def \inserttotalframenumber {19}}
+\headcommand {\beamer@subsectionentry {0}{3}{2}{20}{Future Work}}\headcommand {\beamer@subsectionpages {15}{19}}
+\headcommand {\slideentry {3}{2}{1}{20/20}{Future Work}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\slideentry {3}{2}{2}{21/21}{Future Work}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\sectionentry {4}{Bibliography}{22}{Bibliography}{0}}
+\headcommand {\beamer@sectionpages {15}{21}}
+\headcommand {\beamer@subsectionpages {20}{21}}
+\headcommand {\slideentry {4}{0}{1}{22/22}{}{0}}
+\headcommand {\beamer@framepages {22}{22}}
+\headcommand {\beamer@partpages {1}{22}}
+\headcommand {\beamer@subsectionpages {22}{22}}
+\headcommand {\beamer@sectionpages {22}{22}}
+\headcommand {\beamer@documentpages {22}}
+\headcommand {\def \inserttotalframenumber {22}}
